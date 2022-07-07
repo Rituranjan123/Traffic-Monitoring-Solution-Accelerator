@@ -1,0 +1,3249 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sites_HighwayMonitoring_name": {
+      "defaultValue": "HighwayMonitoring",
+      "type": "String"
+    },
+    "sites_HighwayMonitoringWebAPI_name": {
+      "defaultValue": "HighwayMonitoringWebAPI",
+      "type": "String"
+    },
+    "storageAccounts_createuser_name": {
+      "defaultValue": "createuser",
+      "type": "String"
+    },
+    "databaseAccounts_mspocdb_name": {
+      "defaultValue": "mspocdb",
+      "type": "String"
+    },
+    "registries_mspoccr_name": {
+      "defaultValue": "mspoccr",
+      "type": "String"
+    },
+    "storageAccounts_msstorageblob_name": {
+      "defaultValue": "msstorageblob",
+      "type": "String"
+    },
+    "managedClusters_mspocAKS_name": {
+      "defaultValue": "mspocAKS",
+      "type": "String"
+    },
+    "serverfarms_ASP_MSPOCtrafficmonitoring_945b_name": {
+      "defaultValue": "ASP-MSPOCtrafficmonitoring-945b",
+      "type": "String"
+    },
+    "serverfarms_HighwayMonitoringWebAPI20220620103439Pla_name": {
+      "defaultValue": "HighwayMonitoringWebAPI20220620103439Pla",
+      "type": "String"
+    },
+    "smartdetectoralertrules_failure_anomalies___microsoftpocwebapp_name": {
+      "defaultValue": "failure anomalies - microsoftpocwebapp",
+      "type": "String"
+    },
+    "components_microsoftpocwebapp_externalid": {
+      "defaultValue": "/subscriptions/422cf0b3-8d06-4fc7-8903-2cb72dd00d8f/resourceGroups/mspoctrafficmonitoring/providers/microsoft.insights/components/microsoftpocwebapp",
+      "type": "String"
+    },
+    "actiongroups_application_insights_smart_detection_externalid": {
+      "defaultValue": "/subscriptions/422cf0b3-8d06-4fc7-8903-2cb72dd00d8f/resourceGroups/audaxlabs/providers/microsoft.insights/actiongroups/application insights smart detection",
+      "type": "String"
+    },
+    "applicationGateways_ingress_appgateway_externalid": {
+      "defaultValue": "/subscriptions/422cf0b3-8d06-4fc7-8903-2cb72dd00d8f/resourceGroups/MC_MSPOCtrafficmonitoring_mspocAKS_eastus/providers/Microsoft.Network/applicationGateways/ingress-appgateway",
+      "type": "String"
+    },
+    "publicIPAddresses_736f845d_f37f_4ddd_ab7a_859bfaf8dd36_externalid": {
+      "defaultValue": "/subscriptions/422cf0b3-8d06-4fc7-8903-2cb72dd00d8f/resourceGroups/MC_MSPOCtrafficmonitoring_mspocAKS_eastus/providers/Microsoft.Network/publicIPAddresses/736f845d-f37f-4ddd-ab7a-859bfaf8dd36",
+      "type": "String"
+    },
+    "userAssignedIdentities_mspocAKS_agentpool_externalid": {
+      "defaultValue": "/subscriptions/422cf0b3-8d06-4fc7-8903-2cb72dd00d8f/resourceGroups/MC_MSPOCtrafficmonitoring_mspocAKS_eastus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mspocAKS-agentpool",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('smartdetectoralertrules_failure_anomalies___microsoftpocwebapp_name')]",
+      "location": "global",
+      "properties": {
+        "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+        "state": "Enabled",
+        "severity": "Sev3",
+        "frequency": "PT1M",
+        "detector": {
+          "id": "FailureAnomaliesDetector"
+        },
+        "scope": [
+          "[parameters('components_microsoftpocwebapp_externalid')]"
+        ],
+        "actionGroups": {
+          "groupIds": [
+            "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2022-02-01-preview",
+      "name": "[parameters('registries_mspoccr_name')]",
+      "location": "eastus",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "adminUserEnabled": true,
+        "policies": {
+          "quarantinePolicy": {
+            "status": "disabled"
+          },
+          "trustPolicy": {
+            "type": "Notary",
+            "status": "disabled"
+          },
+          "retentionPolicy": {
+            "days": 7,
+            "status": "disabled"
+          },
+          "exportPolicy": {
+            "status": "enabled"
+          },
+          "azureADAuthenticationAsArmPolicy": {
+            "status": "enabled"
+          },
+          "softDeletePolicy": {
+            "retentionDays": 7,
+            "status": "disabled"
+          }
+        },
+        "encryption": {
+          "status": "disabled"
+        },
+        "dataEndpointEnabled": false,
+        "publicNetworkAccess": "Enabled",
+        "networkRuleBypassOptions": "AzureServices",
+        "zoneRedundancy": "Disabled",
+        "anonymousPullEnabled": false
+      }
+    },
+    {
+      "type": "Microsoft.ContainerService/managedClusters",
+      "apiVersion": "2022-04-02-preview",
+      "name": "[parameters('managedClusters_mspocAKS_name')]",
+      "location": "eastus",
+      "sku": {
+        "name": "Basic",
+        "tier": "Paid"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "kubernetesVersion": "1.22.6",
+        "dnsPrefix": "[concat(parameters('managedClusters_mspocAKS_name'), '-dns')]",
+        "agentPoolProfiles": [
+          {
+            "name": "agentpool",
+            "count": 1,
+            "vmSize": "Standard_B4ms",
+            "osDiskSizeGB": 128,
+            "osDiskType": "Managed",
+            "kubeletDiskType": "OS",
+            "maxPods": 110,
+            "type": "VirtualMachineScaleSets",
+            "availabilityZones": [
+              "1"
+            ],
+            "enableAutoScaling": false,
+            "powerState": {
+              "code": "Running"
+            },
+            "orchestratorVersion": "1.22.6",
+            "currentOrchestratorVersion": "1.22.6",
+            "enableNodePublicIP": false,
+            "enableCustomCATrust": false,
+            "mode": "System",
+            "osType": "Linux",
+            "osSKU": "Ubuntu",
+            "enableFIPS": false
+          }
+        ],
+        "servicePrincipalProfile": {
+          "clientId": "msi"
+        },
+        "addonProfiles": {
+          "azureKeyvaultSecretsProvider": {
+            "enabled": false
+          },
+          "azurepolicy": {
+            "enabled": false
+          },
+          "httpApplicationRouting": {
+            "enabled": true,
+            "config": {
+              "HTTPApplicationRoutingZoneName": "2709dcc31efe48bb8367.eastus.aksapp.io"
+            }
+          },
+          "ingressApplicationGateway": {
+            "enabled": true,
+            "config": {
+              "applicationGatewayName": "ingress-appgateway",
+              "effectiveApplicationGatewayId": "[parameters('applicationGateways_ingress_appgateway_externalid')]",
+              "subnetPrefix": "10.225.0.0/16"
+            }
+          }
+        },
+        "nodeResourceGroup": "[concat('MC_MSPOCtrafficmonitoring_', parameters('managedClusters_mspocAKS_name'), '_eastus')]",
+        "enableRBAC": true,
+        "networkProfile": {
+          "networkPlugin": "kubenet",
+          "loadBalancerSku": "Standard",
+          "loadBalancerProfile": {
+            "managedOutboundIPs": {
+              "count": 1
+            },
+            "effectiveOutboundIPs": [
+              {
+                "id": "[parameters('publicIPAddresses_736f845d_f37f_4ddd_ab7a_859bfaf8dd36_externalid')]"
+              }
+            ]
+          },
+          "podCidr": "10.244.0.0/16",
+          "serviceCidr": "10.0.0.0/16",
+          "dnsServiceIP": "10.0.0.10",
+          "dockerBridgeCidr": "172.17.0.1/16",
+          "outboundType": "loadBalancer"
+        },
+        "identityProfile": {
+          "kubeletidentity": {
+            "resourceId": "[parameters('userAssignedIdentities_mspocAKS_agentpool_externalid')]",
+            "clientId": "193679f9-fd68-43b0-b4fe-ecf059b77335",
+            "objectId": "345f86e1-be6c-4065-a64e-f2503766b46f"
+          }
+        },
+        "securityProfile": {},
+        "storageProfile": {
+          "diskCSIDriver": {
+            "enabled": true,
+            "version": "v1"
+          },
+          "fileCSIDriver": {
+            "enabled": true
+          },
+          "snapshotController": {
+            "enabled": true
+          }
+        },
+        "oidcIssuerProfile": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[parameters('databaseAccounts_mspocdb_name')]",
+      "location": "West US",
+      "tags": {
+        "defaultExperience": "Core (SQL)",
+        "hidden-cosmos-mmspecial": ""
+      },
+      "kind": "GlobalDocumentDB",
+      "identity": {
+        "type": "None"
+      },
+      "properties": {
+        "publicNetworkAccess": "Enabled",
+        "enableAutomaticFailover": false,
+        "enableMultipleWriteLocations": false,
+        "isVirtualNetworkFilterEnabled": false,
+        "virtualNetworkRules": [],
+        "disableKeyBasedMetadataWriteAccess": false,
+        "enableFreeTier": false,
+        "enableAnalyticalStorage": true,
+        "analyticalStorageConfiguration": {
+          "schemaType": "WellDefined"
+        },
+        "databaseAccountOfferType": "Standard",
+        "defaultIdentity": "FirstPartyIdentity",
+        "networkAclBypass": "None",
+        "disableLocalAuth": false,
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "Session",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "locations": [
+          {
+            "locationName": "West US",
+            "provisioningState": "Succeeded",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
+        "cors": [],
+        "capabilities": [],
+        "ipRules": [],
+        "backupPolicy": {
+          "type": "Periodic",
+          "periodicModeProperties": {
+            "backupIntervalInMinutes": 240,
+            "backupRetentionIntervalInHours": 8,
+            "backupStorageRedundancy": "Local"
+          }
+        },
+        "networkAclBypassResourceIds": [],
+        "diagnosticLogSettings": {
+          "enableFullTextQuery": "None"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-09-01",
+      "name": "[parameters('storageAccounts_createuser_name')]",
+      "location": "centralindia",
+      "tags": {
+        "ms-resource-usage": "azure-cloud-shell"
+      },
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "minimumTlsVersion": "TLS1_2",
+        "allowBlobPublicAccess": false,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-09-01",
+      "name": "[parameters('storageAccounts_msstorageblob_name')]",
+      "location": "eastus",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "defaultToOAuthAuthentication": false,
+        "publicNetworkAccess": "Enabled",
+        "allowCrossTenantReplication": true,
+        "minimumTlsVersion": "TLS1_2",
+        "allowBlobPublicAccess": true,
+        "allowSharedKeyAccess": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "requireInfrastructureEncryption": false,
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "table": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "queue": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Cool"
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('serverfarms_ASP_MSPOCtrafficmonitoring_945b_name')]",
+      "location": "East US",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "S1",
+        "family": "S",
+        "capacity": 1
+      },
+      "kind": "app",
+      "properties": {
+        "perSiteScaling": false,
+        "elasticScaleEnabled": false,
+        "maximumElasticWorkerCount": 1,
+        "isSpot": false,
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0,
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('serverfarms_HighwayMonitoringWebAPI20220620103439Pla_name')]",
+      "location": "South Central US",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "S1",
+        "family": "S",
+        "capacity": 1
+      },
+      "kind": "app",
+      "properties": {
+        "perSiteScaling": false,
+        "elasticScaleEnabled": false,
+        "maximumElasticWorkerCount": 1,
+        "isSpot": false,
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0,
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.ContainerService/managedClusters/agentPools",
+      "apiVersion": "2022-04-02-preview",
+      "name": "[concat(parameters('managedClusters_mspocAKS_name'), '/agentpool')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_mspocAKS_name'))]"
+      ],
+      "properties": {
+        "count": 1,
+        "vmSize": "Standard_B4ms",
+        "osDiskSizeGB": 128,
+        "osDiskType": "Managed",
+        "kubeletDiskType": "OS",
+        "maxPods": 110,
+        "type": "VirtualMachineScaleSets",
+        "availabilityZones": [
+          "1"
+        ],
+        "enableAutoScaling": false,
+        "powerState": {
+          "code": "Running"
+        },
+        "orchestratorVersion": "1.22.6",
+        "currentOrchestratorVersion": "1.22.6",
+        "enableNodePublicIP": false,
+        "enableCustomCATrust": false,
+        "mode": "System",
+        "osType": "Linux",
+        "osSKU": "Ubuntu",
+        "enableFIPS": false
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "HighwayMonitoringSystem2"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/00000000-0000-0000-0000-000000000001')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "roleName": "Cosmos DB Built-in Data Reader",
+        "type": "BuiltInRole",
+        "assignableScopes": [
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+        ],
+        "permissions": [
+          {
+            "dataActions": [
+              "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/executeQuery",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/readChangeFeed",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/read"
+            ],
+            "notDataActions": []
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/00000000-0000-0000-0000-000000000002')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "roleName": "Cosmos DB Built-in Data Contributor",
+        "type": "BuiltInRole",
+        "assignableScopes": [
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+        ],
+        "permissions": [
+          {
+            "dataActions": [
+              "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*"
+            ],
+            "notDataActions": []
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_createuser_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_createuser_name'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "allowPermanentDelete": false,
+          "enabled": false
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "changeFeed": {
+          "enabled": false
+        },
+        "restorePolicy": {
+          "enabled": false
+        },
+        "containerDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": 7
+        },
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "allowPermanentDelete": false,
+          "enabled": true,
+          "days": 7
+        },
+        "isVersioningEnabled": false
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_createuser_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_createuser_name'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "shareDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": 7
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "protocolSettings": {
+          "smb": {}
+        },
+        "cors": {
+          "corsRules": []
+        },
+        "shareDeleteRetentionPolicy": {
+          "enabled": true,
+          "days": 7
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/queueServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_createuser_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_createuser_name'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/queueServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_createuser_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_createuser_name'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('sites_HighwayMonitoring_name')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_MSPOCtrafficmonitoring_945b_name'))]"
+      ],
+      "kind": "app",
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "highwaymonitoring.azurewebsites.net",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "highwaymonitoring.scm.azurewebsites.net",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_MSPOCtrafficmonitoring_945b_name'))]",
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "numberOfWorkers": 1,
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": true,
+          "http20Enabled": false,
+          "functionAppScaleLimit": 0,
+          "minimumElasticInstanceCount": 0
+        },
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "hostNamesDisabled": false,
+        "customDomainVerificationId": "D97956FD117CDDFD87652EC36FE630135A89811A56FE8D92BCA703C6B0D2865C",
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None",
+        "storageAccountRequired": false,
+        "keyVaultReferenceIdentity": "SystemAssigned"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('sites_HighwayMonitoringWebAPI_name')]",
+      "location": "South Central US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_HighwayMonitoringWebAPI20220620103439Pla_name'))]"
+      ],
+      "tags": {
+        "subscriptionid": "empty"
+      },
+      "kind": "app",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "highwaymonitoringwebapi.azurewebsites.net",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "highwaymonitoringwebapi.scm.azurewebsites.net",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_HighwayMonitoringWebAPI20220620103439Pla_name'))]",
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "numberOfWorkers": 1,
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": false,
+          "http20Enabled": false,
+          "functionAppScaleLimit": 0,
+          "minimumElasticInstanceCount": 0
+        },
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "hostNamesDisabled": false,
+        "customDomainVerificationId": "D97956FD117CDDFD87652EC36FE630135A89811A56FE8D92BCA703C6B0D2865C",
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": true,
+        "redundancyMode": "None",
+        "storageAccountRequired": false,
+        "keyVaultReferenceIdentity": "SystemAssigned"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/ftp')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "allow": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/ftp')]",
+      "location": "South Central US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ],
+      "tags": {
+        "hidden-related:": "empty"
+      },
+      "properties": {
+        "allow": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/scm')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "allow": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/scm')]",
+      "location": "South Central US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ],
+      "tags": {
+        "subscriptionid": "empty"
+      },
+      "properties": {
+        "allow": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/web')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "nodeVersion": "~16",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "httpLoggingEnabled": false,
+        "acrUseManagedIdentityCreds": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$HighwayMonitoring",
+        "scmType": "None",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": true,
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": true
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "vnetRouteAllEnabled": false,
+        "vnetPrivatePortsCount": 0,
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "scmMinTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "preWarmedInstanceCount": 0,
+        "functionAppScaleLimit": 0,
+        "functionsRuntimeScaleMonitoringEnabled": false,
+        "minimumElasticInstanceCount": 0,
+        "azureStorageAccounts": {}
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/web')]",
+      "location": "South Central US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ],
+      "tags": {
+        "subscriptionid": "empty"
+      },
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v5.0",
+        "phpVersion": "5.6",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": true,
+        "remoteDebuggingVersion": "VS2019",
+        "httpLoggingEnabled": false,
+        "acrUseManagedIdentityCreds": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$HighwayMonitoringWebAPI",
+        "scmType": "None",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": false,
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "vnetRouteAllEnabled": false,
+        "vnetPrivatePortsCount": 0,
+        "localMySqlEnabled": false,
+        "managedServiceIdentityId": 28639,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "scmMinTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "preWarmedInstanceCount": 0,
+        "functionAppScaleLimit": 0,
+        "functionsRuntimeScaleMonitoringEnabled": false,
+        "minimumElasticInstanceCount": 0,
+        "azureStorageAccounts": {}
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/deployments",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/22312c0958cd41c4bc93068fef9661f0')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "status": 4,
+        "author_email": "N/A",
+        "author": "VS Code",
+        "deployer": "ZipDeploy",
+        "message": "Created via a push deployment",
+        "start_time": "2022-06-20T12:16:29.1389736Z",
+        "end_time": "2022-06-20T12:16:32.8584361Z",
+        "active": false
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/deployments",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/35eda3e4d10e409e86b92561246d89d0')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "status": 4,
+        "author_email": "N/A",
+        "author": "VS Code",
+        "deployer": "ZipDeploy",
+        "message": "Created via a push deployment",
+        "start_time": "2022-06-20T06:16:24.455185Z",
+        "end_time": "2022-06-20T06:40:15.8385945Z",
+        "active": false
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/deployments",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/47f8635108f84b4db080d9c17270dd0f')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "status": 4,
+        "author_email": "N/A",
+        "author": "VS Code",
+        "deployer": "ZipDeploy",
+        "message": "Created via a push deployment",
+        "start_time": "2022-06-23T05:37:32.7312492Z",
+        "end_time": "2022-06-23T05:37:37.4151987Z",
+        "active": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/deployments",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/b9afc689512d4d908d03ac2c63efd05d')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "status": 4,
+        "author_email": "N/A",
+        "author": "VS Code",
+        "deployer": "ZipDeploy",
+        "message": "Created via a push deployment",
+        "start_time": "2022-06-20T07:14:17.1738732Z",
+        "end_time": "2022-06-20T07:22:19.1839828Z",
+        "active": false
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/deployments",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/ccb54a2cdd554320b98b3cdafd2213a8')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "status": 4,
+        "author_email": "N/A",
+        "author": "VS Code",
+        "deployer": "ZipDeploy",
+        "message": "Created via a push deployment",
+        "start_time": "2022-06-20T12:21:07.8964698Z",
+        "end_time": "2022-06-20T12:21:12.0209271Z",
+        "active": false
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/', parameters('sites_HighwayMonitoring_name'), '.azurewebsites.net')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ],
+      "properties": {
+        "siteName": "HighwayMonitoring",
+        "hostNameType": "Verified"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/', parameters('sites_HighwayMonitoringWebAPI_name'), '.azurewebsites.net')]",
+      "location": "South Central US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ],
+      "properties": {
+        "siteName": "HighwayMonitoringWebAPI",
+        "hostNameType": "Verified"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/siteextensions",
+      "apiVersion": "2021-03-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/Microsoft.AspNetCore.AzureAppServices.SiteExtension')]",
+      "location": "South Central US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-20T06_20_57_3892117')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-20T06_49_42_8189391')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-20T18_20_58_1278481')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-20T18_49_43_0226530')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-20T21_20_58_3546155')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-20T21_49_43_0864198')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-21T00_20_58_5330677')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-21T00_49_43_1391424')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-21T03_20_58_7574779')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-21T03_49_43_1914029')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-21T06_20_58_8951949')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-21T06_49_43_2756601')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-21T18_20_59_7167265')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-21T18_49_43_4672129')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-21T21_20_59_9037341')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-21T21_49_43_4986758')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-22T00_21_00_1235801')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-22T00_49_43_5681688')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-22T03_21_00_2836249')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-22T03_49_43_5905529')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-22T06_21_00_4838833')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-22T06_49_43_6535583')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-22T18_21_02_2868923')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-22T18_49_44_4056755')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-22T21_21_02_4654307')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-22T21_49_44_4853446')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T00_21_02_6638656')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T00_49_44_4899093')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T03_21_02_8378826')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T03_49_44_5585087')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T06_21_03_0505704')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T06_49_44_6325620')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T09_21_03_2543556')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T09_49_44_6614583')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T10_21_03_3275664')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T10_49_44_6779835')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T11_21_03_3888320')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T11_49_44_6872924')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T12_21_03_4704232')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T12_49_44_7295990')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T13_21_03_5141356')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T13_49_44_7139909')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T14_21_03_6196445')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T14_49_44_7328270')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T15_21_03_6652536')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T15_49_44_7599649')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T16_21_03_7088106')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T16_49_44_7907094')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T17_21_03_7638589')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T17_49_44_8104102')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T18_21_03_8613671')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T18_49_44_8125272')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T19_21_03_9004465')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T19_49_44_8266094')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T20_21_03_9630107')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T20_49_44_8440456')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T21_21_04_0298686')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T21_49_44_8482554')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T22_21_04_0986604')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T22_49_44_8796939')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-23T23_21_04_1525770')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-23T23_49_44_8875581')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T00_21_04_2228855')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T00_49_44_9062494')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T01_21_04_3450142')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T01_49_44_9237782')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T02_21_04_3654687')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T02_49_44_9632655')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T03_21_04_4016048')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T03_49_44_9706345')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T04_21_05_1283238')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T04_49_44_9731862')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T05_21_05_1697822')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T05_49_45_0128759')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T06_21_05_2351202')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T06_49_45_0516583')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T07_21_05_3155035')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T07_49_45_0368299')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T08_21_05_3909184')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T08_49_45_0138454')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T09_21_05_4388103')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T09_49_45_0345245')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T10_21_05_5160689')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T10_49_45_0538895')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T11_21_05_6062318')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T11_49_45_0865536')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T12_21_05_6723791')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T12_49_45_0959701')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T13_21_05_7825773')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T13_49_45_1177171')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T14_21_05_7904335')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T14_49_45_1376495')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T15_21_05_9032697')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T15_49_45_1523950')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T16_21_05_9261100')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T16_49_45_2029526')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T17_21_05_9901412')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T17_49_45_1770309')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T18_21_06_0504610')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T18_49_45_1876574')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T19_21_06_1927112')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T19_49_45_2019484')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T20_21_06_1891832')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T20_49_45_2262625')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T21_21_06_2509688')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T21_49_45_2388210')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T22_21_06_3992635')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T22_49_45_2615088')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-24T23_21_06_4248783')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-24T23_49_45_2651702')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T00_21_06_4516301')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T00_49_45_2715766')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T01_21_06_5573004')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T01_49_45_3041042')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T02_21_06_5844776')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T02_49_45_3214057')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T03_21_06_6540212')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T03_49_45_3331432')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T04_21_06_7312039')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T04_49_45_3523883')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T05_21_06_7851890')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T05_49_45_3647563')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T06_21_06_8499819')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T06_49_45_3835363')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T07_21_07_5154666')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T07_49_45_4025440')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T08_21_07_5292710')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T08_49_45_4173478')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T09_21_07_5872386')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T09_49_45_4464974')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T10_21_07_6536424')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T10_49_45_5082860')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T11_21_07_8156920')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T11_49_45_4960134')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T12_21_07_8634243')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T12_49_45_4947467')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T13_21_07_8612706')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T13_49_45_5148282')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T14_21_07_9234252')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T14_49_45_5376088')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T15_21_07_9940933')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T15_49_45_5457325')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T16_21_08_0817449')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T16_49_45_6234256')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T17_21_08_1452082')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T17_49_45_5891605')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T18_21_08_2000003')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T18_49_45_6040596')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T19_21_08_3138277')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T19_49_45_6263851')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T20_21_08_3476091')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T20_49_45_6392089')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T21_21_08_4135632')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T21_49_45_6669344')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T22_21_08_4730818')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T22_49_45_7037018')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-25T23_21_08_5760670')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-25T23_49_45_7051410')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T00_21_08_6191684')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T00_49_45_7098040')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T01_21_08_6761552')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T01_49_45_7284205')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T02_21_08_7482363')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T02_49_45_7436890')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T03_21_08_8751335')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T03_49_45_7636685')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T04_21_08_8929219')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T04_49_45_7736556')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T05_21_08_9521704')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T05_49_45_7878983')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T06_21_09_0045722')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T06_49_45_8039856')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T07_21_09_1538946')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T07_49_45_8695407')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T08_21_09_1489307')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T08_49_45_8535485')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T09_21_09_2238745')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T09_49_45_8600864')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T10_21_09_3253478')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T10_49_45_8659400')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T11_21_09_3444361')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T11_49_45_8894378')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T12_21_09_4323921')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T12_49_45_8863465')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T13_21_09_5184788')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T13_49_45_9062210')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T14_21_09_5742811')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T14_49_45_9207171')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T15_21_09_6184814')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T15_49_45_9491798')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T16_21_09_6795305')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T16_49_45_9542120')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T17_21_09_7775894')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T17_49_45_9708804')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T18_21_09_9589761')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T18_49_46_0037337')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T19_21_09_9169671')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T19_49_46_0173189')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T20_21_09_9480070')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T20_49_46_0215223')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T21_21_10_0142213')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T21_49_46_0391707')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T22_21_10_0658201')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T22_49_46_0602714')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-26T23_21_10_1380091')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-26T23_49_46_0832146')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T00_21_10_2110214')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T00_49_46_1069817')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T01_21_10_3270670')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T01_49_46_1206159')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T02_21_10_3527539')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T02_49_46_1230771')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T03_21_10_4135784')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T03_49_46_1636612')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T04_21_10_4891470')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T04_49_46_1662038')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T05_21_10_5500374')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T05_49_46_1773123')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T06_21_10_6431865')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T06_49_46_1911007')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T07_21_10_6863571')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T07_49_46_2244949')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T08_21_10_7791684')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T08_49_46_2532932')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T09_21_10_8288363')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoringWebAPI_name'), '/2022-06-27T09_49_46_2639759')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoringWebAPI_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/snapshots",
+      "apiVersion": "2015-08-01",
+      "name": "[concat(parameters('sites_HighwayMonitoring_name'), '/2022-06-27T10_21_10_8882793')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_HighwayMonitoring_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleMonitering')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "VehicleMonitering",
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "automatic": true,
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/\"_etag\"/?"
+              }
+            ]
+          },
+          "partitionKey": {
+            "paths": [
+              "/id"
+            ],
+            "kind": "Hash"
+          },
+          "uniqueKeyPolicy": {
+            "uniqueKeys": []
+          },
+          "conflictResolutionPolicy": {
+            "mode": "LastWriterWins",
+            "conflictResolutionPath": "/_ts"
+          },
+          "analyticalStorageTtl": -1
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleMonitering2')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "VehicleMonitering2",
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "automatic": true,
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/\"_etag\"/?"
+              }
+            ]
+          },
+          "partitionKey": {
+            "paths": [
+              "/id"
+            ],
+            "kind": "Hash"
+          },
+          "conflictResolutionPolicy": {
+            "mode": "LastWriterWins",
+            "conflictResolutionPath": "/_ts"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleMonitering3')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "VehicleMonitering3",
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "automatic": true,
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/\"_etag\"/?"
+              }
+            ]
+          },
+          "partitionKey": {
+            "paths": [
+              "/id"
+            ],
+            "kind": "Hash"
+          },
+          "conflictResolutionPolicy": {
+            "mode": "LastWriterWins",
+            "conflictResolutionPath": "/_ts"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleTrending')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "VehicleTrending",
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "automatic": true,
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/\"_etag\"/?"
+              }
+            ]
+          },
+          "partitionKey": {
+            "paths": [
+              "/id"
+            ],
+            "kind": "Hash"
+          },
+          "uniqueKeyPolicy": {
+            "uniqueKeys": []
+          },
+          "conflictResolutionPolicy": {
+            "mode": "LastWriterWins",
+            "conflictResolutionPath": "/_ts"
+          },
+          "analyticalStorageTtl": -1
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default/microsofttraficmgmt')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_msstorageblob_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "properties": {
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default/processvideo')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_msstorageblob_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "properties": {
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_msstorageblob_name'), '/default/unprocessvideo')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_msstorageblob_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_msstorageblob_name'))]"
+      ],
+      "properties": {
+        "immutableStorageWithVersioning": {
+          "enabled": false
+        },
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccounts_createuser_name'), '/default/', parameters('storageAccounts_createuser_name'), 'fileshare')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_createuser_name'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_createuser_name'))]"
+      ],
+      "properties": {
+        "accessTier": "TransactionOptimized",
+        "shareQuota": 6,
+        "enabledProtocols": "SMB"
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleMonitering/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2', 'VehicleMonitering')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "throughput": 400
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleMonitering2/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2', 'VehicleMonitering2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "throughput": 400
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleMonitering3/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2', 'VehicleMonitering3')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "throughput": 400
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(parameters('databaseAccounts_mspocdb_name'), '/HighwayMonitoringSystem2/VehicleTrending/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2', 'VehicleTrending')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_mspocdb_name'), 'HighwayMonitoringSystem2')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_mspocdb_name'))]"
+      ],
+      "properties": {
+        "resource": {
+          "throughput": 400
+        }
+      }
+    }
+  ]
+}

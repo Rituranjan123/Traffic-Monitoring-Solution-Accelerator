@@ -1,0 +1,2 @@
+azure_storage_connectionstring: "DefaultEndpointsProtocol=https;AccountName=msstorageblob;AccountKey=*******iLNc9ikz9BTwt+v4cpMoQufXd/98x+ASt3kAJoA==***;EndpointSuffix=core.windows.net"
+process_container_name: "processvideo"
