@@ -6,10 +6,8 @@ export let UILabel = {
 };
 
 export let PageURL = {
-  Add: '/UploadSecurities',
-  List: 'UploadSecurities',
-  APIURL: {
-    Add: APIList.UploadBloombergSecurities,
+   APIURL: {
+    Add: '/Video/UploadFile',
   },
 };
 

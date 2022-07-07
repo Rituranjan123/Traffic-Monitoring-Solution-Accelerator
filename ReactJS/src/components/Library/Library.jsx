@@ -226,6 +226,7 @@ class Library extends CreateParent {
         <div className="refblock"></div>
 
         <div className="pagetitle">
+        
           <Row style={{ marginTop: '20px' }}>
             <Col md={10}>
               <Row>
@@ -361,7 +362,7 @@ class Library extends CreateParent {
                                   className="background"
                                   style={{
                                     width: '100px',
-                                    marginTop: '35px',
+                                    position: 'inherit',
                                   }}
                                 >
                                   Processing....

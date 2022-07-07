@@ -104,6 +104,13 @@ class CameraAdd extends CreateParent {
     if (this.props.match !== undefined && this.props.match !== '') {
       APIPost = '/camera/update';
     }
+    CameraValue['place'] = CameraValue['Search'];
+
+    CameraValue['Latitude'] = document.getElementById('Latitude').value;
+    CameraValue['Longitude'] = document.getElementById('Longitude').value;
+
+    CameraValue['place'] = document.getElementById('Search').value;
+  
     if (!CameraValue.Latitude) {
       //this.handelMessage('Requried name');
       alert('required Latitude');
@@ -125,12 +132,6 @@ class CameraAdd extends CreateParent {
       alert('required IP Address');
       return false;
     }
-    CameraValue['place'] = CameraValue['Search'];
-
-    CameraValue['Latitude'] = document.getElementById('Latitude').value;
-    CameraValue['Longitude'] = document.getElementById('Longitude').value;
-
-    CameraValue['place'] = document.getElementById('Search').value;
     let result = await postApiWithoutReqAsyn(APIPost, CameraValue);
     this.handelMessage('Record added successfully!', 'legalBoll');
   };

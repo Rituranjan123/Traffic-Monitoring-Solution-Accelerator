@@ -90,26 +90,36 @@ class UploadVideo extends CreateParent {
     this.setState({ image: img });
   };
 
-  getCameraByid = () => {
+  getCameraByid = async() => {
     const { CameraValue } = this.state;
     if (this.state.CameraValue && this.state.CameraValue.cameraid) {
       let reqData = {
         cameraId: CameraValue.cameraid,
         // CameraId: 1,
       };
-
+      const CameraValuedata = {};
+      let VideoDetals = this.props.item;
+      CameraValuedata['name'] = VideoDetals.name;
+      CameraValuedata['remark'] = VideoDetals.remark;
+        // CameraValuedata.videoId = VideoDetals.videoId;
+        CameraValue['videoId'] = VideoDetals.videoId;
+        this.setState({
+          CameraValue: CameraValuedata,
+        });
       postApiWithoutReqAsyn('/Camera/GetCameraByID', reqData).then((res) => {
         let VideoDetals = this.props.item;
         const { CameraValue } = this.state;
-        const CameraValuedata = {};
+        
         CameraValuedata.State = res.state;
         // CameraValuedata.cameraIp = res.cameraIp;
         CameraValuedata.City = res.city;
-        CameraValuedata.name = VideoDetals.name;
-        CameraValuedata.remark = VideoDetals.remark;
+        CameraValuedata['name'] = VideoDetals.name;
+        CameraValuedata['remark'] = VideoDetals.remark;
         // CameraValuedata.videoId = VideoDetals.videoId;
         CameraValue['videoId'] = VideoDetals.videoId;
         CameraValue['CameraIp'] = res.cameraIp;
+        CameraValue['cameraId'] = res.cameraId;
+        
         this.setState({
           CameraValue: CameraValuedata,
         });
@@ -168,14 +178,19 @@ class UploadVideo extends CreateParent {
     if (this.props && this.props.item && this.props.item.videoId) {
       videoid = this.props.item.videoId;
     }
+
+   // if(this.props.item.videoId>0){
     if (!CameraValue.name) {
       //this.handelMessage('Requried name');
       alert('required name');
+      return false;
     }
     if (!CameraValue.videoid) {
       //this.handelMessage('Requried name');
       alert('required camera');
+      return false;
     }
+//}
     if (files === undefined || files === '') {
       this.handelMessage('Please choose file to upload', 'errorBoll');
     } else {

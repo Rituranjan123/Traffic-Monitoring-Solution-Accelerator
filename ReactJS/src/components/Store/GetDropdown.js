@@ -55,7 +55,7 @@ export const GetDropdownpost = async (arg1, data, fillid) => {
     if (fillid == 'CameraIp' && res.length > 0 && res[0].cameraIp) {
       result.CameraIp = res.map((item) => ({
         name: item.cameraIp,
-        value: item.cameraIp,
+        value: item.cameraId,
       }));
     }
   });

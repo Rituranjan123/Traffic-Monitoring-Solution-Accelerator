@@ -4,7 +4,7 @@ const cookies = new Cookies();
 debugger;
 let baseUrl = process.env.REACT_APP_BASEURL;
 console.log('baseUrl', baseUrl);
-baseUrl = 'https://localhost:5001/api'; //'https://api.phalkons.com/api';
+baseUrl = 'https://localhost:5001/api';
 baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
 
 export let downloadURL = baseUrl;
