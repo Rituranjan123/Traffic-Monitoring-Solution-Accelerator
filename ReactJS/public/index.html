@@ -151,7 +151,7 @@ function makeNormal() {
     function suggestionSelected(result) {
         //Populate the address textbox values
        // alert(result);
-        debugger;
+        
         /*document.getElementById('addressLineTbx').value = result.address.addressLine || '';
         document.getElementById('cityTbx').value = result.address.locality || '';
         document.getElementById('countyTbx').value = result.address.district || '';
@@ -187,7 +187,7 @@ window.map.setView({ bounds: result.bestView });
     }
 
     function FindMAp(result){
-      debugger;
+      
       var curPos = new Microsoft.Maps.Location(result.latitude,   result.longitude);
       var calloutOptions = { title: "Location Information", description:   "This is your current location." };
       var callout = new Microsoft.Maps.Infobox(curPos, calloutOptions);
@@ -220,7 +220,7 @@ window.map.setView({ bounds: result.bestView });
 
      function success(position)
      {
-      debugger;
+      
       var result={};
       result.latitude= position.coords.latitude;
       result.longitude=position.coords.longitude;

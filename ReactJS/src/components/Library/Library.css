@@ -10,7 +10,9 @@
   padding-left: 0ex;
   border: none;
 }
-
+.divheight {
+  min-height: 200px !important;
+}
 .AnlButton {
   width: 75px;
   position: relative;

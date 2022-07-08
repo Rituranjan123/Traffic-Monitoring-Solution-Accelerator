@@ -131,7 +131,6 @@ class CameraVideo extends CreateParent {
   };
 
   handleChangeGen = (event) => {
-    debugger;
     const { formOption } = this.state;
     formOption['name'] = event.target.name;
     formOption[event.target.name] = event.target.value;

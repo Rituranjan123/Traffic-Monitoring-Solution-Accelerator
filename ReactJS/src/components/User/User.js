@@ -123,7 +123,6 @@ class Users extends Component {
 
   //async getOptions =() =>{
   getData = async () => {
-    debugger;
     const { formOption } = this.state;
     let reqData = {
       PAGE_NUMBER: formOption.PageNumber,
@@ -140,7 +139,6 @@ class Users extends Component {
   };
 
   getClienData = async () => {
-    debugger;
     const { formOption } = this.state;
     let reqData = {
       USER_ID: formOption.USER_ID,
@@ -159,7 +157,6 @@ class Users extends Component {
   };
 
   handleDeleteModal = (id) => {
-    debugger;
     this.setState((prevState) => {
       let { deleteModal, itemtodelete } = prevState;
       deleteModal = prevState.deleteModal === false ? true : false;
@@ -168,7 +165,6 @@ class Users extends Component {
     });
   };
   handleRecordDelete = () => {
-    debugger;
     let { itemtodelete } = this.state;
     let reqData = {
       USER_ID: itemtodelete,

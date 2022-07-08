@@ -226,7 +226,6 @@ class Library extends CreateParent {
         <div className="refblock"></div>
 
         <div className="pagetitle">
-        
           <Row style={{ marginTop: '20px' }}>
             <Col md={10}>
               <Row>
@@ -270,8 +269,8 @@ class Library extends CreateParent {
           {UIValues.length >= 0 ? (
             <>
               <div className="dbmenu">
-                <div>
-                  <span className="pageSubtitle"> Unprocessed Videos</span>
+                <div className="divheight">
+                  <span className="pageSubtitle "> Unprocessed Videos</span>
                   <ul>
                     {UIValues &&
                       UIValues.filter(

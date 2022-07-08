@@ -353,7 +353,7 @@ export const GetDropdown = async (arg1, data) => {
     result.get = 1;
   });
   if (result.get === 1) {
-    //debugger;
+    //
     return getDropdowndata(result);
   }
 };

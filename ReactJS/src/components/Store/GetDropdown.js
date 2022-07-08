@@ -29,7 +29,7 @@ export const GetDropdown = async (arg1, data) => {
     }
 
     if (result.get === 1) {
-      //debugger;
+      //
       return getDropdowndata(result);
     }
   });
@@ -45,7 +45,6 @@ export const GetDropdownpost = async (arg1, data, fillid) => {
     URL = APIList[arg1];
   }
   await postApiWithoutReqAsyn(arg1, data).then((res) => {
-    debugger;
     if (fillid == 'city' && res.length > 0 && res[0].city) {
       result.city = res.map((item) => ({
         name: item.city,

@@ -132,7 +132,6 @@ class Group extends Component {
   };
 
   handleDeleteModal = (id) => {
-    debugger;
     this.setState((prevState) => {
       let { deleteModal, itemtodelete } = prevState;
       deleteModal = prevState.deleteModal === false ? true : false;

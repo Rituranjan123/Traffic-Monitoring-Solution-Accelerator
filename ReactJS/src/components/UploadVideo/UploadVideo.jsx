@@ -90,7 +90,7 @@ class UploadVideo extends CreateParent {
     this.setState({ image: img });
   };
 
-  getCameraByid = async() => {
+  getCameraByid = async () => {
     const { CameraValue } = this.state;
     if (this.state.CameraValue && this.state.CameraValue.cameraid) {
       let reqData = {
@@ -101,15 +101,15 @@ class UploadVideo extends CreateParent {
       let VideoDetals = this.props.item;
       CameraValuedata['name'] = VideoDetals.name;
       CameraValuedata['remark'] = VideoDetals.remark;
-        // CameraValuedata.videoId = VideoDetals.videoId;
-        CameraValue['videoId'] = VideoDetals.videoId;
-        this.setState({
-          CameraValue: CameraValuedata,
-        });
+      // CameraValuedata.videoId = VideoDetals.videoId;
+      CameraValue['videoId'] = VideoDetals.videoId;
+      this.setState({
+        CameraValue: CameraValuedata,
+      });
       postApiWithoutReqAsyn('/Camera/GetCameraByID', reqData).then((res) => {
         let VideoDetals = this.props.item;
         const { CameraValue } = this.state;
-        
+
         CameraValuedata.State = res.state;
         // CameraValuedata.cameraIp = res.cameraIp;
         CameraValuedata.City = res.city;
@@ -119,7 +119,7 @@ class UploadVideo extends CreateParent {
         CameraValue['videoId'] = VideoDetals.videoId;
         CameraValue['CameraIp'] = res.cameraIp;
         CameraValue['cameraId'] = res.cameraId;
-        
+
         this.setState({
           CameraValue: CameraValuedata,
         });
@@ -127,7 +127,7 @@ class UploadVideo extends CreateParent {
     }
   };
 
-  handleSeachableDropdonw = async (val, name) => {
+  handleSeachableDropdonwn = async (val, name) => {
     const { initinalFormFill, CameraValue } = this.state;
     if (name === 'State') {
       var state = { state: val };
@@ -142,12 +142,14 @@ class UploadVideo extends CreateParent {
         'CameraIp'
       );
       initinalFormFill['CameraIp'] = [];
-      if (result.CameraIp.length > 0) {
-        initinalFormFill['CameraIp'] = initinalFormFill['CameraIp'].concat(
-          result.CameraIp
-        );
-      } else {
-        initinalFormFill['CameraIp'] = initinalFormFill['place'];
+      if (result.CameraIp) {
+        if (result.CameraIp.length > 0) {
+          initinalFormFill['CameraIp'] = initinalFormFill['CameraIp'].concat(
+            result.CameraIp
+          );
+        } else {
+          initinalFormFill['CameraIp'] = initinalFormFill['place'];
+        }
       }
     }
     CameraValue[name] = val;
@@ -179,18 +181,18 @@ class UploadVideo extends CreateParent {
       videoid = this.props.item.videoId;
     }
 
-   // if(this.props.item.videoId>0){
+    // if(this.props.item.videoId>0){
     if (!CameraValue.name) {
       //this.handelMessage('Requried name');
-      alert('required name');
+      alert('Required name');
       return false;
     }
-    if (!CameraValue.videoid) {
+    if (!CameraValue.cameraId) {
       //this.handelMessage('Requried name');
-      alert('required camera');
+      alert('Required camera');
       return false;
     }
-//}
+    //}
     if (files === undefined || files === '') {
       this.handelMessage('Please choose file to upload', 'errorBoll');
     } else {
@@ -198,10 +200,11 @@ class UploadVideo extends CreateParent {
       var data = JSON.stringify({
         remark: CameraValue.remark,
         name: CameraValue.name,
-        CameraIp: CameraValue.CameraIp,
+        CameraIp: CameraValue.Cameraid,
         city: CameraValue.City,
         State: CameraValue.State,
         VideoId: videoid,
+        Cameraid: CameraValue.Cameraid,
       });
       for (let i = 0; i < files.length; i++) {
         form_data.append(`file[${i}]`, files[i]);
@@ -223,35 +226,61 @@ class UploadVideo extends CreateParent {
   };
 
   async componentDidMount() {
-    await this.getCameraByid();
+    try {
+      this.setState({
+        formOption2: { showResults: 0 },
+      });
+      await this.getCameraByid();
+      let initinalFormFill = await GetDropdown('/USCity/GetAllState', '');
+      initinalFormFill['place'] = (
+        await GetDropdown('/Camera/GetCameraByPlace', '')
+      ).cameraIp;
 
-    // let result = await postApiWithoutReqAsyn('/Camera/GetCameraByID', reqData);
+      initinalFormFill['CameraIp'] = initinalFormFill['place'];
 
-    let initinalFormFill = await GetDropdown('/USCity/GetAllState', '');
-    initinalFormFill['place'] = (
-      await GetDropdown('/Camera/GetCameraByPlace', '')
-    ).cameraIp;
-    initinalFormFill['CameraIp'] = initinalFormFill['place'];
+      if (this.state.CameraValue && this.state.CameraValue.State) {
+        let initinalFormFill2 = await GetDropdownpost(
+          '/USCity/GetCity',
+          this.state.CameraValue.State,
+          'city'
+        );
+        //  console.log(initinalFormFill2, initinalFormFill, 'city');
+        initinalFormFill['city'] = initinalFormFill2.city;
+      }
+      //  return;
 
-    if (this.state.CameraValue && this.state.CameraValue.State) {
-      let initinalFormFill2 = await GetDropdownpost(
-        '/USCity/GetCity',
-        this.state.CameraValue.State,
-        'city'
-      );
-      //  console.log(initinalFormFill2, initinalFormFill, 'city');
-      initinalFormFill['city'] = initinalFormFill2.city;
+      if (this.state.CameraValue && this.state.CameraValue.City) {
+        var cameraDetails = {
+          state: this.state.CameraValue.State,
+          city: this.state.CameraValue.City,
+        };
+        let result = await GetDropdownpost(
+          '/Camera/GetCameraByCity',
+          cameraDetails,
+          'CameraIp'
+        );
+        var cam = result.CameraIp;
+        // cam=cam.map(item=> item.value==this.state.CameraValue.cameraId)?{...item,selected:true}:{item})
+        cam = cam.map((item) =>
+          item.value == this.state.CameraValue.cameraId
+            ? { ...item, selected: true }
+            : { ...item }
+        );
+        initinalFormFill['CameraIp'] = cam; //result.CameraIp;
+      }
+      //  return;
+
+      this.setState({ initinalFormFill: initinalFormFill });
+      ///Camera/Get_Camera_Table_Data
+      this.setState({ initinalFormFill: initinalFormFill });
+      this.setState({
+        formOption2: { showResults: 1 },
+      });
+    } catch (err) {
+      this.setState({
+        formOption2: { showResults: 1 },
+      });
     }
-    //  return;
-
-    if (this.state.CameraValue && this.state.CameraValue.city) {
-      await handleSeachableDropdonw(this.state.CameraValue.city, 'City');
-    }
-    //  return;
-
-    this.setState({ initinalFormFill: initinalFormFill });
-    ///Camera/Get_Camera_Table_Data
-    this.setState({ initinalFormFill: initinalFormFill });
   }
   render() {
     const {
@@ -335,7 +364,7 @@ class UploadVideo extends CreateParent {
                       options={initinalFormFill.usStateList}
                       select="test"
                       onChange={(val) =>
-                        this.handleSeachableDropdonw(val, 'State')
+                        this.handleSeachableDropdonwn(val, 'State')
                       }
                       value={CameraValue.State}
                       name="CameraDetails"
@@ -355,7 +384,7 @@ class UploadVideo extends CreateParent {
                       options={initinalFormFill.city}
                       select="test"
                       onChange={(val) =>
-                        this.handleSeachableDropdonw(val, 'City')
+                        this.handleSeachableDropdonwn(val, 'City')
                       }
                       value={CameraValue.City}
                       name="CameraDetails"
@@ -377,9 +406,9 @@ class UploadVideo extends CreateParent {
                       options={initinalFormFill.CameraIp}
                       select="test"
                       onChange={(val) =>
-                        this.handleSeachableDropdonw(val, 'CameraIp')
+                        this.handleSeachableDropdonwn(val, 'cameraId')
                       }
-                      value={CameraValue.CameraIp}
+                      value={CameraValue.cameraId}
                       name="CameraDetails"
                       placeholder="Select..."
                     />

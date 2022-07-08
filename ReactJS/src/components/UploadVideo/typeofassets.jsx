@@ -6,7 +6,7 @@ export let UILabel = {
 };
 
 export let PageURL = {
-   APIURL: {
+  APIURL: {
     Add: '/Video/UploadFile',
   },
 };

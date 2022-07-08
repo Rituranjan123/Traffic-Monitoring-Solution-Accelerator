@@ -99,7 +99,6 @@ class ImageUpload extends CreateParent {
   }
 
   handleChangeGen = (event) => {
-    debugger;
     if (event.target.type === 'file') {
       let e = event.target.files;
       this.props.setImage(e);

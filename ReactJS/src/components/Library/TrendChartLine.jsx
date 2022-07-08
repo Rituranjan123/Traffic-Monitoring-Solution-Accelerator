@@ -7,7 +7,6 @@ class TrendChartLine extends React.Component {
   constructor(props) {
     super(props);
     if (this.props && this.props.TrendData) {
-      debugger;
       let res = this.props.TrendData;
 
       let categoriesdata = res.map((item) => item['frame_timestamp']);

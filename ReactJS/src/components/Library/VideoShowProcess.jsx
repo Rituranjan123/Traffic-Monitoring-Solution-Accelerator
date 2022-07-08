@@ -190,7 +190,7 @@ class VideoShow extends CreateParent {
         cameraDetails,
         'CameraIp'
       );
-      debugger;
+
       CameraValue.processSasURL = ''; //undefined;
       CameraValue['processSasURL'] = result.processSasURL;
     }

@@ -30,7 +30,7 @@
 
     function suggestionSelected(result) {
         //Populate the address textbox values.
-        debugger;
+        
         document.getElementById('addressLineTbx').value = result.address.addressLine || '';
         document.getElementById('cityTbx').value = result.address.locality || '';
         document.getElementById('countyTbx').value = result.address.district || '';

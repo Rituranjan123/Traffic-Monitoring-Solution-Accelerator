@@ -136,7 +136,6 @@ class Client extends Component {
   };
 
   getClienData = async () => {
-    debugger;
     const { formOption } = this.state;
     let reqData = {
       USER_ID: formOption.USER_ID,
@@ -155,7 +154,6 @@ class Client extends Component {
   };
 
   handleDeleteModal = (id, e) => {
-    debugger;
     this.setState({ investorId: e });
     this.setState((prevState) => {
       let { deleteModal, itemtodelete } = prevState;
@@ -165,7 +163,6 @@ class Client extends Component {
     });
   };
   handleRecordDelete = () => {
-    debugger;
     let { itemtodelete, investorId } = this.state;
     let reqData = {
       USER_ID: itemtodelete,

@@ -110,7 +110,7 @@ class CameraAdd extends CreateParent {
     CameraValue['Longitude'] = document.getElementById('Longitude').value;
 
     CameraValue['place'] = document.getElementById('Search').value;
-  
+
     if (!CameraValue.Latitude) {
       //this.handelMessage('Requried name');
       alert('required Latitude');
@@ -292,7 +292,6 @@ class CameraAdd extends CreateParent {
         );
       }
     } else {
-      debugger;
       let CameraValue2 = {};
       this.setState({ CameraValue: CameraValue2 });
     }

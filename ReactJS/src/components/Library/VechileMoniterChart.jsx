@@ -8,7 +8,6 @@ class VechileMoniterChart extends React.Component {
     super(props);
 
     if (this.props && this.props.MonitorData) {
-      debugger;
       let res = this.props.MonitorData;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       let tAaccident = res.map((item) => item['taccident']);

@@ -77,7 +77,7 @@ class Header extends Component {
     let result = await postApiWithoutReqAsyn(APIPost, reqData);
     result['GROUP_AUTHORIZATION'] = result.grouP_AUTHORIZATION;
     // result['GROUP_AUTHORIZATION']=result.grouP_AUTHORIZATION;
-    debugger;
+
     // if (result.Message !== 'USER does not exist.') {
     let data = result.users[0];
     cookies.set('userID', data.user_Id);

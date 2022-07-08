@@ -1,7 +1,7 @@
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 //let baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
-debugger;
+
 let baseUrl = process.env.REACT_APP_BASEURL;
 console.log('baseUrl', baseUrl);
 baseUrl = 'https://localhost:5001/api';
