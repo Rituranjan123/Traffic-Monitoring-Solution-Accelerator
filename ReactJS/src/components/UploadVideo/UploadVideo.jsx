@@ -200,11 +200,11 @@ class UploadVideo extends CreateParent {
       var data = JSON.stringify({
         remark: CameraValue.remark,
         name: CameraValue.name,
-        CameraIp: CameraValue.Cameraid,
+        CameraIp: CameraValue.cameraId,
         city: CameraValue.City,
         State: CameraValue.State,
         VideoId: videoid,
-        Cameraid: CameraValue.Cameraid,
+        Cameraid: CameraValue.cameraId,
       });
       for (let i = 0; i < files.length; i++) {
         form_data.append(`file[${i}]`, files[i]);
@@ -237,40 +237,41 @@ class UploadVideo extends CreateParent {
       ).cameraIp;
 
       initinalFormFill['CameraIp'] = initinalFormFill['place'];
+      if(this.props.item.videoId>0){
+          if (this.state.CameraValue && this.state.CameraValue.State) {
+            let initinalFormFill2 = await GetDropdownpost(
+              '/USCity/GetCity',
+              this.state.CameraValue.State,
+              'city'
+            );
+            //  console.log(initinalFormFill2, initinalFormFill, 'city');
+            initinalFormFill['city'] = initinalFormFill2.city;
+          }
+          //  return;
 
-      if (this.state.CameraValue && this.state.CameraValue.State) {
-        let initinalFormFill2 = await GetDropdownpost(
-          '/USCity/GetCity',
-          this.state.CameraValue.State,
-          'city'
-        );
-        //  console.log(initinalFormFill2, initinalFormFill, 'city');
-        initinalFormFill['city'] = initinalFormFill2.city;
-      }
-      //  return;
-
-      if (this.state.CameraValue && this.state.CameraValue.City) {
-        var cameraDetails = {
-          state: this.state.CameraValue.State,
-          city: this.state.CameraValue.City,
-        };
-        let result = await GetDropdownpost(
-          '/Camera/GetCameraByCity',
-          cameraDetails,
-          'CameraIp'
-        );
-        var cam = result.CameraIp;
-        // cam=cam.map(item=> item.value==this.state.CameraValue.cameraId)?{...item,selected:true}:{item})
-        cam = cam.map((item) =>
-          item.value == this.state.CameraValue.cameraId
-            ? { ...item, selected: true }
-            : { ...item }
-        );
-        initinalFormFill['CameraIp'] = cam; //result.CameraIp;
-      }
-      //  return;
+          if (this.state.CameraValue && this.state.CameraValue.City) {
+            var cameraDetails = {
+              state: this.state.CameraValue.State,
+              city: this.state.CameraValue.City,
+            };
+            let result = await GetDropdownpost(
+              '/Camera/GetCameraByCity',
+              cameraDetails,
+              'CameraIp'
+            );
+            var cam = result.CameraIp;
+            // cam=cam.map(item=> item.value==this.state.CameraValue.cameraId)?{...item,selected:true}:{item})
+            cam = cam.map((item) =>
+              item.value == this.state.CameraValue.cameraId
+                ? { ...item, selected: true }
+                : { ...item }
+            );
+            initinalFormFill['CameraIp'] = cam; //result.CameraIp;
+          }
+          // //  return;
 
       this.setState({ initinalFormFill: initinalFormFill });
+        }
       ///Camera/Get_Camera_Table_Data
       this.setState({ initinalFormFill: initinalFormFill });
       this.setState({
