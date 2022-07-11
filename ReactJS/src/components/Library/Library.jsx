@@ -206,7 +206,7 @@ class Library extends CreateParent {
         item,
       };
     });
-    //  await this.getAllVidoe();
+     await this.getAllVidoe();
   };
 
   render() {
@@ -316,7 +316,7 @@ class Library extends CreateParent {
                                 fontSize: '18px',
                               }}
                             >
-                              {item.cameraIp}
+                              {item.name}
                             </span>
 
                             <span
@@ -423,7 +423,7 @@ class Library extends CreateParent {
                                     fontSize: '18px',
                                   }}
                                 >
-                                  {item.cameraIp}
+                                  {item.name}
                                 </span>
 
                                 <span
@@ -494,7 +494,7 @@ class Library extends CreateParent {
             >
               <img alt="loading" src="./loading.gif" />
             </div>{' '}
-            <UploadVideo item={this.state.item}></UploadVideo>{' '}
+            <UploadVideo handleModalClose={this.handleModalClose} item={this.state.item}></UploadVideo>{' '}
           </Modal.Body>
 
           <Modal.Footer></Modal.Footer>
