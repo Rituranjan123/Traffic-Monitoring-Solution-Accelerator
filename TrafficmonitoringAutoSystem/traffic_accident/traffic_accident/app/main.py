@@ -1,10 +1,13 @@
-from fastapi import FastAPI, UploadFile, File
-from inferencing import predict_video
-import shutil
-import requests
 import json
-import os
+from fastapi import FastAPI, UploadFile, File
+import requests
+from video_save import realTime
+import shutil
 import yaml
+import os
+
+
+
 app = FastAPI()
 
 
@@ -12,21 +15,25 @@ app = FastAPI()
 async def root(file: UploadFile = File(...)):
     with open(f'{file.filename}', 'wb') as buffer:
         shutil.copyfileobj(file.file, buffer)
-        pre = predict_video(video_path=file.filename)
-        json_data = json.dumps(pre)
-        print(json_data)
-        # print(json_data)
+        rt = realTime(video=file.filename)
+        inference_json = json.dumps(rt, separators=(',', ':'))
+        
         dir_root = os.path.dirname(os.path.abspath(__file__))
+        
         with open(dir_root+ "/config.yaml", "r") as yamlfile:
             config = yaml.load(yamlfile, Loader=yaml.FullLoader)
-        #api_url = "https://highwaymonitoringwebapi.azurewebsites.net/api/TrafficAnalysis"
         
-
+        
+        print('aa',inference_json)
         headers = {
-            "content-type": "application/json",
-            "cache-control": "no_cache"
+            'content-type': "application/json",
+            'cache-control': "no-cache",
+
         }
 
-        response = requests.request("POST", config['Traffic_acc_url'], data=json_data, headers=headers)
+        response = requests.request("POST", config['Traffic_mon_url'], data = inference_json, headers=headers)
         print(response.text)
-    return "Done"
+
+
+    return "Data Posted"
+
