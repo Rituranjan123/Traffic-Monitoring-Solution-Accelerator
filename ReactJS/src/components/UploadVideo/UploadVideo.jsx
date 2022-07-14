@@ -220,7 +220,7 @@ class UploadVideo extends CreateParent {
       this.setState({
         formOption2: { showResults: 1 },
       });
-      this.props.handleModalClose()
+      this.props.handleModalClose();
       var Msg = 'Record(s) updated successfully';
       this.parenthandelMessage(Msg, 'legalBoll');
     }

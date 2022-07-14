@@ -274,7 +274,7 @@ class VideoShow extends CreateParent {
           <Row>
             <Col md={5} /*style={{ background: '#fafafa' }}*/>
               <div className="video_name_box">
-                <div md={12}>{CameraValue.cameraIp}</div>
+                <div md={12}>{CameraValue.name}</div>
                 <div className="video_name_btn_box">
                   {/* <button
                      onClick={() => {
