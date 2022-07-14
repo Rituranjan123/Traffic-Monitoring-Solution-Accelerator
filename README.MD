@@ -21,8 +21,12 @@ In order to successfully complete your solution, you will need to have access to
 1. item 1
 
 ## Azure Platform
-The directions provided for this repository assume fundemental working knowledge of Azure active directory, Azure Blob Storage,
-Cosmos db, SQL Server, dot net core,React JS
+The directions provided for this repository assume fundemental working knowledge of 
+1)Azure Blob Storage
+2)Cosmos db
+3) SQL Server
+4) dot net core
+5)React JS
 
 For additional training and support, please see:
  1. item 1
