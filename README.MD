@@ -1,4 +1,4 @@
-![MSUS Solution Accelerator](./images/MSUS%20Solution%20Accelerator%20Banner%20Two_981.jpg)
+![Traffic-Monitoring-Solution-Accelerator](./images/TMSA.jpg)
 
 ## About this repository
 This accelerator was built to provide developers with all of the resources needed to build a solution to....
@@ -7,7 +7,6 @@ This accelerator was built to provide developers with all of the resources neede
 ## Getting Started 
 Start by deploying the resources needed for this solution: 
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](path_to_azuredeploy.json)
 
 1. Clone this repository and navigate to the root of the directory  
 2. Go to the [Deployment Guide](./DEPLOY.md) for the steps you need to take to deploy this solution 
@@ -22,7 +21,8 @@ In order to successfully complete your solution, you will need to have access to
 1. item 1
 
 ## Azure Platform
-The directions provided for this repository assume fundemental working knowledge of ...
+The directions provided for this repository assume fundemental working knowledge of Azure active directory, Azure Blob Storage,
+Cosmos db, SQL Server, dot net core,React JS
 
 For additional training and support, please see:
  1. item 1
