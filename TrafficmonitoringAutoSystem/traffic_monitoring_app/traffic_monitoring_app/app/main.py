@@ -17,11 +17,11 @@ async def root(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
         rt = realTime(video=file.filename)
         inference_json = json.dumps(rt, separators=(',', ':'))
-        #url = 'https://highwaymonitoringwebapi.azurewebsites.net/api/Vehicletrend'
-        url = 'https://highwaymonitoringwebapi.azurewebsites.net/api/Vehicletrend'
         
-        #with open(dir_root+ "/config.yaml", "r") as yamlfile:
-            #yaml.load(yamlfile, Loader=yaml.FullLoader)
+        dir_root = os.path.dirname(os.path.abspath(__file__))
+        
+        with open(dir_root+ "/config.yaml", "r") as yamlfile:
+            config = yaml.load(yamlfile, Loader=yaml.FullLoader)
         
         
         print('aa',inference_json)
@@ -31,7 +31,7 @@ async def root(file: UploadFile = File(...)):
 
         }
 
-        response = requests.request("POST", url, data = inference_json, headers=headers)
+        response = requests.request("POST", config['Traffic_mon_url'], data = inference_json, headers=headers)
         print(response.text)
 
 

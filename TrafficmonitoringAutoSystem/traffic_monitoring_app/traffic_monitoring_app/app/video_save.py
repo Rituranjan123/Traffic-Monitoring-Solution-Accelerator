@@ -68,7 +68,7 @@ def upload(videos, connection_string, container_name):
         blob_client = container_client.get_blob_client(file)
         dir_root = os.path.dirname(os.path.abspath(__file__))
         with open(dir_root + "/videos/"+ file, "rb") as data:
-            blob_client.upload_blob(data, connection_timeout=14400)
+            blob_client.upload_blob(data, connection_timeout=14400, overwrite=True)
 
 def postProcess(outputs, img):
     # global detected_classNames
@@ -134,6 +134,10 @@ def realTime(video):
     video_id = Path(video).stem
     Video_Id = {'videoID': video_id}
     print(Video_Id)
+    dir_root = os.path.dirname(os.path.abspath(__file__))
+    dir = dir_root + '/videos/'
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
     writer = None
     # frame_count = 0
 
@@ -183,12 +187,13 @@ def realTime(video):
 
             #cv2.imshow('output', img)
             if writer is None:
-                resultVideo = cv2.VideoWriter_fourcc(*'mp4v')
+                resultVideo = cv2.VideoWriter_fourcc(*'vp80')
 
                 # Writing current processed frame into the video file
                 dir_root = os.path.dirname(os.path.abspath(__file__))
                 #print(dir_root)
-                writer = cv2.VideoWriter(dir_root + '/videos/'+ video, resultVideo, 30,
+                
+                writer = cv2.VideoWriter(dir_root + '/videos/'+ video_id+'.webm', resultVideo, 30,
                                          (img.shape[1], img.shape[0]), True)
 
             # Write processed current frame to the file
@@ -209,8 +214,8 @@ def realTime(video):
     print(videos)
     upload(videos, config['azure_storage_connectionstring'], config['process_container_name'])
  
-    os.remove(dir_root + '/videos/'+ video)
-    #os.remove(video)
+    os.remove(dir_root + '/videos/'+ video_id+'.webm')
+   
    
 
   

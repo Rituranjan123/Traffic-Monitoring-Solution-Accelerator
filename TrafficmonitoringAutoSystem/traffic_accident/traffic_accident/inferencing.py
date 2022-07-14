@@ -17,11 +17,6 @@ def predict_video(video_path):
     predictor.loadFullModel(num_objects=4)
 
     cap = cv2.VideoCapture(video_path)
-    # calculate duration of the video
-    fps = (cap.get(cv2.CAP_PROP_FPS))
-    #fps = 5
-
-    #print(fps)
 
     Id = {"id": "1"}
     camera_id = {"tAcamera_Id": "1"}
@@ -32,12 +27,13 @@ def predict_video(video_path):
     json_dict = {}
     json_list = []
 
-   
+    # calculate duration of the video
+    fps1 = cap.get(cv2.CAP_PROP_FPS)
 
     # # Initialising Video writer
     # output_video = cv2.VideoWriter(
-    #     os.path.join(r"C:\Users\ShreyaSharma\Documents\Projects\Sony-Object-Detection\accident-detection-system\Traffic-Net\accident-detection\results",
-    #                  "3042_processed.mp4"),
+    #     os.path.join(r"C:\Users\ShreyaSharma\Documents\Projects\Sony-Object-Detection\accident-detection-system\Traffic-Net\result",
+    #                  "3274_probprocessed.mp4"),
     #     cv2.VideoWriter_fourcc(*'avc1'), 24, (
     #         (int(cap.get(3)), int(cap.get(4)))))
 
@@ -57,12 +53,12 @@ def predict_video(video_path):
             progress_tracker += 1
 
             if progress_tracker % skip_frame == 0:
-                cv2.imwrite("video_image99.jpg", frame)
+                cv2.imwrite("video_image3274.jpg", frame)
 
             # Predicting each frame of video
             try:
                 predictions, probabilities = predictor.classifyImage(
-                    image_input="video_image99.jpg", result_count=1)
+                    image_input="video_image3274.jpg", result_count=1)
 
                 if predictions == ['Accident'] or predictions == ['Fire']:
                     predictions = "Accident"
@@ -82,7 +78,10 @@ def predict_video(video_path):
                     accident = "0"
                     no_accident = "0"
 
-                response_label = predictions + ":" + "{:.2f}".format(probabilities[0]) + "%"
+                if predictions == "Accident" and probabilities[0] < 50:
+                    response_label = "No Accident" + ":" + "{:.2f}".format(probabilities[0]) + "%"
+                else:
+                    response_label = predictions + ":" + "{:.2f}".format(probabilities[0]) + "%"
 
             except:
                 None
@@ -119,15 +118,15 @@ def predict_video(video_path):
 
     # Converting list of dictionary into json
     json_list_final = []
-    for i in range(0, len(json_list), int(fps)):
+    for i in range(0, len(json_list), int(fps1)):
         k = json_list[i]
         json_list_final.append(k)
 
-    # with open('1.json'), 'w', encoding='utf-8') as f:
-    #     json.dump(json_list_final, f, ensure_ascii=False, indent=4)
+    #with open('prob.json', 'w', encoding='utf-8') as f:
+        #json.dump(json_list_final, f, ensure_ascii=False, indent=4)
     return json_list_final
 
 
-# # Calling function
-# p = predict_video('3274.mp4')
+# Calling function
+# p = predict_video(r'C:\Users\ShreyaSharma\Documents\Projects\Sony-Object-Detection\accident-detection-system\Traffic-Net\videos\3274.mp4')
 # print(p)
