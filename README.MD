@@ -9,7 +9,7 @@ Start by deploying the resources needed for this solution:
 
 
 1. Clone this repository and navigate to the root of the directory  
-2. Go to the [Deployment Guide](Traffic-Monitoring-Solution-Accelerator/blob/main/DEPLOY.MD) for the steps you need to take to deploy this solution 
+2. Go to the [Deployment Guide](DEPLOY.MD) for the steps you need to take to deploy this solution 
 
 ## Prerequisites
 In order to successfully complete your solution, you will need to have access to and or provisioned the following:
