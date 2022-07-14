@@ -17,7 +17,38 @@ To start, clone or download this repository and navigate to the project's root d
             a) Run the follwing script in SQL instance
 
 
-## Step 3. Upload Sample Dataset
+## Step 3. Set up  configuration on appsetting.json in HighwayMonitoringWebAPI
+
+        "ConnectionStrings": {  
+  "DefaultConnection": "Server=predictivesql.database.windows.net;Initial Catalog=MicrosoftTrafficMgmt;Persist Security Info=False;User ID=predictiveadmin;Password=root@123;MultipleActiveResultSets=False;TrustServerCertificate=False;"
+  },
+
+  "BlobConnectionString": "DefaultEndpointsProtocol=https;AccountName=msstorageblob;AccountKey=4p3NNT34CzPXoYAlDF4+7GNFHTJBv9zV+1D7rFIUIiLH0r7iLNc9ikz9BTwt+v4cpMoQufXd/98x+ASt3kAJoA==;EndpointSuffix=core.windows.net",
+
+
+  "BlobContainerNameProcessvideo": "processvideo",
+
+  "BlobContainerNameUnProcessvideo": "unprocessvideo",
+
+  "ML_VechileDetection_API": "http://20.124.149.46:8082/",
+
+  "ML_Accident_API": "http://20.124.147.176:8083/",
+
+  "SASURLValidYear": "2",
+  "BaseURL": "https://highwaymonitoringwebapi.azurewebsites.net/api/",
+
+  "blobstoraccountKey": "4p3NNT34CzPXoYAlDF4+7GNFHTJBv9zV+1D7rFIUIiLH0r7iLNc9ikz9BTwt+v4cpMoQufXd/98x+ASt3kAJoA==",
+
+  
+  "CosmosDb": {
+    "Account": "https://mspocdb.documents.azure.com:443//",
+    "Key": "R79EBwOGMIbYFnwFXbN33p1eLX30uLVAT1XnIckuxpaZ7y9ZXa1LGaRTeHHD3jIJYuzzTo21cq9NLxHPqPf9uw==",
+    "DatabaseName": "HighwayMonitoringSystem2",
+    "ContainerName": "VehicleMonitering3"
+  }
+
+
+
 
 ## Step 4. Security Access
 
