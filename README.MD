@@ -27,15 +27,14 @@ Start by deploying the resources needed for this solution:
 
 ## Prerequisites
 In order to successfully complete your solution, you will need to have access to and or provisioned the following:
-1. item 1
-2. item 2
-3. item 3
 
-### Optional
-1. item 1
+* Deploy the Azure resource manger from deployment guide.
+* Set up the configuration as per deployment guide
+
 
 ## Azure Platform
-The directions provided for this repository assume fundemental working knowledge of 
+The directions provided for this repository assume fundamental working knowledge of 
+ 
 * API Connection
   * Azure Blob
 * App Services
