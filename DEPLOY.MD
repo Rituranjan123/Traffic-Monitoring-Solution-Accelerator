@@ -14,6 +14,10 @@ If your environment meets the prerequisites and you're familiar with using ARM t
 [![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Rituranjan123/Traffic-Monitoring-Solution-Accelerator/main/ARMTemplate/ARMTemplate_mspoc_MainResourceGroup.json)
 
 
+[![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2FSynapse%2Fmaster%2FManage%2FDeployWorkspace%2Fazuredeploy.json)
+
+
+
 ## Step 2. Setup Resources
     * Create a resource group name
     * Create a Storage account
