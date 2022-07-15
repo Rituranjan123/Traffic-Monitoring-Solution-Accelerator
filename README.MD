@@ -1,4 +1,4 @@
-![Traffic-Monitoring-Solution-Accelerator](./images/TMSA.jpg)
+![Traffic-Monitoring-Solution-Accelerator](TMSA.jpg)
 
 ## About this repository
 This accelerator was built to provide developers with all of the resources needed to build a solution to....
@@ -22,11 +22,20 @@ In order to successfully complete your solution, you will need to have access to
 
 ## Azure Platform
 The directions provided for this repository assume fundemental working knowledge of 
-1)Azure Blob Storage
-2)Cosmos db
-3) SQL Server
-4) dot net core
-5)React JS
+* API Connection
+  * Azure Blob
+* App Services
+  * Blob operations
+  * CosmosDb  
+  * Web API & Web App(UI)
+* App Service Plan
+* Storage Account
+  * Storage for process video
+  * Storage for unprocess video
+* kubernetes
+* Python
+* AI ML Tools like CVAT
+
 
 For additional training and support, please see:
  1. item 1
