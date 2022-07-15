@@ -33,21 +33,28 @@ This Azure Resource Manager (ARM) template will create an kubernetes services
 
 
 ## Step 3. Set up  configuration appsetting.json in HighwayMonitoringWebAPI
+        
+        * Enter the SQL sever connection strings        
+           * "ConnectionStrings": {  "XXXXXXXXXXXX" },
+        
+        * Enter the Blob connection strings  
+           * "BlobConnectionString": "XXXXXXXXXXXXXXXXXX",
+        
+        * Enter the Blob BlobContainer Name  
+            * "BlobContainerNameProcessvideo": "processvideo",
+            * "BlobContainerNameUnProcessvideo": "unprocessvideo",
+        * Enter the AI ML API path  
+             * "ML_VechileDetection_API": "****",
+             * "ML_Accident_API": "******",
 
-        "ConnectionStrings": {  "XXXXXXXXXXXX" },
-        "BlobConnectionString": "XXXXXXXXXXXXXXXXXX",
-        "BlobContainerNameProcessvideo": "processvideo",
-        "BlobContainerNameUnProcessvideo": "unprocessvideo",
-        "ML_VechileDetection_API": "****",
-        "ML_Accident_API": "******",
-        "SASURLValidYear": "2",
-        "BaseURL": "********",
-        "blobstoraccountKey": "******************************",  
+        * Enter the SAS URL expiry year  
+             * "SASURLValidYear": "2",
+             
+        * Enter the CosmosDb details
         "CosmosDb": {
                 "Account": "**********//",
                 "Key": "************************",
-                "DatabaseName": "********",
-                "ContainerName": "******"
+                "DatabaseName": "********"                
                 }
 
 
