@@ -3,9 +3,9 @@
 ## Step 1. Download Files
 To start, clone or download this repository and navigate to the project's root directory.
 
-# Quickstart: Create an Azure Synapse workspace using an ARM template
+# Quickstart: Create an Azure Resource Group using an ARM template
 
-This Azure Resource Manager (ARM) template will create an Azure Synapse workspace with underlying Data Lake Storage. The Azure Synapse workspace is a securable collaboration boundary for analytics processes in Azure Synapse Analytics.
+This Azure Resource Manager (ARM) template will create an Azure resource groups & resource . The Azure Synapse workspace is a securable collaboration boundary for analytics processes in Azure Synapse Analytics.
 
 [!INCLUDE [About Azure Resource Manager](../../includes/resource-manager-quickstart-introduction.md)]
 
@@ -13,8 +13,9 @@ If your environment meets the prerequisites and you're familiar with using ARM t
 
 [![Deploy to Azure 0](../media/template-deployments/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_MainResourceGroup.json)
 
+This Azure Resource Manager (ARM) template will create an kubernetes services
 
-[![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2FSynapse%2Fmaster%2FManage%2FDeployWorkspace%2Fazuredeploy.json)
+[![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https%3A%2F%2Fportal.azure.com%2F%23create%2FMicrosoft.Template%2Furi%2Fhttps%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_AKSResourceGroup.json)
 
 
 ## Step 2. Setup Resources
