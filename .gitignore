@@ -47,7 +47,9 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
+/vs
+/HighwayMonitoring/UtilityLibrary/bin/
+/HighwayMonitoring/UtilityLibrary/obj/
 /HighwayMonitoring/AzureCosmosDB/
 /HighwayMonitoring/HighwayMonitoringDAL/bin/
 /HighwayMonitoring/HighwayMonitoringDAL/obj
