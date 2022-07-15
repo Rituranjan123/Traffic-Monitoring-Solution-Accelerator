@@ -11,7 +11,7 @@ This Azure Resource Manager (ARM) template will create an Azure Synapse workspac
 
 If your environment meets the prerequisites and you're familiar with using ARM templates, select the **Deploy to Azure** button. The template will open in the Azure portal.
 
-[![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Rituranjan123/Traffic-Monitoring-Solution-Accelerator/main/ARMTemplate/ARMTemplate_mspoc_MainResourceGroup.json)
+[![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https%3A%2F%2Fportal.azure.com%2F%23create%2FMicrosoft.Template%2Furi%2Fhttps%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_MainResourceGroup.json)
 
 
 [![Deploy to Azure 1](../media/template-deployments/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2FSynapse%2Fmaster%2FManage%2FDeployWorkspace%2Fazuredeploy.json)
