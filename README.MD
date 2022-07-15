@@ -1,5 +1,19 @@
 ![Traffic-Monitoring-Solution-Accelerator](TMSA.jpg)
 
+This solution will enable state DOT/City to deliver geospatial visualizations of road network performance and demand, travel time delay, non-recurring congestion events. Record, analysis, and dispatch crew for pavement repair, and other hazardous conditions. 
+
+
+    Ability to upload a video.  
+    Classify vehicles based on vehicle type (car, pickup truck, and trailer) 
+    Count vehicles for each vehicle type 
+    Identify if there is any incident/ accident and notify the user (configurable email address) 
+    User interface will allow users to visualize the camera locations on the map (if the video has geo information) 
+    User can select any camera on the map to get the further details about the location.
+    The UI will allow users to interface with the video and review the identified features.  
+    The system will store inference data to Azure based on predefined frequency. 
+
+ 
+
 ## About this repository
 This accelerator was built to provide developers with all of the resources needed to build a solution to....
 
