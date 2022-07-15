@@ -48,35 +48,35 @@ Thumbs.db
 *.mov
 *.wmv
 
-
-/TrafficmonitoringAutoSystem/HighwayMonitoringDAL/bin/Debug/netcoreapp3.1
-/TrafficmonitoringAutoSystem/HighwayMonitoringDAL/Migrations/20210314182807_CRUDAspNetCore5WebAPI2021.Designer.cs
-/TrafficmonitoringAutoSystem/HighwayMonitoringDAL/Migrations/20210314182807_CRUDAspNetCore5WebAPI2021.cs
-/TrafficmonitoringAutoSystem/HighwayMonitoringDAL/obj
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/bin/Debug/net5.0
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/obj
-/TrafficmonitoringAutoSystem/HighwayMonitoring-BAL/bin/Debug/netcoreapp3.1
-/TrafficmonitoringAutoSystem/HighwayMonitoring-BAL/obj
-/TrafficmonitoringAutoSystem/Utility
-/TrafficmonitoringAutoSystem/HighwayMonitoringCosmosDB/bin/Debug/net5.0
+/HighwayMonitoring/AzureCosmosDB/
+/HighwayMonitoring/HighwayMonitoringDAL/bin/
+/HighwayMonitoring/HighwayMonitoringDAL/obj
+/HighwayMonitoring/HighwayMonitoringWebAPI/bin/
+/HighwayMonitoring/HighwayMonitoringWebAPI/obj
+/HighwayMonitoring/HighwayMonitoring-BAL/bin/
+/HighwayMonitoring/HighwayMonitoring-BAL/obj/
+/HighwayMonitoring/Utility
+/HighwayMonitoring/HighwayMonitoringCosmosDB/bin/
+/HighwayMonitoring/HighwayMonitoringCosmosDB/bin/
 /ReactJS/build
-/TrafficmonitoringAutoSystem/HighwayMonitoring-BAL/bin/Release/netcoreapp3.1
-/TrafficmonitoringAutoSystem/HighwayMonitoringCosmosDB/bin/Release/net5.0
-/TrafficmonitoringAutoSystem/HighwayMonitoring/AzureCosmosDB/bin/Debug/net5.0
-/TrafficmonitoringAutoSystem/HighwayMonitoring/HighwayMonitoring-BAL/bin
-/TrafficmonitoringAutoSystem/HighwayMonitoring/HighwayMonitoring-BAL/obj
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/.config
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/bin/Release/net5.0/publish
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/bin/Release/net5.0/publish2/appsettings.Development.json
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/bin/Release/net5.0/publish2
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/bin/Release/net5.0
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/Properties/PublishProfiles
+/HighwayMonitoring/HighwayMonitoring-BAL/bin/
+/HighwayMonitoring//HighwayMonitoring/HighwayMonitoringCosmosDB/bin/Debug/net5.0/runtimes/win-x64/native/Microsoft.Azure.Cosmos.ServiceInterop.dll
+/HighwayMonitoring//HighwayMonitoring/HighwayMonitoringCosmosDB/bin/Debug/net5.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/HighwayMonitoring//HighwayMonitoring/AzureCosmosDB/bin/
+/HighwayMonitoring//HighwayMonitoring/HighwayMonitoring-BAL/bin
+/HighwayMonitoring//HighwayMonitoring/HighwayMonitoring-BAL/obj
+/HighwayMonitoring/HighwayMonitoringWebAPI/.config
+/HighwayMonitoring/HighwayMonitoringWebAPI/bin
+/HighwayMonitoring/HighwayMonitoringWebAPI/bin
+/HighwayMonitoring/HighwayMonitoringWebAPI/bin/
+/HighwayMonitoring/HighwayMonitoringWebAPI/bin/
+/HighwayMonitoring/HighwayMonitoringWebAPI/Properties/PublishProfiles
 /ReactJS/build.zip
-/TrafficmonitoringAutoSystem/HighwayMonitoringCosmosDB/obj
-/HighwayMonitoring\HighwayMonitoringCosmosDB/bin
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAP - Web Deploy
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAPI - Web Deploy
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAPI - Web Deploy1/profile.arm.json
+/HighwayMonitoring/HighwayMonitoringCosmosDB/obj
+
+/HighwayMonitoring/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAP - Web Deploy
+/HighwayMonitoring/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAPI - Web Deploy
+/HighwayMonitoring/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAPI - Web Deploy1/profile.arm.json
 /ReactJS/.vscode
-/TrafficmonitoringAutoSystem/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAPI - Web Deploy2
-/TrafficmonitoringAutoSystem/traffic_monitoring_app/traffic_monitoring_app/app\yolov4.weights
+/HighwayMonitoring/HighwayMonitoringWebAPI/Properties/ServiceDependencies/HighwayMonitoringWebAPI - Web Deploy2
+/HighwayMonitoring/traffic_monitoring_app/traffic_monitoring_app/app\yolov4.weights

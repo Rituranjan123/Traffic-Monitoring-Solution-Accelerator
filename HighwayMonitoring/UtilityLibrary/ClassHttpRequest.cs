@@ -30,6 +30,7 @@ namespace UtilityLibrary
        public void WritetoFile(Exception ex,string msg)
         {
             string date = (DateTime.Now.ToString("dd/MM/yyyy").Replace("/", "_")).Replace("-","_")+".html";
+            date = "Error.html";
             string root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)+"/" + date;//"/file.html";
             File.AppendAllText(root, DateTime.Now.ToString() + Environment.NewLine);
             if (!string.IsNullOrEmpty(msg))

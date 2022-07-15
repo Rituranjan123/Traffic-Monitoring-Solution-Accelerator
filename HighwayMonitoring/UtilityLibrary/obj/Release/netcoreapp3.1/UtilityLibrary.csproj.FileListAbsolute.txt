@@ -1,0 +1,9 @@
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\bin\Release\netcoreapp3.1\UtilityLibrary.deps.json
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\bin\Release\netcoreapp3.1\UtilityLibrary.dll
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\bin\Release\netcoreapp3.1\UtilityLibrary.pdb
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.csproj.AssemblyReference.cache
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.AssemblyInfoInputs.cache
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.AssemblyInfo.cs
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.csproj.CoreCompileInputs.cache
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.dll
+C:\Users\RituranjanGupta\source\repos\1706\MicrosoftTrafficMgmt\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.pdb

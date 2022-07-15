@@ -27,6 +27,7 @@ using HighwayMonitoringCosmosDB.Services;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using Microsoft.AspNetCore.Hosting;
+using System.Text;
 
 namespace HighwayMonitoringWebAPI.Controllers
 {
@@ -264,7 +265,7 @@ namespace HighwayMonitoringWebAPI.Controllers
         {
             { bytes, "file", fileName }
         };
-          // var result =  await MLAPI(fileName, blobstorageconnection, multiContent,data);
+           //var result =  await MLAPI(fileName, blobstorageconnection, multiContent,data);
            var result = await MPAPIparallel(multiContent,fileName,data  );
             
             return result;
@@ -275,15 +276,15 @@ namespace HighwayMonitoringWebAPI.Controllers
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "multipart/form-data");
-            string TrendingAPI_path = (_configuration.GetValue<string>("TrendingAPI_path"));
-            string MonitorAPI_path = (_configuration.GetValue<string>("MonitorAPI_path"));
+            string ML_VechileDetection_API = (_configuration.GetValue<string>("ML_VechileDetection_API"));
+            string ML_Accident_API = (_configuration.GetValue<string>("ML_Accident_API"));
 
 
             //Start with a list of URLs
             var urls = new string[]
                 {
-                  TrendingAPI_path,
-                  MonitorAPI_path
+                  ML_VechileDetection_API,
+                  ML_Accident_API
                 };
 
             //Start requests for all of them
@@ -327,8 +328,8 @@ namespace HighwayMonitoringWebAPI.Controllers
 
         async Task<bool> MLAPI(string fileName, string blobstorageconnection, MultipartFormDataContent multiContent, byte[] data)
         {
-            string MonitorAPI_path = (_configuration.GetValue<string>("MonitorAPI_path"));
-            string TrendingAPI_path = (_configuration.GetValue<string>("TrendingAPI_path"));
+            string ML_Accident_API = (_configuration.GetValue<string>("ML_Accident_API"));
+            string ML_VechileDetection_API = (_configuration.GetValue<string>("ML_VechileDetection_API"));
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -338,8 +339,8 @@ namespace HighwayMonitoringWebAPI.Controllers
                     
                     classHttpRequest.WritetoFile(null, "VideoID"+ fileName+" send to AIML");
                   
-                  var result= await client.PostAsync(TrendingAPI_path + fileName, multiContent);
-                  string result3 = await Upload(data, MonitorAPI_path, fileName);
+                  var result= await client.PostAsync(ML_VechileDetection_API + fileName, multiContent);
+                  string result3 = await Upload(data, ML_Accident_API, fileName);
                     return true;
                    
                 }
@@ -347,23 +348,13 @@ namespace HighwayMonitoringWebAPI.Controllers
             catch (Exception ex)
             {
                 // return true;
-                string result3 = await Upload(data, MonitorAPI_path, fileName);
+                
                 if (ex.Message.Contains("Timeout of 100 seconds"))
                 {
                     try
                     {
-                       // string result3 = await Upload(data, MonitorAPI_path, fileName);
-                        return true;
-                        //using (HttpClient client2 = new HttpClient())
-                        //{
-                        //    // client.Timeout = TimeSpan.FromMinutes(15);
-                        //    client2.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "multipart/form-data");
-                        //    string MonitorAPI_path2 = (_configuration.GetValue<string>("MonitorAPI_path"));
-                        //    var result22 = await client2.PostAsync(MonitorAPI_path2 + fileName, multiContent);
-                        //    return true;
+                        string result3 = await Upload(data, ML_Accident_API, fileName);
 
-
-                        //}
                     }
                     catch (Exception ex1)
                     {
@@ -451,11 +442,111 @@ namespace HighwayMonitoringWebAPI.Controllers
                 VideoClass1.Created_Date = DateTime.Now;
                 VideoClass1.VideoPath = systemFileName;
                 var result2 =  _cameraService.update(VideoClass1);
+                classHttpRequest.WritetoFile(null, " Upload File ");
                 return Ok("File Uploaded Successfully");
             }
-            catch (Exception ex) {
-                
-                return BadRequest(ex);
+            catch (Exception ex)
+            {
+                classHttpRequest.WritetoFile(ex, " Upload File ");
+                return (IActionResult)ex;
+            }
+
+        }
+
+
+        [HttpPost(nameof(UploadFileLarge))]
+        [Consumes("multipart/form-data")]
+        [DisableRequestSizeLimit, RequestFormLimits(MultipartBodyLengthLimit = int.MaxValue, ValueLengthLimit = int.MaxValue)]
+
+        public async Task<ActionResult> UploadFileLarge(IFormFile fileRequestObject, [FromForm] string name  )
+        {
+            ClassHttpRequest classHttpRequest = new ClassHttpRequest();
+            try
+            {
+
+                VideoDetails VideoClass1 = JsonConvert.DeserializeObject<VideoDetails>(name);
+                Random rnd = new Random();
+                VideoClass1.VideoPath = "";//BlobPath + files.FileName;
+                VideoClass1.CameraIp = VideoClass1.CameraIp; ;
+                VideoClass1.VideoImage = (_configuration.GetValue<string>("videoImage"));
+                if (VideoClass1.VideoId > 0)
+                {
+                    var update = _cameraService.update(VideoClass1);
+                    return Ok("Record updated successfully"); ;
+                }
+                var result = await _cameraService.AddVideoDetail(VideoClass1);
+
+                string storageAccountConnectionString = (_configuration.GetValue<string>("BlobConnectionString"));
+                string BlobContainerName = _configuration.GetValue<string>("BlobContainerNameUnProcessvideo");
+                CloudStorageAccount StorageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
+                CloudBlobClient BlobClient = StorageAccount.CreateCloudBlobClient();
+                CloudBlobContainer Container = BlobClient.GetContainerReference(BlobContainerName);
+                await Container.CreateIfNotExistsAsync();
+                CloudBlockBlob blob = Container.GetBlockBlobReference(fileRequestObject.FileName);
+                HashSet<string> blocklist = new HashSet<string>();
+                var files = Request.Form.Files[0];
+                string systemFileName = result.VideoId + Path.GetExtension(files.FileName);
+                CloudBlockBlob blockBlob = Container.GetBlockBlobReference(systemFileName);
+                blockBlob.Properties.ContentType = "video/mp4";
+                BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders()
+                {
+                    ContentType = "video/mp4"
+                };
+
+                var file = fileRequestObject;
+                const int pageSizeInBytes = 10485760;
+                long prevLastByte = 0;
+                long bytesRemain = file.Length;
+
+                byte[] bytes;
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    var fileStream = file.OpenReadStream();
+                    await fileStream.CopyToAsync(ms);
+                    bytes = ms.ToArray();
+                }
+
+                // Upload each piece
+                do
+                {
+                    long bytesToCopy = Math.Min(bytesRemain, pageSizeInBytes);
+                    byte[] bytesToSend = new byte[bytesToCopy];
+
+                    Array.Copy(bytes, prevLastByte, bytesToSend, 0, bytesToCopy);
+                    prevLastByte += bytesToCopy;
+                    bytesRemain -= bytesToCopy;
+
+                    //create blockId
+                    string blockId = Guid.NewGuid().ToString();
+                    string base64BlockId = Convert.ToBase64String(Encoding.UTF8.GetBytes(blockId));
+
+                    await blob.PutBlockAsync(
+                        base64BlockId,
+                        new MemoryStream(bytesToSend, true),
+                        null
+                        );
+
+                    blocklist.Add(base64BlockId);
+
+                } while (bytesRemain > 0);
+
+                //post blocklist
+                await blob.PutBlockListAsync(blocklist);
+
+                VideoClass1.SasURL = GenerateSASURL(storageAccountConnectionString, BlobContainerName, systemFileName);
+                VideoClass1.Created_Date = DateTime.Now;
+                VideoClass1.VideoPath = systemFileName;
+                var result2 = _cameraService.update(VideoClass1);
+                classHttpRequest.WritetoFile(null, " Upload File successfully");
+                return Ok();
+                // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see https://go.microsoft.com/fwlink/?LinkID=717803
+               
+            }
+            catch(Exception ex)
+            {
+                classHttpRequest.WritetoFile(ex, " Upload File ");
+                return null;
             }
         }
 
