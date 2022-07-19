@@ -109,7 +109,7 @@
                         srclive='http://localhost/index41.html'
                     }    
                     else{
-                        document.getElementById("myH1").style.display = "hide";
+                        document.getElementById("cameradetails").style.display = "hide";
                         srclive='http://localhost/index0.html'
                     }
                 document.getElementById("iframeid").src=srclive
@@ -119,7 +119,6 @@
 
         function ShowCameraDetails(){
             document.getElementById("cameradetails").style.display = "block";
-
             let CameraDetails=JSON.parse(getCookie('CameraDetails'));
                 document.getElementById("latitude").innerHTML =CameraDetails.latitude
                 document.getElementById("longitude").innerHTML =CameraDetails.longitude
