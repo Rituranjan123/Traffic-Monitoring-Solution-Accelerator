@@ -129,14 +129,14 @@ class Header extends Component {
                 <img style={{ height: '100%' }} src="./microsoft_icon.png" />
               </div>
 
-              {/* <NavLink
+              <NavLink
                 className="logo "
                 exact
                 activeClassName="tabactive"
                 to="/Dashboard"
               >
-                <div>Dashboard</div>
-              </NavLink> */}
+                <div>Live Stream</div>
+              </NavLink>
               <NavLink
                 className="logo "
                 exact

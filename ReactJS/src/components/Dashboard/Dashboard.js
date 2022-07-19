@@ -17,51 +17,39 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      embedUrl: '',
+      src: '',
       token: '',
     };
     //alert(this.props.powerBIEmbedUrl);
   }
-
-  getPoswerBI = async () => {
-    const { instance } = this.context;
-    let accounts = cookies.get('accounts');
-
-    let request = {
-      ...loginRequest,
-      account: accounts[0],
-    };
-    await instance.acquireTokenSilent(request).then((response) => {
-      this.setState({
-        token: response.accessToken,
-      });
-    });
-
-    let res = await getAsyncPowerBi(
-      `https://api.powerbi.com/v1.0/myorg/reports/75336daa-c388-4cdd-bc4e-cab4d9a2b4d8`,
-      this.state.token
-    );
-    console.log('PowerBI', res);
-  };
   componentDidMount() {
-    //this.getPoswerBI();
+    if (this.props.match !== undefined && this.props.match !== '') {
+      if (
+        this.props.match.params.id !== '' &&
+        this.props.match.params.id !== undefined
+      ) {
+        let src = '';
+        src = './CameraMap.html?id=' + this.props.match.params.id;
+        //   if(this.props.match.params.id==40){
+        //     src='./CameraMap.html?id='+this.props.match.params.id
+        //     //='http://www.mozilla.org'
+        //   //  src='http://localhost/index40.html'
+        //   }
+        //  else if(this.props.match.params.id==41){
+        //     src='./CameraMap.html?id='+this.props.match.params.id
+        //   //  src='http://localhost/index41.html'
+        //     }
+        //   else{
+        //     src='http://localhost/index0.html'
+        //   }
+
+        this.setState({ src: src });
+      }
+    }
   }
 
   render() {
-    if (cookies.get('token') == null || cookies.get('token') === undefined) {
-      return <Redirect to="/" />;
-    }
-
-    let embedUrl = this.props.powerBIEmbedUrl;
-    if (cookies.get('USER_NAME') !== 'Dev Team') {
-      embedUrl = this.props.powerBIEmbedUrl;
-    }
-    if (this.props.powerBIEmbedUrlID) {
-      embedUrl =
-        'https://app.powerbi.com/reportEmbed?reportId=50c7d0a6-628a-409e-a7a6-643432a34524&autoAuth=true&filterPanelEnabled=False&pageName=ReportSection448d1f7e04e377060bcd&$filter=Vehicletrend/videoID eq ' +
-        this.props.powerBIEmbedUrlID;
-    }
-    const { Data, token } = this.state;
+    const { src } = this.state;
     return (
       <>
         {/* {this.props.powerBIEmbedUrlID ? ( */}
@@ -74,7 +62,7 @@ class Dashboard extends Component {
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
           className="reportContainner"
           title="Chart"
-          src="./Vforward/dist/examples/elephantsdream/index.html"
+          src={src}
           allowFullScreen="true"
         ></iframe>
         {/* ) : null} */}

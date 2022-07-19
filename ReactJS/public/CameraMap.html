@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Filling in an Address Form - Bing Maps Samples</title>
+
+    <meta charset="utf-8" />
+	<link rel="shortcut icon" href="/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="This example shows how to use the selected result from the default autosuggest UI to fill in an address form." />
+    <meta name="keywords" content="Microsoft maps, map, gis, API, SDK, Bing, Bing Maps, autosuggest" />
+    <meta name="author" content="Microsoft Bing Maps" />
+    <meta name="screenshot" content="bmv8-autosuggestaddressform.jpg" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+         var map;
+         var pinInfobox;
+    function GetMap() {
+        debugger;
+        var pushpinInfos = [];
+        pushpinInfos[0] = { 'redirectUrl':'./#/Dashboard/41','lat': 31.82296210674898, 'lng': 84.1900683034569, 'title': 'Another <a href="http://www.google.com">Kipper</a> Market', 'description': 'Kipper Gostivar', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };
+        pushpinInfos[1] = {'redirectUrl':'/#/Dashboard/40', 'lat': 33.59000000, 'lng': -86.92000000, 'title': 'Salmon Market', 'description': '<a href="http://www.google.com">Kipper</a> Gostivar', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Inside-Chartreuse-icon.png' };      
+      
+		var infoboxLayer = new Microsoft.Maps.EntityCollection();
+        var pinLayer = new Microsoft.Maps.EntityCollection();
+        var apiKey = 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN';
+        var curPos = new Microsoft.Maps.Location(33.59000000,   -86.92000000);
+        var mapOptions = {
+          credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
+          center: curPos,
+          mapTypeId: Microsoft.Maps.MapTypeId.road,
+          zoom: 12
+      };
+        var map = new window.Microsoft.Maps.Map('#myMap',mapOptions);
+        //var map = new Microsoft.Maps.Map(document.getElementById("myMap"), { credentials: apiKey });
+        // Create the info box for the pushpin
+        pinInfobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(0, 0), { visible: false });
+        infoboxLayer.push(pinInfobox);
+        var locs = [];
+        for (var i = 0 ; i < pushpinInfos.length; i++) {
+            locs[i] = new Microsoft.Maps.Location(pushpinInfos[i].lat, pushpinInfos[i].lng);
+            var pin = new Microsoft.Maps.Pushpin(locs[i], {icon: pushpinInfos[i].icon, width:'20px', height:'20px'});
+            pin.Title = pushpinInfos[i].title;
+            pin.Description = pushpinInfos[i].description;
+			pin.redirectUrl = pushpinInfos[i].redirectUrl;
+            pinLayer.push(pin); 
+            Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+        }
+        map.entities.push(pinLayer);
+        map.entities.push(infoboxLayer);
+        var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
+        map.setView({ center: bestview.center, zoom: 8 });
+    }
+    function displayInfobox(e) {
+		  window.open(e.target.redirectUrl);
+        //pinInfobox.setOptions({ title: e.target.Title, description: e.target.Description, visible: true, offset: new Microsoft.Maps.Point(0, 25) });
+        //pinInfobox.setLocation(e.target.getLocation());
+    }
+    function hideInfobox(e) {
+        pinInfobox.setOptions({ visible: false });
+    }
+    </script>
+    
+  
+</head>
+<body>   
+    <script>
+        // Dynamic load the Bing Maps Key and Script
+        // Get your own Bing Maps key at https://www.microsoft.com/maps
+        (async () => {
+            let script = document.createElement("script");
+            let bingKey ='AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN'// await fetch("https://samples.azuremaps.com/api/GetBingMapsKey").then(r => r.text()).then(key => { return key });
+            script.setAttribute("src", `https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=${bingKey}`);
+            document.body.appendChild(script);
+        })();
+        debugger;
+
+        function loadDeferredIframe() {
+            let paramsURL = (new URL(document.location)).searchParams;
+            let params = paramsURL.get("id");
+
+            if(params){
+                debugger;
+                
+               
+                var srclive='';
+                    if(params=='40'){                    
+                        srclive='http://20.102.33.84:5000/'
+                    }
+                    else if(params=='41'){                    
+                        srclive='http://localhost/index41.html'
+                    }    
+                    else{
+                        srclive='http://localhost/index0.html'
+                    }
+                document.getElementById("iframeid").src=srclive
+           
+            }
+        }
+    
+        window.onload = loadDeferredIframe;
+
+    </script>
+
+
+
+<div class="container">
+    <div class="row" style="height:500px;">
+      <div class="col-sm-12">
+        <div id="myMap"></div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <iframe  name="Google"  id="iframeid"  scrolling="auto" style="width:95%;height:600px"  ></iframe>
+        </div>
+      </div> 
+  </div>
+
+  
+
+
+
+    
+</body>
+</html>

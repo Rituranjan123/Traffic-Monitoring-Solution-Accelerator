@@ -328,9 +328,7 @@ class Library extends CreateParent {
                                 fontSize: '12px',
                                 height: '50px',
                               }}
-                            >
-                              {item.remark.substring(0, 74)}
-                            </span>
+                            ></span>
                             <span
                               style={{
                                 display: 'flex',

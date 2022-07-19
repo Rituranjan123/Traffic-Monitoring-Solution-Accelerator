@@ -72,7 +72,7 @@ class Routing extends Component {
 
         <Route path="/Welcome" component={Welcome} />
 
-        <Route path="/Dashboard" component={Dashboards} />
+        <Route path="/Dashboard/:id" component={Dashboards} />
 
         <Route path="/UploadVideo" component={UploadVideo} />
         <Route path="/CameraVideo" component={CameraVideo} />
