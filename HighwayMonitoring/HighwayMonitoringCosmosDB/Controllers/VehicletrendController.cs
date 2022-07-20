@@ -47,24 +47,39 @@ namespace HighwayMonitoringCosmosDB.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw ;
+            }
+        }
+
+        [HttpGet("{cameraId}")]
+        public async Task<IActionResult> GetBycameraId(int cameraId)
+        {
+            try
+            {
+
+                return Ok(await _cosmosDbService.GetMultipleAsync("SELECT* FROM VehicleTrending v where v.cameraId=" + cameraId));
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
 
-//        [HttpGet("{id}")]
-//        public async Task<IActionResult> Get(string id)
-//        {
-//            try { 
-//            return Ok(await _cosmosDbService.GetAsync(id));
-//        }
-//            catch (Exception ex)
-//            {
-//                throw ex;
-//            }
-//}
 
-        
+        //        [HttpGet("{id}")]
+        //        public async Task<IActionResult> Get(string id)
+        //        {
+        //            try { 
+        //            return Ok(await _cosmosDbService.GetAsync(id));
+        //        }
+        //            catch (Exception ex)
+        //            {
+        //                throw ex;
+        //            }
+        //}
+
+
         [HttpPost]
         public async Task<string> Create([FromBody] List<Vehicletrend> item)
         {

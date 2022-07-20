@@ -1,9 +1,0 @@
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\bin\Debug\netcoreapp3.1\UtilityLibrary.deps.json
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\bin\Debug\netcoreapp3.1\UtilityLibrary.dll
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\bin\Debug\netcoreapp3.1\UtilityLibrary.pdb
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Debug\netcoreapp3.1\UtilityLibrary.csproj.AssemblyReference.cache
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Debug\netcoreapp3.1\UtilityLibrary.AssemblyInfoInputs.cache
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Debug\netcoreapp3.1\UtilityLibrary.AssemblyInfo.cs
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Debug\netcoreapp3.1\UtilityLibrary.csproj.CoreCompileInputs.cache
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Debug\netcoreapp3.1\UtilityLibrary.dll
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Debug\netcoreapp3.1\UtilityLibrary.pdb

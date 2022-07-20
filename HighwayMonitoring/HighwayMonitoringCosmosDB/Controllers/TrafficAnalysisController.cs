@@ -52,6 +52,21 @@ namespace HighwayMonitoringCosmosDB.Controllers
             }
         }
 
+        [HttpGet("{cameraID}")]
+        public async Task<IActionResult> GetByCamera(int tAcameraId)
+        {
+            try
+            {
+
+                return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM VehicleMonitering v where v.tAcamera_Id=" + tAcameraId));
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
         //[HttpGet("{id}")]
         //public async Task<IActionResult> Get(string camera_Id)
         //{
@@ -65,7 +80,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
         //    }
         //}
 
-       
+
         [HttpPost]
         public async Task<string> Create([FromBody] List<TrafficAnalysis> item)
         {
