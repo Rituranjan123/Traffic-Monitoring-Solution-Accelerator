@@ -51,10 +51,9 @@ namespace HighwayMonitoringWebAPI
             //services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleMonitering3").GetAwaiter().GetResult());
             // services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering2").GetAwaiter().GetResult());
 
-            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleTrending").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
 
-            services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering").GetAwaiter().GetResult());
-
+            services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleAccidentLive").GetAwaiter().GetResult());
 
             services.AddControllers();
             services.AddHttpClient();

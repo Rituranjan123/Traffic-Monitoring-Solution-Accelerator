@@ -25,6 +25,7 @@ import CameraGrid from '../CameraAdd/CameraGrid';
 import Library from '../Library/Library';
 import VideoShow from '../Library/VideoShow';
 import VideoShowProcess from '../Library/VideoShowProcess';
+import Livevideo from '../Library/Livevideo';
 
 import CameraAdd from '../CameraAdd/CameraAdd';
 const cookies = new Cookies();
@@ -83,7 +84,8 @@ class Routing extends Component {
         <Route path="/CameraGrid" component={CameraGrid} />
         <Route path="/VideoShow/:id" component={VideoShow} />
         <Route path="/VideoShowProcess/:id" component={VideoShowProcess} />
-
+        <Route path="/Livevideo/:id" component={Livevideo} />
+        
         <Route path="*" render={() => <NotFound />} />
       </Switch>
     );

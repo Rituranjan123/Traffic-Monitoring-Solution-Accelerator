@@ -9,7 +9,9 @@ import { HashRouter } from 'react-router-dom';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 import { msalConfig } from './authConfig';
-
+import {
+  withRouter
+} from "react-router-dom";
 const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.render(

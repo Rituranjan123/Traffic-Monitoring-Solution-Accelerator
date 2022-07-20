@@ -75,11 +75,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
             {
              
              for (int i = 0; i < item.Count; i++)
-            {
-                    if (i == 0)
-                    {
-                        classHttpRequest.WritetoFile(null, "Vechile Json recived" + item[0].TAcamera_Id.ToString());
-                    } 
+            {                    
                 item[i].Id = Guid.NewGuid().ToString();                
                 await _cosmosDbService.AddAsync(item[i]);
             }

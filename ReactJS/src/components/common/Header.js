@@ -133,7 +133,7 @@ class Header extends Component {
                 className="logo "
                 exact
                 activeClassName="tabactive"
-                to="/Dashboard"
+                to="/Dashboard/0"
               >
                 <div>Live Stream</div>
               </NavLink>

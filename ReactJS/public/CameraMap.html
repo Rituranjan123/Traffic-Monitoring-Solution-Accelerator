@@ -153,6 +153,8 @@ function getCookie(name) {
     function refreshIframe() {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
         document.getElementById("iframeid").src = 'http://20.102.33.84:5000?id='+CameraDetails.title;//ifr.src;
+        document.getElementById("iframeChart").src = '/#/Livevideo/17';//ifr.src;
+        
 }
 
     </script>
@@ -191,6 +193,11 @@ function getCookie(name) {
         <div class="col-sm-12">
             
             <iframe   scrolling="no" id="iframeid"  scrolling="auto" style="width:95%;height:600px;overflow: hidden;"  ></iframe>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-sm-12">            
+            <iframe   scrolling="no" id="iframeChart"  scrolling="auto" style="width:95%;height:600px;overflow: hidden;"  ></iframe>
         </div>
       </div> 
   </div>
