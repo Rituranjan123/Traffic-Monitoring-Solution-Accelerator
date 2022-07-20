@@ -19,18 +19,19 @@
     function GetMap() {
         debugger;
         var pushpinInfos = [];
-        pushpinInfos[0] = { 'redirectUrl':'./#/Dashboard/41','lat': 31.82296210674898, 'lng': 84.1900683034569, 'title': 'Camera 1', 'description': 'Washington', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };
-        pushpinInfos[1] = {'redirectUrl':'/#/Dashboard/40', 'lat': 33.59000000, 'lng': -86.92000000, 'title': 'Camera 2', 'description': 'New york ', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };      
+        pushpinInfos[0] = { 'redirectUrl':'./#/Dashboard/41','lat': 35.59000000, 'lng': -87.92000000, 'title': 'Camera 1', 'description': 'Tennessee', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };
+        pushpinInfos[1] = {'redirectUrl':'/#/Dashboard/40', 'lat': 33.59000000, 'lng': -86.92000000, 'title': 'Camera 2', 'description': 'Birmingham', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };      
       
 		var infoboxLayer = new Microsoft.Maps.EntityCollection();
         var pinLayer = new Microsoft.Maps.EntityCollection();
         var apiKey = 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN';
-        var curPos = new Microsoft.Maps.Location(33.59000000,   -86.92000000);
+        var curPos = new Microsoft.Maps.Location(35.24761672238248,   -87.22187500000001);
         var mapOptions = {
           credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
-          zoom: 7
+          zoom: 7,
+          disableScrollWheelZoom:true
       };
         var map = new window.Microsoft.Maps.Map('#myMap',mapOptions);
         //var map = new Microsoft.Maps.Map(document.getElementById("myMap"), { credentials: apiKey });
@@ -50,7 +51,7 @@
         map.entities.push(pinLayer);
         map.entities.push(infoboxLayer);
         var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
-        map.setView({ center: bestview.center, zoom: 3 });
+        map.setView({ center: bestview.center, zoom: 6 });
     }
     function setCookie(name,value,expires){
         document.cookie = name + "=" + value + ((expires==null) ? "" : ";expires=" + expires.toGMTString())
@@ -61,16 +62,16 @@
             CameraDetails['longitude']=e.location.longitude
             CameraDetails['latitude']=e.location.latitude
             CameraDetails['description']=e.target.Description
-            CameraDetails['title']=e.target.title;
+            CameraDetails['title']=e.target.Title;
             let jsonstring=JSON.stringify(CameraDetails);
             var expirydate=new Date();
             expirydate.setTime( expirydate.getTime()+(100*60*60*24*100) )
-            setCookie('CameraDetails',jsonstring,expirydate)
-		   window.open(e.target.redirectUrl);
-          //window.open(e.target.redirectUrl,"_self")
-
-        //pinInfobox.setOptions({ title: e.target.Title, description: e.target.Description, visible: true, offset: new Microsoft.Maps.Point(0, 25) });
-        //pinInfobox.setLocation(e.target.getLocation());
+            debugger;
+            setCookie('CameraDetails',jsonstring,expirydate)		  
+            ShowCameraDetails();
+            //window.open(e.target.redirectUrl,"_self")
+            pinInfobox.setOptions({ title: e.target.Title, description: e.target.Description, visible: true, offset: new Microsoft.Maps.Point(0, 25) });
+            pinInfobox.setLocation(e.target.getLocation());
     }
     function hideInfobox(e) {
         pinInfobox.setOptions({ visible: false });
@@ -117,13 +118,13 @@
             }
         }
 
-        function ShowCameraDetails(){
-            document.getElementById("cameradetails").style.display = "block";
+        function ShowCameraDetails(){            
             let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-                document.getElementById("latitude").innerHTML =CameraDetails.latitude
-                document.getElementById("longitude").innerHTML =CameraDetails.longitude
-                document.getElementById("description").innerHTML =CameraDetails.description
-                document.getElementById("title").innerHTML =CameraDetails.title
+                document.getElementById("latitude").innerHTML =CameraDetails.latitude;
+                document.getElementById("longitude").innerHTML =CameraDetails.longitude;
+                document.getElementById("description").innerHTML =CameraDetails.description;
+                document.getElementById("title").innerHTML =CameraDetails.title;
+                document.getElementById("cameradetails").style.visibility = "visible";
                
         }
 
@@ -146,11 +147,16 @@ function getCookie(name) {
    }
    return false
 }
+       // window.onload = loadDeferredIframe;
+       document.getElementById('cameradetails').style.visibility = "hidden";
 
-    
-        window.onload = loadDeferredIframe;
+    function refreshIframe() {
+        let CameraDetails=JSON.parse(getCookie('CameraDetails'));
+        document.getElementById("iframeid").src = 'http://20.102.33.84:5000?id='+CameraDetails.title;//ifr.src;
+}
 
     </script>
+
 
 
 
@@ -161,7 +167,7 @@ function getCookie(name) {
         <div id="myMap"></div>
       </div>
     </div>
-    <div id="cameradetails">
+     <div id="cameradetails" style="margin-top:2%">
         <div class="row">
             <div class="col-sm-2">           
                 <span><b>Camera</b></span> <span id='title'></span>
@@ -169,14 +175,18 @@ function getCookie(name) {
             <div class="col-sm-2">
                 <span><b>Location</b></span> <span id='description'></span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <span><b>Latitude</b></span> <span id='latitude'></span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <span><b>Longitude</b></span> <span id='longitude'></span>
             </div>
+            <div class="col-sm-2">
+                <button type="button" onclick="refreshIframe();" class="btn btn-success">Live Stream Start</button>
+            </div>
+
         </div>
-    </div>
+    </div> 
     <div class="row">
         <div class="col-sm-12">
             
