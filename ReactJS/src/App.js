@@ -4,9 +4,7 @@ import './App.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import Cookies from 'universal-cookie';
 import Routing from './components/Router/Routing';
-import {
-    withRouter
-} from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 const cookies = new Cookies();
 
@@ -22,7 +20,7 @@ class App extends Component {
       isCookiesSet: cookies.get('token'),
     });
   };
-  
+
   render() {
     let locationName = this.props?.location?.pathname.split('/')[1];
     if (
@@ -31,9 +29,9 @@ class App extends Component {
     ) {
       return (
         <div>
-          {locationName!=="Livevideo" &&
+          {locationName !== 'Livevideo' && (
             <Header switchHeader={this.SwithToLogin} />
-          }
+          )}
           <div className="comoncantainer">
             <Routing switchHeader={this.SwithToLogin} />
           </div>

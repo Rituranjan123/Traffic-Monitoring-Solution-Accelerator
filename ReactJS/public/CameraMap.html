@@ -152,7 +152,7 @@ function getCookie(name) {
 
     function refreshIframe() {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-        document.getElementById("iframeid").src ='http://20.124.60.140:5000/';//http://20.237.9.176:5000';// 'http://20.102.33.84:5000?id='+CameraDetails.title;//ifr.src;
+        document.getElementById("iframeid").src ='http://20.241.224.236:5000/';
         document.getElementById("iframeChart").src = '/#/Livevideo/17';//ifr.src;
         
 }
@@ -184,7 +184,7 @@ function getCookie(name) {
                 <span><b>Longitude</b></span> <span id='longitude'></span>
             </div>
             <div class="col-sm-2">
-                <button type="button" onclick="refreshIframe();" class="btn btn-success">Live Stream Start</button>
+                <button type="button" onclick="refreshIframe();" class="btn btn-success">Live Stream</button>
             </div>
 
         </div>

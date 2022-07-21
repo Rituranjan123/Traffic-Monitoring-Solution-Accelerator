@@ -6,7 +6,8 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import {
   formatDateMMDDYY,
   postApiWithoutReqAsyn,
-  postApiFileUploadWithoutReqAsyn,postApiWithoutReqAsynNoLoader,
+  postApiFileUploadWithoutReqAsyn,
+  postApiWithoutReqAsynNoLoader,
   checkEditRights,
 } from '../Services/PostAPI';
 import DatePicker from 'react-datepicker';
@@ -91,7 +92,7 @@ class Livevideo extends CreateParent {
   };
 
   getUpdate = () => {
-    console.log("test")
+    console.log('test');
     let reqData = {};
 
     if (this.props.match) {
@@ -104,42 +105,42 @@ class Livevideo extends CreateParent {
       }
     }
   };
-  
+
   getPowerBIData = async (id) => {
     let VideoID = { VideoID: id };
     const { initinalFormFill } = this.state;
-    
-   // let res = await getApiBodyWithoutReqAsyn('/Vehicletrend/' + id, VideoID);
-    if(window.lastcurrenttimestamp){
-      window.lastcurrenttimestamp=0;
+
+    // let res = await getApiBodyWithoutReqAsyn('/Vehicletrend/' + id, VideoID);
+    if (window.lastcurrenttimestamp) {
+      window.lastcurrenttimestamp = 0;
     }
     let reqData = {
       cameraId: 1,
-      currenttimestamp:window.lastcurrenttimestamp
+      currenttimestamp: window.lastcurrenttimestamp,
     };
     let res = await postApiWithoutReqAsynNoLoader(
       '/VehicletrendLive/GetBycameraId',
       reqData
     );
-    if(res.length>0){
-      window.lastcurrenttimestamp=res[res.length - 1].current_time       
+    if (res.length > 0) {
+      window.lastcurrenttimestamp = res[res.length - 1].current_time;
       //window.TrendData.push(res);
-      if(initinalFormFill['TrendData']){
-        let data=initinalFormFill['TrendData'];
-      //initinalFormFill['TrendData'] = initinalFormFill['TrendData'].push(res);
-      initinalFormFill['TrendData']=Array.prototype.push.apply(data,res)
+      if (initinalFormFill['TrendData']) {
+        let data = initinalFormFill['TrendData'];
+        //initinalFormFill['TrendData'] = initinalFormFill['TrendData'].push(res);
+        Array.prototype.push.apply(data, res);
+        initinalFormFill['TrendData'] = data;
+      } else {
+        initinalFormFill['TrendData'] = res;
       }
-      else{
-        initinalFormFill['TrendData']=res;
-      }
+      this.setState((prevState) => {
+        let { initinalFormFill } = prevState;
+        initinalFormFill = initinalFormFill;
+        return { initinalFormFill };
+      });
 
-
-      //res = await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + id, VideoID);
-      //var res1 = res;
-      //initinalFormFill['MonitorData'] = res;
-      this.setState({ initinalFormFill: initinalFormFill });
+      // this.setState({ initinalFormFill: initinalFormFill });
     }
-   
   };
 
   // Handle Searchable dropdowns
@@ -225,18 +226,17 @@ class Livevideo extends CreateParent {
     );
     // alert('aa'))
   };
-   componentDidMount () {
+  componentDidMount() {
     const { initinalFormFill } = this.state;
-    
-   // initinalFormFill['MonitorData'] =await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + 17, VideoID);;
+
+    // initinalFormFill['MonitorData'] =await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + 17, VideoID);;
     // this.setState({ initinalFormFill: initinalFormFill });
-   this.intervel= setInterval(this.getUpdate.bind(this),10000);
-      }
+    this.intervel = setInterval(this.getUpdate.bind(this), 10000);
+  }
   componentWillUnmount() {
-    if(this.setInterval!=null)
-    clearInterval(this.intervel)   
-    }
-      
+    if (this.setInterval != null) clearInterval(this.intervel);
+  }
+
   handleModalClose = async () => {
     this.setState((prevState) => {
       let { show, item } = prevState;
@@ -264,34 +264,31 @@ class Livevideo extends CreateParent {
     } = this.state;
     //CameraValue.processSasURL=https://msstorageblob.blob.core.windows.net/microsofttraficmgmt/cam04.mp4?sp=r&st=2022-05-31T14:29:07Z&se=2022-10-27T22:29:07Z&sv=2020-08-04&sr=b&sig=UffEjSERsU95h4QdGQYtyMYyoarUlTOf%2FJWOwdGDBGQ%3D'
     return (
-       
-        <div className="databox1">
-         
-          <Row>
-            <Col md={12}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  margin: '12px 2px',
-                }}
-              ></div>
-              {initinalFormFill.TrendData ? (
-                <TrendChartLine
-                  TrendData={initinalFormFill.TrendData}
-                ></TrendChartLine>
-              ) : null}
-              {initinalFormFill.MonitorData ? (
-                <VechileMoniterChart
-                  MonitorData={initinalFormFill.MonitorData}
-                ></VechileMoniterChart>
-              ) : null}
-            </Col>
-          </Row>
+      <div className="databox1">
+        <Row>
+          <Col md={12}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                margin: '12px 2px',
+              }}
+            ></div>
+            {initinalFormFill.TrendData ? (
+              <TrendChartLine
+                TrendData={initinalFormFill.TrendData}
+              ></TrendChartLine>
+            ) : null}
+            {initinalFormFill.MonitorData ? (
+              <VechileMoniterChart
+                MonitorData={initinalFormFill.MonitorData}
+              ></VechileMoniterChart>
+            ) : null}
+          </Col>
+        </Row>
 
-          <div className="clr"></div>
-        </div>
-      
+        <div className="clr"></div>
+      </div>
     );
   }
 }

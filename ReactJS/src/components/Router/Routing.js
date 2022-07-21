@@ -85,7 +85,7 @@ class Routing extends Component {
         <Route path="/VideoShow/:id" component={VideoShow} />
         <Route path="/VideoShowProcess/:id" component={VideoShowProcess} />
         <Route path="/Livevideo/:id" component={Livevideo} />
-        
+
         <Route path="*" render={() => <NotFound />} />
       </Switch>
     );

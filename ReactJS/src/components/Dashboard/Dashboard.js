@@ -56,7 +56,6 @@ class Dashboard extends Component {
         <iframe
           id="test"
           name="test"
-          
           width="1000"
           height="1000"
           frameBorder="0"

@@ -34,13 +34,13 @@ namespace HighwayMonitoringCosmosDB.Controllers
             {
                 if (liveStramFilter.currenttimestamp == 0)
                 {
-                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()-100;// GetTimestamp(DateTime.Now) -100;
+                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();// GetTimestamp(DateTime.Now) -100;
 
 
                 }
                 string query = "SELECT * FROM VehicleTrendingLive v ";
                 liveStramFilter.cameraId = 1;
-               // query = "SELECT * FROM VehicleTrendingLive v where v.camera_Id = " + liveStramFilter.cameraId + " and v.current_time > " + liveStramFilter.currenttimestamp;
+                query = "SELECT * FROM VehicleTrendingLive v where v.camera_Id = " + liveStramFilter.cameraId + " and v.current_time > " + liveStramFilter.currenttimestamp;
                 var result = await _cosmosDbService.GetMultipleAsync(query);
                 return Ok(result);
             }
