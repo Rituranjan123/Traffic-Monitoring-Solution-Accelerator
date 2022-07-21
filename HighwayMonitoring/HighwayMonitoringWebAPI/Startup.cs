@@ -27,11 +27,11 @@ namespace HighwayMonitoringWebAPI
     {
         private readonly IConfiguration _configuration;
 
-       
+
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
-                  }
+        }
         private readonly string _policyName = "CorsPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,9 +51,10 @@ namespace HighwayMonitoringWebAPI
             //services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleMonitering3").GetAwaiter().GetResult());
             // services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering2").GetAwaiter().GetResult());
 
-            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleTrending").GetAwaiter().GetResult());
 
-            services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleAccidentLive").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering").GetAwaiter().GetResult());
+
 
             services.AddControllers();
             services.AddHttpClient();
@@ -83,21 +84,21 @@ namespace HighwayMonitoringWebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HighwayMonitoringWebAPI", Version = "v1" });
             });
-           
 
-          
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-          //  if (env.IsDevelopment())
+            //  if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HighwayMonitoringWebAPI v1"));
             }
-         
+
             app.UseHttpsRedirection();
             app.UseDeveloperExceptionPage();
             app.UseRouting();
@@ -131,10 +132,10 @@ namespace HighwayMonitoringWebAPI
             return cosmosDbService;
         }
 
-        private static async Task<CosmosDbServiceAccident> InitializeCosmosClientInstanceAsync2(IConfigurationSection configurationSection,string containerName)
+        private static async Task<CosmosDbServiceAccident> InitializeCosmosClientInstanceAsync2(IConfigurationSection configurationSection, string containerName)
         {
             var databaseName = configurationSection["DatabaseName"];
-           // var containerName = configurationSection["ContainerName"];
+            // var containerName = configurationSection["ContainerName"];
             var account = configurationSection["Account"];
             var key = configurationSection["Key"];
             var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);

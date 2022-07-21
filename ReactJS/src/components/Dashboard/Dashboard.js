@@ -7,7 +7,7 @@ import { getAsyncPowerBi, getAsyncPowerBiToken } from '../Services/GetAPI';
 import { MsalProvider, MsalContext } from '@azure/msal-react';
 import { loginRequest } from '../../authConfig';
 import * as pbi from 'powerbi-client';
-
+//import './Dashboard.css';
 const cookies = new Cookies();
 
 class Dashboard extends Component {
@@ -56,8 +56,9 @@ class Dashboard extends Component {
         <iframe
           id="test"
           name="test"
+          
           width="1000"
-          height="400"
+          height="1000"
           frameBorder="0"
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
           className="reportContainner"

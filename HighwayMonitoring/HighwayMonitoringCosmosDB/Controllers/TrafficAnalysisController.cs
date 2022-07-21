@@ -22,7 +22,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -48,24 +48,9 @@ namespace HighwayMonitoringCosmosDB.Controllers
             }
             catch (Exception ex)
             {
-                throw ;
-            }
-        }
-
-        [HttpGet("{cameraID}")]
-        public async Task<IActionResult> GetByCamera(int tAcameraId)
-        {
-            try
-            {
-
-                return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM VehicleMonitering v where v.tAcamera_Id=" + tAcameraId));
-            }
-            catch (Exception ex)
-            {
                 throw;
             }
         }
-
 
         //[HttpGet("{id}")]
         //public async Task<IActionResult> Get(string camera_Id)
@@ -88,51 +73,57 @@ namespace HighwayMonitoringCosmosDB.Controllers
 
             try
             {
-             
-             for (int i = 0; i < item.Count; i++)
-            {                    
-                item[i].Id = Guid.NewGuid().ToString();                
-                await _cosmosDbService.AddAsync(item[i]);
+
+                for (int i = 0; i < item.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        classHttpRequest.WritetoFile(null, "Vechile Json recived" + item[0].TAcamera_Id.ToString());
+                    }
+                    item[i].Id = Guid.NewGuid().ToString();
+                    await _cosmosDbService.AddAsync(item[i]);
+                }
+                return "success";
             }
-            return "success";
-        }
 
             catch (Exception ex)
             {
-                throw ;
+                throw;
             }
-}
+        }
 
-      
+
         [HttpPut("{camera_Id}")]
         public async Task<IActionResult> Edit([FromBody] TrafficAnalysis item)
         {
-            try { 
-            await _cosmosDbService.UpdateAsync(item.Id, item);
-            return NoContent();
-        }
+            try
+            {
+                await _cosmosDbService.UpdateAsync(item.Id, item);
+                return NoContent();
+            }
 
             catch (Exception ex)
             {
-                throw ;
+                throw;
             }
-}
+        }
 
-        
+
         [HttpDelete("{camera_Id}")]
         public async Task<IActionResult> Delete(string camera_Id)
         {
-            try { 
-            await _cosmosDbService.DeleteAsync(camera_Id);
-            return NoContent();
-        }
+            try
+            {
+                await _cosmosDbService.DeleteAsync(camera_Id);
+                return NoContent();
+            }
             catch (Exception ex)
             {
-                throw ;
+                throw;
             }
         }
 
-           
+
     }
     #endregion
 }

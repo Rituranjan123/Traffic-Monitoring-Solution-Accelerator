@@ -32,6 +32,7 @@ const cookies = new Cookies();
 class Library extends CreateParent {
   constructor(props) {
     super(props);
+    
     this.AnalyseVideo = this.AnalyseVideo.bind(this);
     this.EditVideo = this.EditVideo.bind(this);
     this.getAllVidoe = this.getAllVidoe.bind(this);

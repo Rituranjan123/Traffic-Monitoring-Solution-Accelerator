@@ -24,47 +24,33 @@ namespace HighwayMonitoringCosmosDB.Controllers
             _configuration = configuration; ;
         }
 
-       
+
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            try { 
-            return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM c"));
-        }
+            try
+            {
+                return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM c"));
+            }
             catch (Exception ex)
             {
                 throw ex;
             }
-}
+        }
 
         [HttpGet("{VideoID}")]
         public async Task<IActionResult> GetByVideoID(int VideoID)
         {
             try
             {
-                
+
                 return Ok(await _cosmosDbService.GetMultipleAsync("SELECT* FROM VehicleTrending v where v.VideoID=" + VideoID));
             }
             catch (Exception ex)
             {
-                throw ;
+                throw ex;
             }
         }
-
-        [HttpGet("{cameraId}")]
-        public async Task<IActionResult> GetBycameraId(int cameraId)
-        {
-            try
-            {
-
-                return Ok(await _cosmosDbService.GetMultipleAsync("SELECT* FROM VehicleTrending v where v.cameraId=" + cameraId));
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
 
 
         //        [HttpGet("{id}")]
@@ -91,7 +77,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
 
                 if (item.Count > 0)
                 {
-                    
+
                     var content = new FormUrlEncodedContent(new[]
                     {
                     new KeyValuePair<string, string>("VideoId", item[0].VideoID.ToString())
@@ -101,32 +87,33 @@ namespace HighwayMonitoringCosmosDB.Controllers
                     classHttpRequest.WritetoFile(null, "Vechile Json recived" + item[0].VideoID.ToString());
                 }
                 for (int i = 0; i < item.Count; i++)
-            {
-                item[i].Id = Guid.NewGuid().ToString();                
-                await _cosmosDbService.AddAsync(item[i]);
+                {
+                    item[i].Id = Guid.NewGuid().ToString();
+                    await _cosmosDbService.AddAsync(item[i]);
+                }
+                return "success";
             }
-            return "success" ;
-        }
             catch (Exception ex)
             {
-             
-                throw ;
-            }
-}
 
-        
+                throw;
+            }
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit([FromBody] Vehicletrend item)
         {
-            try { 
-            await _cosmosDbService.UpdateAsync(item.Id, item);
-            return NoContent();
-        }
+            try
+            {
+                await _cosmosDbService.UpdateAsync(item.Id, item);
+                return NoContent();
+            }
             catch (Exception ex)
             {
                 throw ex;
             }
-}
+        }
 
 
         [HttpDelete("{id}")]
@@ -144,7 +131,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
             }
             catch (Exception ex)
             {
-                throw ;
+                throw;
             }
         }
 
