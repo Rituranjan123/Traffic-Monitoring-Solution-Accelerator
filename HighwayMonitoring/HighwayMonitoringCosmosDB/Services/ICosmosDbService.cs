@@ -12,6 +12,15 @@ namespace HighwayMonitoringCosmosDB.Services
         Task UpdateAsync(string id, Vehicletrend item);
         Task DeleteAsync(string id);
     }
+
+    public interface ICosmosDbServiceLive
+    {
+        Task<IEnumerable<VehicleTrendingLive>> GetMultipleAsync(string query);
+        //Task<VehicleTrendingLive> GetAsync(string id);
+        //Task AddAsync(VehicleTrendingLive item);
+        //Task UpdateAsync(string id, VehicleTrendingLive item);
+        //Task DeleteAsync(string id);
+    }
     public interface ICosmosDbServiceAccident
     {
        Task<IEnumerable<TrafficAnalysis>> GetMultipleAsync(string query);

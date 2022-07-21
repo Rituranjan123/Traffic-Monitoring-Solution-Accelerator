@@ -6,7 +6,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import {
   formatDateMMDDYY,
   postApiWithoutReqAsyn,
-  postApiFileUploadWithoutReqAsyn,
+  postApiFileUploadWithoutReqAsyn,postApiWithoutReqAsynNoLoader,
   checkEditRights,
 } from '../Services/PostAPI';
 import DatePicker from 'react-datepicker';
@@ -33,6 +33,7 @@ class Livevideo extends CreateParent {
   constructor(props) {
     super(props);
     this.EditVideo = this.EditVideo.bind(this);
+    this.intervel = null;
     this.state = {
       iframe_key: 0,
       iframe_url: './powerbiReport2.html', //Your URL here
@@ -89,7 +90,8 @@ class Livevideo extends CreateParent {
     );
   };
 
-  getUpdate = async () => {
+  getUpdate = () => {
+    console.log("test")
     let reqData = {};
 
     if (this.props.match) {
@@ -97,26 +99,47 @@ class Livevideo extends CreateParent {
         reqData = {
           ID: this.props.match.params.id,
         };
-        let res = await postApiWithoutReqAsyn(
-          '/Video/GetVideoByID',
-          reqData.ID
-        );
-        await this.getPowerBIData(reqData.ID);
-        this.setState({ CameraValue: res });
+        this.getPowerBIData(reqData.ID);
+        // this.setState({ CameraValue: res });
       }
     }
   };
-
+  
   getPowerBIData = async (id) => {
     let VideoID = { VideoID: id };
     const { initinalFormFill } = this.state;
-    let res = await getApiBodyWithoutReqAsyn('/Vehicletrend/' + id, VideoID);
-    var res1 = res;
-    initinalFormFill['TrendData'] = res;
-    res = await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + id, VideoID);
-    var res1 = res;
-    initinalFormFill['MonitorData'] = res;
-    this.setState({ initinalFormFill: initinalFormFill });
+    
+   // let res = await getApiBodyWithoutReqAsyn('/Vehicletrend/' + id, VideoID);
+    if(window.lastcurrenttimestamp){
+      window.lastcurrenttimestamp=0;
+    }
+    let reqData = {
+      cameraId: 1,
+      currenttimestamp:window.lastcurrenttimestamp
+    };
+    let res = await postApiWithoutReqAsynNoLoader(
+      '/VehicletrendLive/GetBycameraId',
+      reqData
+    );
+    if(res.length>0){
+      window.lastcurrenttimestamp=res[res.length - 1].current_time       
+      //window.TrendData.push(res);
+      if(initinalFormFill['TrendData']){
+        let data=initinalFormFill['TrendData'];
+      //initinalFormFill['TrendData'] = initinalFormFill['TrendData'].push(res);
+      initinalFormFill['TrendData']=Array.prototype.push.apply(data,res)
+      }
+      else{
+        initinalFormFill['TrendData']=res;
+      }
+
+
+      //res = await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + id, VideoID);
+      //var res1 = res;
+      //initinalFormFill['MonitorData'] = res;
+      this.setState({ initinalFormFill: initinalFormFill });
+    }
+   
   };
 
   // Handle Searchable dropdowns
@@ -202,30 +225,18 @@ class Livevideo extends CreateParent {
     );
     // alert('aa'))
   };
-  async componentDidMount() {
-    await this.getUpdate();
-    const script = document.createElement('script');
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-    script.type = 'text/javascript';
-    script.src =
-      'https://www.bing.com/api/maps/mapcontrol?key=AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN'; // + this.props.apiKey;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-
-    setTimeout(
-      () =>
-        (script.onload = function () {
-          window.addEventListener('load', function () {
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-
-            window.getMediaPlayer();
-          });
-          // window.GetMap();
-        }),
-      0
-    );
-  }
+   componentDidMount () {
+    const { initinalFormFill } = this.state;
+    
+   // initinalFormFill['MonitorData'] =await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + 17, VideoID);;
+    // this.setState({ initinalFormFill: initinalFormFill });
+   this.intervel= setInterval(this.getUpdate.bind(this),10000);
+      }
+  componentWillUnmount() {
+    if(this.setInterval!=null)
+    clearInterval(this.intervel)   
+    }
+      
   handleModalClose = async () => {
     this.setState((prevState) => {
       let { show, item } = prevState;

@@ -53,6 +53,9 @@ namespace HighwayMonitoringWebAPI
 
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleTrending").GetAwaiter().GetResult());
 
+            services.AddSingleton<ICosmosDbServiceLive>(InitializeCosmosICosmosDbServiceLive(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
+
+
             services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering").GetAwaiter().GetResult());
 
 
@@ -132,6 +135,21 @@ namespace HighwayMonitoringWebAPI
             return cosmosDbService;
         }
 
+        private static async Task<CosmosDbServiceLive> InitializeCosmosICosmosDbServiceLive(IConfigurationSection configurationSection, string containerName)
+        {
+            var databaseName = configurationSection["DatabaseName"];
+            //var containerName = configurationSection["ContainerName"];
+            var account = configurationSection["Account"];
+            var key = configurationSection["Key"];
+            var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+            var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            var cosmosDbService = new CosmosDbServiceLive(client, databaseName, containerName);
+            return cosmosDbService;
+        }
+
+
+        
         private static async Task<CosmosDbServiceAccident> InitializeCosmosClientInstanceAsync2(IConfigurationSection configurationSection, string containerName)
         {
             var databaseName = configurationSection["DatabaseName"];
