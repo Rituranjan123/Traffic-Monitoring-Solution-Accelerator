@@ -15,6 +15,34 @@
     
     <script>
 
+async function fetchAsyncGet (url) {
+  let response = await fetch(url);
+  let data = await response.json();
+  return data;
+}
+let data=fetchAsyncGet('https://highwaymonitoringwebapi.azurewebsites.net/api/USCity/GetAllState');
+
+let v='https://highwaymonitoringwebapi.azurewebsites.net/api/USCity/GetCity'
+
+var city=fetchAsyncPost(v,'Alabama')
+function fetchAsyncPost (url,postObj) {
+    let xhr = new XMLHttpRequest()
+    let post = JSON.stringify(postObj)
+xhr.open('POST', url, true)
+xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+xhr.send(postObj);
+
+xhr.onload = function () {
+    if(xhr.status === 201) {
+        console.log("Post successfully created!") 
+    }
+    if(xhr.status === 200) {
+        var pushpinInfos=JSON.parse(xhr.response);
+        return pushpinInfos;
+    }
+}
+}
+
 
 
 function ShowCameraonMap(map){
@@ -23,7 +51,7 @@ let postObj = {'PAGE_NUMBER': 1, 'PAGE_SIZE': 10};
 let post = JSON.stringify(postObj)
  
 const url ='https://highwaymonitoringwebapi.azurewebsites.net/api/Camera/GetAllCameraDetails' ;
-
+var city=fetchAsyncPost(v,post)
 let xhr = new XMLHttpRequest()
  
 xhr.open('POST', url, true)

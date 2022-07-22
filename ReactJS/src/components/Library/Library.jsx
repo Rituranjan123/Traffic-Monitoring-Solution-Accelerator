@@ -435,8 +435,8 @@ class Library extends CreateParent {
                                     height: '50px',
                                   }}
                                 >
-                                  {/* {item.remark}*/}
-                                  {item.remark.substring(0, 74)}
+                                 
+                                 
                                 </span>
                                 <span
                                   style={{

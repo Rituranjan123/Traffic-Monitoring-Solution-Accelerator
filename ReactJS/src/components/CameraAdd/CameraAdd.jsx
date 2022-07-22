@@ -126,7 +126,12 @@ class CameraAdd extends CreateParent {
       //this.handelMessage('Requried name');
       alert('required CameraName');
       return false;
-    }   
+    }
+    if (!CameraValue.iP_Address) {
+      //this.handelMessage('Requried name');
+      alert('required IP Address');
+      return false;
+    }
     let result = await postApiWithoutReqAsyn(APIPost, CameraValue);
     this.handelMessage('Record added successfully!', 'legalBoll');
   };
@@ -385,9 +390,12 @@ class CameraAdd extends CreateParent {
             <Col md={6}>
               <div id="myMap" className="mapcss"></div>
               <Row>
-                <Col md={3}>
+                <Col md={3}  style={{marginLeft: '70px'}}>
                   <Form.Group>
                     <InputGroup>
+                      <div class="col-sm-3" style={{marginTop: '20px'}}>
+                <span style={{marginLeft: '-80px'}}><b>Latitude :</b></span> <span id='latitude'></span>
+                    </div> 
                       <FormControl
                         name="Latitude"
                         id="Latitude"
@@ -401,7 +409,10 @@ class CameraAdd extends CreateParent {
                 </Col>
                 <Col md={3}>
                   <Form.Group>
-                    <InputGroup>
+                    <InputGroup style={{marginLeft: '80px'}} >
+                     <div class="col-sm-3" style={{marginTop: '20px'}}>
+                <span style={{marginLeft: '-80px'}}><b>Longitude :</b></span> <span id='latitude'></span>
+                    </div> 
                       <FormControl
                         name="Longitude"
                         id="Longitude"
@@ -435,7 +446,7 @@ class CameraAdd extends CreateParent {
                       name="iP_Address"
                       value={CameraValue.iP_Address}
                       onChange={this.handleChangeGen}
-                      placeholder="IP Address"
+                      placeholder="Stream Endpoint"
                       style={{ height: '50px', marginTop: '15px' }}
                     />
                   </InputGroup>

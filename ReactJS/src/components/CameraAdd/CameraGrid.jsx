@@ -94,7 +94,7 @@ class CameraGrid extends CreateParent {
           <div className="securitiesTablegrid">
             <div className="listtopbar">
               <div className="other">camera Name</div>
-              <div className="other">Ip Address</div>
+              <div className="other">Stream Endpoint</div>
               <div className="other">state</div>
               <div className="other">city</div>
               <div className="other">latitude</div>
