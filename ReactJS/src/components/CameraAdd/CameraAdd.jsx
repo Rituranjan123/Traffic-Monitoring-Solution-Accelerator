@@ -126,12 +126,7 @@ class CameraAdd extends CreateParent {
       //this.handelMessage('Requried name');
       alert('required CameraName');
       return false;
-    }
-    if (!CameraValue.iP_Address) {
-      //this.handelMessage('Requried name');
-      alert('required IP Address');
-      return false;
-    }
+    }   
     let result = await postApiWithoutReqAsyn(APIPost, CameraValue);
     this.handelMessage('Record added successfully!', 'legalBoll');
   };

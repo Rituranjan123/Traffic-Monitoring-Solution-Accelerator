@@ -115,7 +115,7 @@ class Livevideo extends CreateParent {
       window.lastcurrenttimestamp = 0;
     }
     let reqData = {
-      cameraId: 1,
+      cameraId: id,
       currenttimestamp: window.lastcurrenttimestamp,
     };
     let res = await postApiWithoutReqAsynNoLoader(

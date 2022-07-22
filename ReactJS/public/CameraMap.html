@@ -14,6 +14,53 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     
     <script>
+
+
+
+function ShowCameraonMap(map){
+let postObj = {'PAGE_NUMBER': 1, 'PAGE_SIZE': 10};
+
+let post = JSON.stringify(postObj)
+ 
+const url ='https://highwaymonitoringwebapi.azurewebsites.net/api/Camera/GetAllCameraDetails' ;
+
+let xhr = new XMLHttpRequest()
+ 
+xhr.open('POST', url, true)
+xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+xhr.send(post);
+ 
+xhr.onload = function () {
+    if(xhr.status === 201) {
+        console.log("Post successfully created!") 
+    }
+    if(xhr.status === 200) {
+        var pushpinInfos=JSON.parse(xhr.response);
+        var locs = [];
+        var pinLayer = new Microsoft.Maps.EntityCollection();
+        for (var i = 0 ; i < pushpinInfos.length; i++) {
+            locs[i] = new Microsoft.Maps.Location(pushpinInfos[i].latitude, pushpinInfos[i].longitude);
+            
+            pushpinInfos[i].icon='./redCamera.png'
+            if(pushpinInfos[i].iP_Address){
+                pushpinInfos[i].icon='./greenCamera.png';
+            }
+            var pin = new Microsoft.Maps.Pushpin(locs[i], {icon: pushpinInfos[i].icon, width:'20px', height:'20px'});
+            pin.Title = pushpinInfos[i].cameraIp;
+            pin.Description = pushpinInfos[i].remark;
+			//pin.redirectUrl = pushpinInfos[i].redirectUrl;
+            pin.cameraId=pushpinInfos[i].cameraId
+            pinLayer.push(pin); 
+            Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+        }
+        map.entities.push(pinLayer);
+
+        console.log("Post successfully created!") ;
+    }
+
+}}
+
+
          var map;
          var pinInfobox;
     function GetMap() {
@@ -38,17 +85,8 @@
         // Create the info box for the pushpin
         pinInfobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(0, 0), { visible: false });
         infoboxLayer.push(pinInfobox);
-        var locs = [];
-        for (var i = 0 ; i < pushpinInfos.length; i++) {
-            locs[i] = new Microsoft.Maps.Location(pushpinInfos[i].lat, pushpinInfos[i].lng);
-            var pin = new Microsoft.Maps.Pushpin(locs[i], {icon: pushpinInfos[i].icon, width:'20px', height:'20px'});
-            pin.Title = pushpinInfos[i].title;
-            pin.Description = pushpinInfos[i].description;
-			pin.redirectUrl = pushpinInfos[i].redirectUrl;
-            pinLayer.push(pin); 
-            Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
-        }
-        map.entities.push(pinLayer);
+         var locs = [];
+        ShowCameraonMap(map);
         map.entities.push(infoboxLayer);
         var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
         map.setView({ center: bestview.center, zoom: 6 });
@@ -63,6 +101,7 @@
             CameraDetails['latitude']=e.location.latitude
             CameraDetails['description']=e.target.Description
             CameraDetails['title']=e.target.Title;
+            CameraDetails['cameraId']=e.target.cameraId
             let jsonstring=JSON.stringify(CameraDetails);
             var expirydate=new Date();
             expirydate.setTime( expirydate.getTime()+(100*60*60*24*100) )
@@ -152,8 +191,8 @@ function getCookie(name) {
 
     function refreshIframe() {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-        document.getElementById("iframeid").src ='http://20.241.224.236:5000/';
-        document.getElementById("iframeChart").src = '/#/Livevideo/17';//ifr.src;
+        document.getElementById("iframeid").src ='http://20.241.224.236:5000/id='+CameraDetails.cameraId;
+        document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
         
 }
 
