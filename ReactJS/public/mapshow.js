@@ -1,9 +1,11 @@
 let CityList=[];
-
+let cityLatLong={};
 let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
 baseURL = 'https://localhost:5001/api/';
 var map;
 var pinInfobox;
+let lat1= 35.24761672238248;
+let long1=   -87.22187500000001;
         function loadDeferredIframe() {
             let paramsURL = (new URL(document.location)).searchParams;
             let params = paramsURL.get("id");
@@ -69,13 +71,17 @@ function getCookie(name) {
         
 }
 
-function GetMap() {
+function GetCityMap() {
         debugger;
     var Obj=CityList.filter(function (el)
     {
       return el.city='Acampo' ;
     }
+
     );
+    cityLatLong.lat1=Obj[0].latitude;
+    cityLatLong.long1=Obj[0].longitude;
+    GetMap();
     
 }
 
@@ -227,7 +233,7 @@ xhr.onload = function () {
         }
         map.entities.push(pinLayer);
         var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
-        map.setView({ center: bestview.center, zoom: 6 });
+       // map.setView({ center: bestview.center, zoom: 6 });
         console.log("Post successfully created!") ;
     }
 
@@ -244,7 +250,11 @@ xhr.onload = function () {
 		var infoboxLayer = new Microsoft.Maps.EntityCollection();
         var pinLayer = new Microsoft.Maps.EntityCollection();
         var apiKey = 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN';
-        var curPos = new Microsoft.Maps.Location(35.24761672238248,   -87.22187500000001);
+        if(cityLatLong.lat1){
+            lat1=cityLatLong.lat1; 
+            long=cityLatLong.long1;
+        }
+        var curPos = new Microsoft.Maps.Location(lat1,   long1);
         var mapOptions = {
           credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,

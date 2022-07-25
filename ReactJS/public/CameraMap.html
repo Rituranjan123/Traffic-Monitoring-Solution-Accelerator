@@ -320,14 +320,16 @@
 
 <div class="container">
 
-    <div class="row">
+    <div class="row" style="margin-bottom:2%">
         <div class="col-sm-2">           
             <span><b>State</b></span>
         </div>
         <div class="col-sm-2">
             <select id="ddlstate"  onchange="GetCity();" />
             <span><b>City</b></span> 
-            <select id="ddlCity" onchange="GetMap();" ></select> 
+            <select id="ddlCity" onchange="GetMap();" >
+               
+            </select> 
         </div>
         <div class="col-sm-3">
             <span><b>City</b></span> 
@@ -336,7 +338,9 @@
             
         </div>
         <div class="col-sm-3">
-            <select id="ddlCity" onchange="GetMap();" ></select>
+            <select id="ddlCity" onchange="GetCityMap();" >
+                <option>Select</option>
+            </select>
            
         </div>
     </div>
