@@ -434,10 +434,7 @@ class Library extends CreateParent {
                                     fontSize: '12px',
                                     height: '50px',
                                   }}
-                                >
-                                 
-                                 
-                                </span>
+                                ></span>
                                 <span
                                   style={{
                                     display: 'flex',

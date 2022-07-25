@@ -7,59 +7,56 @@ class VechileMoniterChart extends React.Component {
   constructor(props) {
     super(props);
 
-     if (this.props && this.props.MonitorData) {
+    if (this.props && this.props.MonitorData) {
       debugger;
       let res = this.props.MonitorData;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       let tAaccident = res.map((item) => item['tAaccident']);
-   
-    this.state = {
-          
-      series: [{
-        data: tAaccident
-      }],
 
-     options: {
-        chart: {
-          type: 'line',
-          height: 350
+      this.state = {
+        series: [
+          {
+            data: tAaccident,
+          },
+        ],
+
+        options: {
+          chart: {
+            type: 'line',
+            height: 350,
+          },
+          stroke: {
+            curve: 'stepline',
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          title: {
+            text: 'Trend Chart',
+            align: 'left',
+          },
+          markers: {
+            hover: {
+              sizeOffset: 4,
+            },
+          },
         },
-        stroke: {
-          curve: 'stepline',
-        },
-        dataLabels: {
-          enabled: false
-        },
-        title: {
-          text: 'Trend Chart',
-          align: 'left'
-        },
-        markers: {
-          hover: {
-            sizeOffset: 4
-          }
-        }
-      },
-    
-    
-    };
+      };
+    }
   }
-  }
-
-
 
   render() {
     return (
-      
-
-<div id="chart">
-<ReactApexChart options={this.state.options} series={this.state.series} type="line" height={350} />
-</div>
-
-
+      <div id="chart">
+        <ReactApexChart
+          options={this.state.options}
+          series={this.state.series}
+          type="line"
+          height={350}
+        />
+      </div>
     );
   }
 }
-
 
 export default VechileMoniterChart;

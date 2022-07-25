@@ -62,7 +62,6 @@ class Dashboard extends Component {
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
           className="reportContainner"
           style={{ 'margin-top': '4%' }}
-          
           title="Chart"
           src={src}
           allowFullScreen="true"

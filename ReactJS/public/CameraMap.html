@@ -14,23 +14,104 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     
     <script>
-
+let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
+baseURL = 'https://localhost:5001/api/';
 async function fetchAsyncGet (url) {
   let response = await fetch(url);
   let data = await response.json();
   return data;
 }
-let data=fetchAsyncGet('https://highwaymonitoringwebapi.azurewebsites.net/api/USCity/GetAllState');
 
-let v='https://highwaymonitoringwebapi.azurewebsites.net/api/USCity/GetCity'
 
-var city=fetchAsyncPost(v,'Alabama')
+
+async function FilldropdownState (url) {
+    let customerslist=await fetchAsyncGet(baseURL+'USCity/GetAllState');
+    let statelist=customerslist.usStateList;
+    var ddlstate = document.getElementById("ddlstate");
+    Filldropdown(ddlstate,statelist)  
+   // await GetCity();        
+}
+    
+ function Filldropdown (dropdown,data) {
+    for (var i = 0; i < data.length; i++) {
+               var option = document.createElement("OPTION");
+               //Set Customer Name in Text part.
+               option.innerHTML = data[i];
+               //Set CustomerId in Value part.
+               option.value = data[i];
+               //Add the Option element to DropDownList.
+               dropdown.options.add(option);
+           }
+}
+    
+   
+function FilldropdownCity (dropdown,data) {
+    debugger;
+    for (var i = 0; i < data.length; i++) {
+               var option = document.createElement("OPTION");
+               //Set Customer Name in Text part.
+               option.innerHTML = data[i];
+               //Set CustomerId in Value part.
+               option.value = data[i];
+               //Add the Option element to DropDownList.
+               dropdown.options.add(option);
+           }
+}
+async function GetCity() {
+    let ddlstate = document.getElementById("ddlstate").value;
+    let url=baseURL+'USCity/GetCity';
+    var cityList= await getHTML(url,ddlstate);
+    let ddlCity = document.getElementById("ddlCity");//.value;
+    debugger;
+   // FilldropdownCity(ddlCity,cityList);
+    
+}
+
+
+
+function getHTML(url,postObj) {
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        //xhr.open('get', url, true);
+        //xhr.responseType = 'document';
+        let post = JSON.stringify(postObj)
+        xhr.open('POST', url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+
+        xhr.onload = function () {
+            var status = xhr.status;
+            if (status == 200) {
+                let dropdown = document.getElementById("ddlCity");//.value;
+                document.getElementById("ddlCity").innerHTML = null;
+                var data=JSON.parse(xhr.response);
+                for (var i = 0; i < data.length; i++) {
+               var option = document.createElement("OPTION");
+               //Set Customer Name in Text part.
+               option.innerHTML = data[i].city;
+               //Set CustomerId in Value part.
+               option.value = data[i].city;
+               //Add the Option element to DropDownList.
+               dropdown.options.add(option);
+           }
+
+               // return pushpinInfos;
+
+            } else {
+                reject(status);
+            }
+        };
+        xhr.send(post);
+    });
+}
+
+
+
 function fetchAsyncPost (url,postObj) {
     let xhr = new XMLHttpRequest()
     let post = JSON.stringify(postObj)
 xhr.open('POST', url, true)
 xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
-xhr.send(postObj);
+xhr.send(post);
 
 xhr.onload = function () {
     if(xhr.status === 201) {
@@ -82,7 +163,8 @@ xhr.onload = function () {
             Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
         }
         map.entities.push(pinLayer);
-
+        var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
+        map.setView({ center: bestview.center, zoom: 6 });
         console.log("Post successfully created!") ;
     }
 
@@ -116,8 +198,7 @@ xhr.onload = function () {
          var locs = [];
         ShowCameraonMap(map);
         map.entities.push(infoboxLayer);
-        var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
-        map.setView({ center: bestview.center, zoom: 6 });
+       
     }
     function setCookie(name,value,expires){
         document.cookie = name + "=" + value + ((expires==null) ? "" : ";expires=" + expires.toGMTString())
@@ -215,7 +296,7 @@ function getCookie(name) {
    return false
 }
        // window.onload = loadDeferredIframe;
-       document.getElementById('cameradetails').style.visibility = "hidden";
+      // document.getElementById('cameradetails').style.visibility = "hidden";
 
     function refreshIframe() {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
@@ -230,7 +311,29 @@ function getCookie(name) {
 
 
 <div class="container">
+
+    <div class="row">
+        <div class="col-sm-2">           
+            <span><b>State</b></span>
+        </div>
+        <div class="col-sm-2">
+            <select id="ddlstate"  onchange="GetCity();" >
+            <select id="ddlCity" >
+            
+        </div>
+        <div class="col-sm-3">
+            <span><b>City</b></span> 
+        </div>
+        <div class="col-sm-3">
+            <select id="ddlCity" >
+        </div>
+    </div>
+
+    
+
     <div class="row" style="height:300px;">
+
+
       <div class="col-sm-12">
 
         <div id="myMap"></div>
@@ -271,7 +374,10 @@ function getCookie(name) {
 
   
 
-
+<script>
+     FilldropdownState();
+     
+</script>
 
     
 </body>
