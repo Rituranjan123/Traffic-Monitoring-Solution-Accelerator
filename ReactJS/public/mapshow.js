@@ -66,7 +66,7 @@ function getCookie(name) {
 
     function refreshIframe() {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-        document.getElementById("iframeid").src ='http://20.241.224.236:5000/id='+CameraDetails.cameraId;
+        document.getElementById("iframeid").src ='http://20.241.224.236:5000?id='+CameraDetails.cameraId;
         document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
         
 }

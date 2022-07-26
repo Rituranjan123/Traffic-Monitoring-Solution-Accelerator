@@ -59,6 +59,8 @@ class Dashboard extends Component {
           width="1000"
           height="1000"
           frameBorder="0"
+          scrolling="no"
+          seamless="seamless"
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
           className="reportContainner"
           style={{ 'margin-top': '4%' }}
