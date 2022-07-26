@@ -272,17 +272,9 @@ function MapPositionShow(cityLatLong,map){
      locs[0] = new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1);
         var pinLayer = new Microsoft.Maps.EntityCollection();
 	var pin = new Microsoft.Maps.Pushpin(locs[0], {icon: './Mylocation.png', width:'20px', height:'20px'});
-    // pin.Title = "";
-    // pin.Description ="";// "Latitude:"+cityLatLong.lat1+"Longitude "+ cityLatLong.long1;
-    // //pin.redirectUrl = pushpinInfos[i].redirectUrl;
-   
-    pinLayer.push(pin); 
-    Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+    pinLayer.push(pin);    
     map.entities.push(pin);
-    //var bestview = Microsoft.Maps.LocationRect.fromLocations(cityLatLong);
-    //map.setView({ center: bestview.center, zoom: 9 });
-   // var pushpin= new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1)); 
-   // map.entities.push(pushpin); 
+   
 
 }
         
@@ -303,12 +295,13 @@ function MapPositionShow(cityLatLong,map){
 
         }
         var curPos = new Microsoft.Maps.Location(lat1,   long1);
-        var mapOptions = {
+        var mapOptions={};
+         mapOptions = {
           credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
           zoom: 5,
-          disableScrollWheelZoom:true
+          disableScrollWheelZoom:false
       };
         var map = new window.Microsoft.Maps.Map('#myMap',mapOptions);
         //var map = new Microsoft.Maps.Map(document.getElementById("myMap"), { credentials: apiKey });
