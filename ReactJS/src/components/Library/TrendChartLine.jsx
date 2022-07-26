@@ -158,6 +158,22 @@ class TrendChartLine extends React.Component {
     }
   }
 
+  state = { count: 0 };
+
+  componentDidMount() {
+    const intervalId = setInterval(() => {
+      this.setState(prevState => {
+        return {
+          count: prevState.count + 1,
+        };
+      });
+    }, 10000);
+  }
+
+  componentWillUnmount(){
+    clearInterval(intervalId);
+  }
+
   render() {
     return (
       <div id="chart">

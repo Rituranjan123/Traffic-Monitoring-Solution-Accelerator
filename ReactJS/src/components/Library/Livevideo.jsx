@@ -55,6 +55,24 @@ class Livevideo extends CreateParent {
     };
     this.handelInit();
   }
+
+  state = { count: 0 };
+
+  componentDidMount() {
+    const intervalId = setInterval(() => {
+      this.setState(prevState => {
+        return {
+          
+          count: prevState.count + 1,
+        };
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount(){
+    clearInterval(intervalId);
+  }
+
   handelInit = () => {
     const { UIValues, formOption } = this.state;
 
@@ -129,10 +147,23 @@ class Livevideo extends CreateParent {
         let data = initinalFormFill['TrendData'];
         //initinalFormFill['TrendData'] = initinalFormFill['TrendData'].push(res);
         Array.prototype.push.apply(data, res);
+        // initinalFormFill['TrendData']=[];
+        // this.setState((prevState) => {
+        //   // let { initinalFormFill } = prevState;
+        //   // prevState.initinalFormFill = initinalFormFill;
+        //   // initinalFormFill = initinalFormFill;
+        //   return { ...prevState, initinalFormFill:initinalFormFill };
+        // });
+  
         initinalFormFill['TrendData'] = data;
       } else {
         initinalFormFill['TrendData'] = res;
       }
+
+      // if(initinalFormFill['TrendData'].length>200){
+      //   initinalFormFill['TrendData']=[];
+      // }
+
       this.setState((prevState) => {
         let { initinalFormFill } = prevState;
         initinalFormFill = initinalFormFill;
@@ -171,61 +202,7 @@ class Livevideo extends CreateParent {
     });
   };
 
-  EditVideo = async () => {
-    const { CameraValue } = this.state;
-    //this.setState({ item: event });
-    this.handleModalClose();
-  };
-  DeleteVideo = async () => {
-    const { CameraValue } = this.state;
-    var video = {};
-    var UIValues = await postApiWithoutReqAsyn(
-      '/Video/DeleteFileBlobAPI',
-      CameraValue
-    );
-    var Msg = 'Record(s) Delete Successfully';
-    this.parenthandelMessage(Msg, 'legalBoll');
-  };
 
-  handleSeachableDropdonw = async (val, name) => {
-    const { initinalFormFill, CameraValue } = this.state;
-    if (name === 'State') {
-      var state = { statename: val };
-      let result = await GetDropdownpost('/USCity/GetCity', val, 'city');
-      initinalFormFill['city'] = result.city;
-    }
-    if (name === 'City') {
-      var cameraDetails = { state: CameraValue.State, city: val };
-      let result = await GetDropdownpost(
-        '/Camera/GetCameraByCity',
-        cameraDetails,
-        'CameraIp'
-      );
-      initinalFormFill['CameraIp'] = result.CameraIp;
-    }
-    if (name === 'CameraIp') {
-      var cameraDetails = {
-        state: CameraValue.State,
-        city: CameraValue.City,
-        CameraIp: val,
-      };
-      let result = await postApiWithoutReqAsyn(
-        '/Video/GetCameraVideo',
-        cameraDetails,
-        'CameraIp'
-      );
-
-      CameraValue.processSasURL = ''; //undefined;
-      CameraValue['processSasURL'] = result.processSasURL;
-    }
-    CameraValue[name] = val;
-
-    this.setState(
-      { CameraValue: CameraValue, initinalFormFill: initinalFormFill },
-      () => console.log('a')
-    );
-    // alert('aa'))
-  };
   componentDidMount() {
     const { initinalFormFill } = this.state;
 
@@ -237,20 +214,6 @@ class Livevideo extends CreateParent {
     if (this.setInterval != null) clearInterval(this.intervel);
   }
 
-  handleModalClose = async () => {
-    this.setState((prevState) => {
-      let { show, item } = prevState;
-      show = prevState.show === false ? true : false;
-      if (show === false) {
-        item = '';
-      }
-      return {
-        show,
-        item,
-      };
-    });
-    await this.getAllVidoe();
-  };
   render() {
     const {
       UIValues,

@@ -274,6 +274,8 @@ function MapPositionShow(cityLatLong,map){
 	var pin = new Microsoft.Maps.Pushpin(locs[0], {icon: './Mylocation.png', width:'20px', height:'20px'});
     pinLayer.push(pin);    
     map.entities.push(pin);
+    // pin.setLocation(locs[0]);
+    // map.setView({ center: pinLocation});
    
 
 }
