@@ -1,7 +1,7 @@
 let CityList=[];
 let cityLatLong={};
 let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
-baseURL = 'https://localhost:5001/api/';
+//baseURL = 'https://localhost:5001/api/';
 var map;
 var pinInfobox;
 let lat1= 35.24761672238248;
@@ -73,14 +73,15 @@ function getCookie(name) {
 
 function GetCityMap() {
         debugger;
-    var Obj=CityList.filter(function (el)
-    {
-      return el.city='Acampo' ;
-    }
+    // var Obj=CityList.filter(function (el)
+    // {
+    //   return el.city=document.getElementById("ddlCity").value;//'Acampo' ;
+    // });
+    var Obj=CityList.find(o => o.city === document.getElementById("ddlCity").value);
 
-    );
-    cityLatLong.lat1=Obj[0].latitude;
-    cityLatLong.long1=Obj[0].longitude;
+
+    cityLatLong.lat1=Obj.latitude;
+    cityLatLong.long1=Obj.longitude;
     GetMap();
     
 }
@@ -102,6 +103,10 @@ async function FilldropdownState (url) {
 }
     
  function Filldropdown (dropdown,data) {
+    var option = document.createElement("OPTION");    
+    option.innerHTML = 'Select';
+    dropdown.options.add(option);
+
     for (var i = 0; i < data.length; i++) {
                var option = document.createElement("OPTION");
                //Set Customer Name in Text part.
@@ -232,21 +237,59 @@ xhr.onload = function () {
             Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
         }
         map.entities.push(pinLayer);
-        var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
-       // map.setView({ center: bestview.center, zoom: 6 });
+    //     var bestview = Microsoft.Maps.LocationRect.fromLocations(locs);
+    //    map.setView({ center: bestview.center, zoom: 6 });
         console.log("Post successfully created!") ;
     }
 
 }}
 
 
+function MapPositionShow3(cityLatLong,pinNumber) {
+    let lat=cityLatLong.lat1;let lon= cityLatLong.long1;
+    let locs = new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1);
+    var pinLocation = new Microsoft.Maps.Location(locs);
+
+    var pin = new Microsoft.Maps.Pushpin(locs, {icon: './Mylocation.png', width:'20px', height:'20px'});
+
+    pinInfobox = new Microsoft.Maps.Infobox(pinLocation,
+            { title: 'Details',
+                description: 'Latitude: ' + lat.toString() + ' Longitude: ' + lon.toString(),
+                offset: new Microsoft.Maps.Point(0, 15)
+            });
+
+
+    map.entities.push(pinInfobox);
+    map.entities.push(pin);
+
+    pin.setLocation(pinLocation);
+    map.setView({ center: pinLocation});
+}
+
+
+function MapPositionShow(cityLatLong,map){
+    var locs = [];
+     locs[0] = new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1);
+        var pinLayer = new Microsoft.Maps.EntityCollection();
+	var pin = new Microsoft.Maps.Pushpin(locs[0], {icon: './Mylocation.png', width:'20px', height:'20px'});
+    // pin.Title = "";
+    // pin.Description ="";// "Latitude:"+cityLatLong.lat1+"Longitude "+ cityLatLong.long1;
+    // //pin.redirectUrl = pushpinInfos[i].redirectUrl;
+   
+    pinLayer.push(pin); 
+    Microsoft.Maps.Events.addHandler(pin, 'click', displayInfobox);
+    map.entities.push(pin);
+    //var bestview = Microsoft.Maps.LocationRect.fromLocations(cityLatLong);
+    //map.setView({ center: bestview.center, zoom: 9 });
+   // var pushpin= new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1)); 
+   // map.entities.push(pushpin); 
+
+}
         
     function GetMap() {
         debugger;
         var pushpinInfos = [];
-        pushpinInfos[0] = { 'redirectUrl':'./#/Dashboard/41','lat': 35.59000000, 'lng': -87.92000000, 'title': 'Camera 1', 'description': 'Tennessee', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };
-        pushpinInfos[1] = {'redirectUrl':'/#/Dashboard/40', 'lat': 33.59000000, 'lng': -86.92000000, 'title': 'Camera 2', 'description': 'Birmingham', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };      
-      
+       
 		var infoboxLayer = new Microsoft.Maps.EntityCollection();
         var pinLayer = new Microsoft.Maps.EntityCollection();
         var apiKey = 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN';
@@ -254,12 +297,17 @@ xhr.onload = function () {
             lat1=cityLatLong.lat1; 
             long=cityLatLong.long1;
         }
+        else{
+            cityLatLong.lat1=lat1; 
+            long=cityLatLong.long1=long1;
+
+        }
         var curPos = new Microsoft.Maps.Location(lat1,   long1);
         var mapOptions = {
           credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
-          zoom: 7,
+          zoom: 5,
           disableScrollWheelZoom:true
       };
         var map = new window.Microsoft.Maps.Map('#myMap',mapOptions);
@@ -269,7 +317,9 @@ xhr.onload = function () {
         infoboxLayer.push(pinInfobox);
          var locs = [];
         ShowCameraonMap(map);
+        MapPositionShow(cityLatLong,map);
         map.entities.push(infoboxLayer);
+        
        
     }
     function setCookie(name,value,expires){

@@ -104,7 +104,9 @@ class CameraGrid extends CreateParent {
             {Data.map((item) => (
               <div className="listdata" key={item.cameraId}>
                 <div className="other">{item.cameraIp}</div>
-                <div className="other">{item.iP_Address}</div>
+                <div className="other" style={{ wordBreak: 'break-word' }}>
+                  {item.iP_Address}
+                </div>
                 <div className="other">{item.state}</div>
                 <div className="other" style={{ paddingLeft: '35px' }}>
                   {item.city}
