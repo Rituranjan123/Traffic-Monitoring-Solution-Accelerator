@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import SnackbarError from '../common/SnackbarError';
 import SnackbarSuccess from '../common/SnackbarSuccess';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row,Spinner } from 'react-bootstrap';
 import {
   formatDateMMDDYY,
   postApiWithoutReqAsyn,
@@ -44,6 +44,7 @@ class Livevideo extends CreateParent {
             'https://msstorageblob.blob.core.windows.net/microsofttraficmgmt/cam04.mp4?sp=r&st=2022-05-31T14:29:07Z&se=2022-10-27T22:29:07Z&sv=2020-08-04&sr=b&sig=UffEjSERsU95h4QdGQYtyMYyoarUlTOf%2FJWOwdGDBGQ%3D',
         },
       },
+      formOption2: { showResults: 1 },
       initinalFormFill: {},
       formOption: {},
       errors: {},
@@ -73,11 +74,19 @@ class Livevideo extends CreateParent {
 
   getPowerBIData = async (id) => {
     let VideoID = { VideoID: id };
-    const { initinalFormFill } = this.state;
+    const { initinalFormFill ,formOption2} = this.state;
 
     
     if (!window.lastcurrenttimestamp) {
       window.lastcurrenttimestamp = 0;
+      this.setState({
+        formOption2: { showResults: 0 },
+      });
+    }
+    else{
+      this.setState({
+        formOption2: { showResults: 1 },
+      });
     }
     let reqData = {
       cameraId: id,
@@ -126,13 +135,23 @@ class Livevideo extends CreateParent {
       CameraValue,
       initinalFormFill,
       iframe_key,
-      iframe_url,
+      iframe_url,formOption2
     } = this.state;
 
     return (
       <div className="databox1">
+        
         <Row>
+       
           <Col md={12}>
+          {/* {formOption2.showResults == 0 ? (
+                    <>
+                      <Spinner animation="border" size="lg" />
+                      <Spinner animation="border" />
+                      <Spinner animation="grow" size="sm" />
+                      <Spinner animation="grow" />
+                    </>
+                  ) : ( */}
             <div
               style={{
                 display: 'flex',
@@ -150,6 +169,8 @@ class Livevideo extends CreateParent {
                 MonitorData={initinalFormFill.MonitorData}
               ></VechileMoniterChart>
             ) : null}
+            {/* )}
+  */}
           </Col>
         </Row>
 
