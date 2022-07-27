@@ -14,11 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script src="./mapshow.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js"></script> -->
 
     <script>
 // let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
@@ -331,8 +331,8 @@
             <span><b>State</b></span>
         </div>
         <div class="col-sm-2">
-            <select id="ddlstate"  onchange="GetCity();" data-live-search="true" data-live-search-style="startsWith" class="selectpicker"></select>
-            <!-- <select id="ddlstate"  onchange="GetCity();" class="selectpicker" data-live-search="true" />
+            <!-- <!-- <select id="ddlstate"  onchange="GetCity();" data-live-search="true" data-live-search-style="startsWith" class="selectpicker"></select> -->
+            <select id="ddlstate"  onchange="GetCity();" class="selectpicker" data-live-search="true" />
             <span><b>City</b></span>  -->
             <select id="ddlCity" onchange="GetMap();" >
                
@@ -359,7 +359,8 @@
 
       <div class="col-sm-12">
 
-        <div id="myMap"></div>
+        <div id="myMap" style="position:relative; 
+         height:300px;"></div>
       </div>
     </div>
      <div id="cameradetails" style="margin-top:2%">

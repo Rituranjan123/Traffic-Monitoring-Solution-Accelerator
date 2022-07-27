@@ -287,16 +287,6 @@ namespace HighwayMonitoringWebAPI.Controllers
                   ML_Accident_API
                 };
 
-            //Start requests for all of them
-            //var requests = urls.Select
-            //  (
-            //        url => client.GetAsync(url)
-            //    ).ToList();
-
-            //var requests = urls.Select
-            //   (
-            //       url => client.PostAsync(urls + fileName, multiContent)
-            //   ).ToList();
             var content =
                    new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture));
             
@@ -308,7 +298,7 @@ namespace HighwayMonitoringWebAPI.Controllers
 
               ).ToList();
             
-            //Wait for all the requests to finish
+            
             await Task.WhenAll(requests);
 
             //Get the responses

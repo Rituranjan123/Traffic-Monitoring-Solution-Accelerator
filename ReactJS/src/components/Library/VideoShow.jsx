@@ -218,8 +218,8 @@ class VideoShow extends CreateParent {
         (script.onload = function () {
           window.addEventListener('load', function () {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
-            //let iframe = window.document.getElementById('test');
-            //iframe.contentWindow.myFunction(CameraValue.sasURL);
+            let iframe = window.document.getElementById('test');
+            iframe.contentWindow.myFunction(CameraValue.sasURL);
 
             window.getMediaPlayer();
           });
@@ -340,7 +340,7 @@ class VideoShow extends CreateParent {
           </Row>
           <Row>
             <Col md={12}>
-              {/* <iframe
+              <iframe
                 id="test"
                 name="test"
                 width="1000"
@@ -351,7 +351,7 @@ class VideoShow extends CreateParent {
                 title="Chart"
                 src="./Vforward/dist/examples/elephantsdream/index.html"
                 allowFullScreen="true"
-              ></iframe> */}
+              ></iframe>
 
               <div
                 style={{

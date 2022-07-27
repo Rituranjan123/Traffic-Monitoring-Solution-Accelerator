@@ -29,7 +29,7 @@ class VechileMoniterChart extends React.Component {
       // res = res2;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       let tAaccident = res.map((item) => item['taccident']);
-      var labels = [0,1]
+      var labels = [0, 1];
 
       this.state = {
         options: {
@@ -43,8 +43,7 @@ class VechileMoniterChart extends React.Component {
             height: 350,
             // width: auto,
             marginRight: 50,
-            marginLeft: 50
-           
+            marginLeft: 50,
           },
           stroke: {
             curve: 'stepline',
@@ -58,12 +57,11 @@ class VechileMoniterChart extends React.Component {
             align: 'center',
           },
           yAxis: {
-   
             labels: {
-              formatter: function() {
-                return labels[this.pos ]
-              }
-            }
+              formatter: function () {
+                return labels[this.pos];
+              },
+            },
           },
           markers: {
             hover: {
@@ -77,7 +75,7 @@ class VechileMoniterChart extends React.Component {
 
   render() {
     return (
-      <div id="chart" >
+      <div id="chart">
         <HighchartsReact
           options={this.state.options}
           series={this.state.series}

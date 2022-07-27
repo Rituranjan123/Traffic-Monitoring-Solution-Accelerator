@@ -89,8 +89,7 @@ class TrendChartLine extends React.Component {
             type: 'line',
             height: 350,
             marginRight: 50,
-            marginLeft: 50
-           
+            marginLeft: 50,
           },
           stroke: {
             width: [0, 4],
@@ -158,21 +157,21 @@ class TrendChartLine extends React.Component {
     }
   }
 
-  state = { count: 0 };
+  // state = { count: 0 };
 
-  componentDidMount() {
-    const intervalId = setInterval(() => {
-      this.setState(prevState => {
-        return {
-          count: prevState.count + 1,
-        };
-      });
-    }, 10000);
-  }
+  // componentDidMount() {
+  //   const intervalId = setInterval(() => {
+  //     this.setState(prevState => {
+  //       return {
+  //         count: prevState.count + 1,
+  //       };
+  //     });
+  //   }, 10000);
+  // }
 
-  componentWillUnmount(){
-    clearInterval(intervalId);
-  }
+  // componentWillUnmount(){
+  //   clearInterval(intervalId);
+  // }
 
   render() {
     return (

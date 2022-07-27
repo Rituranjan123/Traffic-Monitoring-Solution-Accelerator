@@ -67,7 +67,7 @@ function getCookie(name) {
     function refreshIframe() {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
         document.getElementById("iframeid").src ='http://20.241.224.236:5000?id='+CameraDetails.cameraId;
-        document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
+        document.getElementById("iframeChart").src = '/#/Livevideo/1';//+CameraDetails.cameraId
         
 }
 
@@ -274,6 +274,12 @@ function MapPositionShow(cityLatLong,map){
 	var pin = new Microsoft.Maps.Pushpin(locs[0], {icon: './Mylocation.png', width:'20px', height:'20px'});
     pinLayer.push(pin);    
     map.entities.push(pin);
+    // var bestView = Microsoft.Maps.LocationRect.fromLocations(locs[0]);
+
+    // setTimeout((function () {
+    //     map.setView({ bounds: bestView });
+    // }).bind(this), 1000);
+
     // pin.setLocation(locs[0]);
     // map.setView({ center: pinLocation});
    
@@ -341,3 +347,25 @@ function MapPositionShow(cityLatLong,map){
     function hideInfobox(e) {
         pinInfobox.setOptions({ visible: false });
     }
+
+
+
+    
+        function disableScroll() {
+            // Get the current page scroll position
+            scrollTop = 
+              window.pageYOffset || document.documentElement.scrollTop;
+            scrollLeft = 
+              window.pageXOffset || document.documentElement.scrollLeft,
+  
+                // if any scroll is attempted,
+                // set this to the previous value
+                window.onscroll = function() {
+                    window.scrollTo(scrollLeft, scrollTop);
+                };
+        }
+  
+        function enableScroll() {
+            window.onscroll = function() {};
+        }
+       // disableScroll();

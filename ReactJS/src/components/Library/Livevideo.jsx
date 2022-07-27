@@ -33,11 +33,11 @@ const cookies = new Cookies();
 class Livevideo extends CreateParent {
   constructor(props) {
     super(props);
-    this.EditVideo = this.EditVideo.bind(this);
+    
     this.intervel = null;
     this.state = {
       iframe_key: 0,
-      iframe_url: './powerbiReport2.html', //Your URL here
+      iframe_url: '', //Your URL here
       UIValues: {
         cameraVideo: {
           processSasURL:
@@ -53,61 +53,8 @@ class Livevideo extends CreateParent {
 
       initinalFormFill: {},
     };
-    this.handelInit();
+    
   }
-
-  state = { count: 0 };
-
-  componentDidMount() {
-    const intervalId = setInterval(() => {
-      this.setState(prevState => {
-        return {
-          
-          count: prevState.count + 1,
-        };
-      });
-    }, 1000);
-  }
-
-  componentWillUnmount(){
-    clearInterval(intervalId);
-  }
-
-  handelInit = () => {
-    const { UIValues, formOption } = this.state;
-
-    formOption.currentDate =
-      cookies.get('REFERENCE_DATE') === undefined
-        ? new Date()
-        : new Date(cookies.get('REFERENCE_DATE'));
-    formOption.errorBoll = false;
-    formOption.legalBoll = false;
-    formOption.Message = '';
-
-    this.setState({ UIValues: UIValues });
-  };
-
-  handelMessage = (Message, Boll) => {
-    const { formOption } = this.state;
-    formOption[Boll] = true;
-    formOption['Message'] = Message;
-    this.setState(
-      {
-        formOption: formOption,
-      },
-      function () {
-        setTimeout(
-          function () {
-            formOption[Boll] = false;
-            this.setState({
-              formOption: formOption,
-            });
-          }.bind(this),
-          3000
-        );
-      }
-    );
-  };
 
   getUpdate = () => {
     console.log('test');
@@ -128,8 +75,8 @@ class Livevideo extends CreateParent {
     let VideoID = { VideoID: id };
     const { initinalFormFill } = this.state;
 
-    // let res = await getApiBodyWithoutReqAsyn('/Vehicletrend/' + id, VideoID);
-    if (window.lastcurrenttimestamp) {
+    
+    if (!window.lastcurrenttimestamp) {
       window.lastcurrenttimestamp = 0;
     }
     let reqData = {
@@ -145,75 +92,31 @@ class Livevideo extends CreateParent {
       //window.TrendData.push(res);
       if (initinalFormFill['TrendData']) {
         let data = initinalFormFill['TrendData'];
-        //initinalFormFill['TrendData'] = initinalFormFill['TrendData'].push(res);
+       
         Array.prototype.push.apply(data, res);
-        // initinalFormFill['TrendData']=[];
-        // this.setState((prevState) => {
-        //   // let { initinalFormFill } = prevState;
-        //   // prevState.initinalFormFill = initinalFormFill;
-        //   // initinalFormFill = initinalFormFill;
-        //   return { ...prevState, initinalFormFill:initinalFormFill };
-        // });
-  
         initinalFormFill['TrendData'] = data;
       } else {
         initinalFormFill['TrendData'] = res;
       }
-
-      // if(initinalFormFill['TrendData'].length>200){
-      //   initinalFormFill['TrendData']=[];
-      // }
-
       this.setState((prevState) => {
         let { initinalFormFill } = prevState;
         initinalFormFill = initinalFormFill;
         return { initinalFormFill };
       });
 
-      // this.setState({ initinalFormFill: initinalFormFill });
+     
     }
   };
 
-  // Handle Searchable dropdowns
-  handleSeachableDropdonw1 = (val, name) => {
-    const { UIValues } = this.state;
-    UIValues[name] = val;
-    this.setState({
-      [UIValues]: UIValues,
-    });
-  };
-
-  iframeRefresh() {
-    var url =
-      this.state.iframe_url +
-      '&video=' +
-      this.state.initinalFormFill['processSasURL'];
-    url = './powerbiReport2.html';
-    this.setState({
-      iframe_key: this.state.iframe_key + 1,
-      iframe_url1: url,
-      a: this.state.iframe_url,
-    });
-  }
-  getDataMenu = async () => {
-    let res = await getMenuData();
-    this.setState({
-      MenuData: res.GROUP_AUTHORIZATION,
-    });
-  };
-
+ 
 
   componentDidMount() {
     const { initinalFormFill } = this.state;
-
-    // initinalFormFill['MonitorData'] =await getApiBodyWithoutReqAsyn('/TrafficAnalysis/' + 17, VideoID);;
-    // this.setState({ initinalFormFill: initinalFormFill });
     this.intervel = setInterval(this.getUpdate.bind(this), 10000);
   }
   componentWillUnmount() {
     if (this.setInterval != null) clearInterval(this.intervel);
   }
-
   render() {
     const {
       UIValues,
@@ -225,7 +128,7 @@ class Livevideo extends CreateParent {
       iframe_key,
       iframe_url,
     } = this.state;
-    //CameraValue.processSasURL=https://msstorageblob.blob.core.windows.net/microsofttraficmgmt/cam04.mp4?sp=r&st=2022-05-31T14:29:07Z&se=2022-10-27T22:29:07Z&sv=2020-08-04&sr=b&sig=UffEjSERsU95h4QdGQYtyMYyoarUlTOf%2FJWOwdGDBGQ%3D'
+
     return (
       <div className="databox1">
         <Row>

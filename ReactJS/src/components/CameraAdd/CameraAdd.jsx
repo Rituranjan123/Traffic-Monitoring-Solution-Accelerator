@@ -127,7 +127,7 @@ class CameraAdd extends CreateParent {
       alert('required CameraName');
       return false;
     }
-   
+
     let result = await postApiWithoutReqAsyn(APIPost, CameraValue);
     this.handelMessage('Record added successfully!', 'legalBoll');
   };
