@@ -68,6 +68,13 @@ function getCookie(name) {
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
         document.getElementById("iframeid").src ='http://20.241.224.236:5000?id='+CameraDetails.cameraId;
         document.getElementById("iframeChart").src = '/#/Livevideo/1';//+CameraDetails.cameraId
+        setInterval(function () {
+            
+            document.getElementById("iframeChart").src = '/#/Livevideo/1';//+CameraDetails.cameraId
+        
+        }, 150000);
+
+       
         
 }
 

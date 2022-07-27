@@ -42,6 +42,9 @@ namespace HighwayMonitoringCosmosDB.Controllers
                 //liveStramFilter.cameraId = 1;
                 query = "SELECT * FROM VehicleTrendingLive v where v.camera_Id = " + liveStramFilter.cameraId + " and v.current_time > " + liveStramFilter.currenttimestamp;
                 var result = await _cosmosDbService.GetMultipleAsync(query);
+                var s = result.GetEnumerator();
+                
+
                 return Ok(result);
             }
             catch (Exception ex)

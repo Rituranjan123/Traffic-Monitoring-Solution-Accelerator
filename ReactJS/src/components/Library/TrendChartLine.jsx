@@ -8,41 +8,33 @@ import HighchartsReact from 'highcharts-react-official';
 class TrendChartLine extends React.Component {
   constructor(props) {
     super(props);
-    // let res={};
-    // res.frame_timestamp=[0,1,2,3,4,5,6,7,8,9,10,11]
-    // let res2={};
-    // res2['frame_timestamp']=[]
-    // for(let i=0;i<res.frame_timestamp.length;i++){
-    // if((i+1)<res.frame_timestamp.length){
-    // let frame_timestamp2=res.frame_timestamp[i]+res.frame_timestamp[i+1];
-    // res2['frame_timestamp'].push(frame_timestamp2);
-    // console.log(frame_timestamp2)
-    // }
-    // }
+    
+      }
+
+
+  //componentDid
+  // state = { count: 0 };
+
+  // componentDidMount() {
+  //   const intervalId = setInterval(() => {
+  //     this.setState(prevState => {
+  //       return {
+  //         count: prevState.count + 1,
+  //       };
+  //     });
+  //   }, 10000);
+  // }
+
+  // componentWillUnmount(){
+  //   clearInterval(intervalId);
+  // }
+
+  render() {
+    let options = {};
+
     if (this.props && this.props.TrendData) {
       let res = this.props.TrendData;
-      // let res2 = [];
-      // // res2['frame_timestamp']=[]
-      // for (let i = 0; i < res.length; i += 2) {
-      //   if (i + 1 < res.length) {
-      //     let frame_timestamp2 =
-      //       res[i].frame_timestamp + res[i + 1].frame_timestamp;
-      //     let car2 = res[i].car + res[i + 1].car;
-      //     let bus2 = res[i].bus + res[i + 1].bus;
-      //     let truck2 = res[i].truck + res[i + 1].truck;
-      //     let motorbike2 = res[i].motorbike + res[i + 1].motorbike;
-
-      //     let t = {};
-      //     t['frame_timestamp'] = frame_timestamp2;
-      //     t['car'] = car2;
-      //     t['bus'] = bus2;
-      //     t['truck'] = truck2;
-      //     t['motorbike'] = motorbike2;
-      //     res2.push(t);
-      //     console.log(frame_timestamp2);
-      //   }
-      // }
-      // res = res2;
+      
       let categoriesdata = res.map((item) => item['frame_timestamp']);
       let Car = res.map((item) => item['car']);
       let Bus = res.map((item) => item['bus']);
@@ -155,25 +147,9 @@ class TrendChartLine extends React.Component {
         },
       };
     }
-  }
 
-  // state = { count: 0 };
 
-  // componentDidMount() {
-  //   const intervalId = setInterval(() => {
-  //     this.setState(prevState => {
-  //       return {
-  //         count: prevState.count + 1,
-  //       };
-  //     });
-  //   }, 10000);
-  // }
-
-  // componentWillUnmount(){
-  //   clearInterval(intervalId);
-  // }
-
-  render() {
+    
     return (
       <div id="chart">
         <HighchartsReact

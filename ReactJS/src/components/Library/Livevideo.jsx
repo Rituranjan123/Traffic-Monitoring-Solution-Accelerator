@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import SnackbarError from '../common/SnackbarError';
 import SnackbarSuccess from '../common/SnackbarSuccess';
-import { Button, Col, Form, Row,Spinner } from 'react-bootstrap';
+import { Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import {
   formatDateMMDDYY,
   postApiWithoutReqAsyn,
@@ -33,7 +33,7 @@ const cookies = new Cookies();
 class Livevideo extends CreateParent {
   constructor(props) {
     super(props);
-    
+
     this.intervel = null;
     this.state = {
       iframe_key: 0,
@@ -54,7 +54,6 @@ class Livevideo extends CreateParent {
 
       initinalFormFill: {},
     };
-    
   }
 
   getUpdate = () => {
@@ -74,54 +73,60 @@ class Livevideo extends CreateParent {
 
   getPowerBIData = async (id) => {
     let VideoID = { VideoID: id };
-    const { initinalFormFill ,formOption2} = this.state;
+    const { initinalFormFill, formOption2 } = this.state;
 
-    
     if (!window.lastcurrenttimestamp) {
-      window.lastcurrenttimestamp = 0;
+        window.lastcurrenttimestamp = 0;
       this.setState({
         formOption2: { showResults: 0 },
       });
-    }
-    else{
+    } else {
       this.setState({
         formOption2: { showResults: 1 },
       });
     }
+    // window.lastcurrenttimestamp,
+    let lastcurrenttimestamp=0;
+    if(localStorage.getItem("lastcurrenttimestamp")){
+      lastcurrenttimestamp=localStorage.getItem("lastcurrenttimestamp")
+    }
+    
     let reqData = {
       cameraId: id,
-      currenttimestamp: window.lastcurrenttimestamp,
+      currenttimestamp:lastcurrenttimestamp
     };
     let res = await postApiWithoutReqAsynNoLoader(
       '/VehicletrendLive/GetBycameraId',
       reqData
     );
     if (res.length > 0) {
-      window.lastcurrenttimestamp = res[res.length - 1].current_time;
+      if(!window.lastcurrenttimestamp){
+        localStorage.setItem("lastcurrenttimestamp", res[0].current_time);
+
+      window.lastcurrenttimestamp = res[0].current_time;
+      }
       //window.TrendData.push(res);
       if (initinalFormFill['TrendData']) {
         let data = initinalFormFill['TrendData'];
-       
+
         Array.prototype.push.apply(data, res);
-        initinalFormFill['TrendData'] = data;
+        initinalFormFill['TrendData'] = res;
       } else {
         initinalFormFill['TrendData'] = res;
       }
+     // this.setState({initinalFormFill:initinalFormFill});
       this.setState((prevState) => {
-        let { initinalFormFill } = prevState;
-        initinalFormFill = initinalFormFill;
-        return { initinalFormFill };
+        // let { initinalFormFill } = prevState;
+        // initinalFormFill = initinalFormFill;
+        return { initinalFormFill:initinalFormFill };
       });
-
-     
     }
   };
 
- 
-
   componentDidMount() {
     const { initinalFormFill } = this.state;
-    this.intervel = setInterval(this.getUpdate.bind(this), 10000);
+   // this.getUpdate();
+   this.intervel = setInterval(this.getUpdate.bind(this), 10000);
   }
   componentWillUnmount() {
     if (this.setInterval != null) clearInterval(this.intervel);
@@ -135,16 +140,15 @@ class Livevideo extends CreateParent {
       CameraValue,
       initinalFormFill,
       iframe_key,
-      iframe_url,formOption2
+      iframe_url,
+      formOption2,
     } = this.state;
 
     return (
       <div className="databox1">
-        
         <Row>
-       
           <Col md={12}>
-          {/* {formOption2.showResults == 0 ? (
+            {/* {formOption2.showResults == 0 ? (
                     <>
                       <Spinner animation="border" size="lg" />
                       <Spinner animation="border" />
@@ -170,7 +174,7 @@ class Livevideo extends CreateParent {
               ></VechileMoniterChart>
             ) : null}
             {/* )}
-  */}
+             */}
           </Col>
         </Row>
 
