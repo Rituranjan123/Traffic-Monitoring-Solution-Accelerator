@@ -34,9 +34,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
             {
                 if (liveStramFilter.currenttimestamp == 0)
                 {
-                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();// GetTimestamp(DateTime.Now) -100;
-
-
+                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
                 }
                 string query = "SELECT * FROM VehicleTrendingLive v ";
                 //liveStramFilter.cameraId = 1;

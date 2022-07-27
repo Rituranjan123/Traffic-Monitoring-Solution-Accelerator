@@ -48,15 +48,14 @@ namespace HighwayMonitoringWebAPI
             });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleMonitering3").GetAwaiter().GetResult());
-            // services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering2").GetAwaiter().GetResult());
-
+            
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(_configuration.GetSection("CosmosDb"), "VehicleTrending").GetAwaiter().GetResult());
-
-            services.AddSingleton<ICosmosDbServiceLive>(InitializeCosmosICosmosDbServiceLive(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
-
-
             services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbServiceLive>(InitializeCosmosICosmosDbServiceLive(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
+            
+            services.AddSingleton<ICosmosDbServiceLiveAccidennt>(InitializeICosmosDbServiceLiveAccidennt(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
+
+
 
 
             services.AddControllers();
@@ -149,7 +148,22 @@ namespace HighwayMonitoringWebAPI
         }
 
 
-        
+        private static async Task<ICosmosDbServiceLiveAccidennt> InitializeICosmosDbServiceLiveAccidennt(IConfigurationSection configurationSection, string containerName)
+        {
+            var databaseName = configurationSection["DatabaseName"];
+            //var containerName = configurationSection["ContainerName"];
+            var account = configurationSection["Account"];
+            var key = configurationSection["Key"];
+            var client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+            var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            var cosmosDbService = new CosmosDbServiceLiveAccidennt(client, databaseName, containerName);
+            return cosmosDbService;
+        }
+
+       
+
+
         private static async Task<CosmosDbServiceAccident> InitializeCosmosClientInstanceAsync2(IConfigurationSection configurationSection, string containerName)
         {
             var databaseName = configurationSection["DatabaseName"];

@@ -65,6 +65,7 @@ function getCookie(name) {
       // document.getElementById('cameradetails').style.visibility = "hidden";
 
     function refreshIframe() {
+      //  localStorage.setItem("lastcurrenttimestamp", 0);
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
         document.getElementById("iframeid").src ='http://20.241.224.236:5000?id='+CameraDetails.cameraId;
         document.getElementById("iframeChart").src = '/#/Livevideo/1';//+CameraDetails.cameraId
