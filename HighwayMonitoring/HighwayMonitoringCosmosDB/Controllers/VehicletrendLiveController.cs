@@ -38,8 +38,8 @@ namespace HighwayMonitoringCosmosDB.Controllers
             {
                 if (liveStramFilter.currenttimestamp == 0)
                 {
-                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-                    Thread.Sleep(10000);
+                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()-100;
+                    
                 }
                 string query = "SELECT * FROM VehicleTrendingLive v ";
                 //liveStramFilter.cameraId = 1;
@@ -50,12 +50,9 @@ namespace HighwayMonitoringCosmosDB.Controllers
                 var result = await _cosmosDbService.GetMultipleAsync(query);
                 liveChartData.VehicleTrendingLive = result.Cast<VehicleTrendingLive>().ToArray();
                 query = "SELECT * FROM VehicleAccidentLive v ";
-                //  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
+                  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
                 var r = await _cosmosDbServiceLiveAccidennt.GetMultipleAsync(query);
-                liveChartData.trafficAccidentLive = r.Cast<VehicleAccidentLive>().ToArray();
-                var s = result.GetEnumerator();
-                
-
+                liveChartData.trafficAccidentLive = r.Cast<VehicleAccidentLive>().ToArray(); 
                 return Ok(liveChartData);
             }
             catch (Exception ex)
