@@ -15,4 +15,3 @@ C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerato
 C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.csproj.CoreCompileInputs.cache
 C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.dll
 C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.pdb
-C:\Users\RituranjanGupta\Documents\GitHub\Traffic-Monitoring-Solution-Accelerator2\Traffic-Monitoring-Solution-Accelerator\HighwayMonitoring\UtilityLibrary\obj\Release\netcoreapp3.1\UtilityLibrary.csproj.AssemblyReference.cache

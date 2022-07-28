@@ -18,7 +18,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
     public class VehicletrendLiveController : ControllerBase
     {
         private readonly ICosmosDbServiceLive _cosmosDbService;
-        ICosmosDbServiceLiveAccidennt _cosmosDbServiceLiveAccidennt;
+        ICosmosDbServiceLiveAccidennt _cosmosDbServiceLiveAccident;
 
         private readonly IConfiguration _configuration;
         #region Vechile Trends CRUD
@@ -26,7 +26,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
             _configuration = configuration;
-            _cosmosDbServiceLiveAccidennt= cosmosDbServiceLiveAccidennt ?? throw new ArgumentNullException(nameof(cosmosDbServiceLiveAccidennt));
+            _cosmosDbServiceLiveAccident= cosmosDbServiceLiveAccidennt ?? throw new ArgumentNullException(nameof(cosmosDbServiceLiveAccidennt));
         }
 
 
@@ -36,23 +36,28 @@ namespace HighwayMonitoringCosmosDB.Controllers
         {
             try
             {
-                if (liveStramFilter.currenttimestamp == 0)
-                {
-                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()-100;
-                    
-                }
-                string query = "SELECT * FROM VehicleTrendingLive v ";
-                //liveStramFilter.cameraId = 1;
-                query = "SELECT * FROM VehicleTrendingLive v where v.camera_Id = " + liveStramFilter.cameraId + " and v.current_time > " + liveStramFilter.currenttimestamp;
                 LiveChartData liveChartData = new LiveChartData();
 
-
-                var result = await _cosmosDbService.GetMultipleAsync(query);
-                liveChartData.VehicleTrendingLive = result.Cast<VehicleTrendingLive>().ToArray();
-                query = "SELECT * FROM VehicleAccidentLive v ";
-                  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
-                var r = await _cosmosDbServiceLiveAccidennt.GetMultipleAsync(query);
-                liveChartData.trafficAccidentLive = r.Cast<VehicleAccidentLive>().ToArray(); 
+                if (liveStramFilter.currenttimestamp == 0)
+                {
+                    liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() - 100;
+                    VehicleTrendingLive vehicleTrendingLive = new VehicleTrendingLive();
+                    vehicleTrendingLive.current_time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    List<VehicleTrendingLive> vehicleTrendingLive_ = new List<VehicleTrendingLive>();
+                    vehicleTrendingLive_.Add(vehicleTrendingLive);
+                    liveChartData.VehicleTrendingLive = vehicleTrendingLive_.ToArray();
+                }
+                else {
+                    string query = "SELECT * FROM VehicleTrendingLive v ";
+                    //liveStramFilter.cameraId = 1;
+                    query = "SELECT * FROM VehicleTrendingLive v where v.camera_Id = " + liveStramFilter.cameraId + " and v.current_time > " + liveStramFilter.currenttimestamp;
+                    var result = await _cosmosDbService.GetMultipleAsync(query);
+                    liveChartData.VehicleTrendingLive = result.Cast<VehicleTrendingLive>().ToArray();
+                    query = "SELECT * FROM VehicleAccidentLive v ";
+                  //  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;
+                    var r = await _cosmosDbServiceLiveAccident.GetMultipleAsync(query);
+                    liveChartData.trafficAccidentLive= r.Cast<VehicleAccidentLive>().ToArray();
+                }
                 return Ok(liveChartData);
             }
             catch (Exception ex)

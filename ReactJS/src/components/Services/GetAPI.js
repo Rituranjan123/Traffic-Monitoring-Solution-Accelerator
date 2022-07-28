@@ -5,7 +5,7 @@ const cookies = new Cookies();
 let baseUrl = process.env.REACT_APP_BASEURL;
 console.log('baseUrl', baseUrl);
 baseUrl = 'https://localhost:5001/api';
-baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
+//baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
 
 export let downloadURL = baseUrl;
 //get API servicesnpm

@@ -1,7 +1,7 @@
 let CityList=[];
 let cityLatLong={};
 let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
-//baseURL = 'https://localhost:5001/api/';
+baseURL = 'https://localhost:5001/api/';
 let MLAPI='http://20.241.205.191:5000/'
 var map;
 var pinInfobox;
