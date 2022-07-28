@@ -129,21 +129,21 @@ namespace HighwayMonitoringCosmosDB.Services
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task AddAsync(TrafficAccidentLive item)
+        public async Task AddAsync(VehicleAccidentLive item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
         public async Task DeleteAsync(string id)
         {
-            await _container.DeleteItemAsync<TrafficAccidentLive>(id, new PartitionKey(id));
+            await _container.DeleteItemAsync<VehicleAccidentLive>(id, new PartitionKey(id));
         }
 
-        public async Task<TrafficAccidentLive> GetAsync(string id)
+        public async Task<VehicleAccidentLive> GetAsync(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<TrafficAccidentLive>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<VehicleAccidentLive>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException) //For handling item not found and other exceptions
@@ -152,11 +152,11 @@ namespace HighwayMonitoringCosmosDB.Services
             }
         }
 
-        public async Task<IEnumerable<TrafficAccidentLive>> GetMultipleAsync(string queryString)
+        public async Task<IEnumerable<VehicleAccidentLive>> GetMultipleAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<TrafficAccidentLive>(new QueryDefinition(queryString));
+            var query = _container.GetItemQueryIterator<VehicleAccidentLive>(new QueryDefinition(queryString));
 
-            var results = new List<TrafficAccidentLive>();
+            var results = new List<VehicleAccidentLive>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();

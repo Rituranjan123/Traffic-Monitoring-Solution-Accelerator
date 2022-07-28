@@ -22,7 +22,7 @@ namespace HighwayMonitoringCosmosDB.Services
 
     public interface ICosmosDbServiceLiveAccidennt
     {
-        Task<IEnumerable<TrafficAccidentLive>> GetMultipleAsync(string query);
+        Task<IEnumerable<VehicleAccidentLive>> GetMultipleAsync(string query);
    }
     public interface ICosmosDbServiceAccident
     {

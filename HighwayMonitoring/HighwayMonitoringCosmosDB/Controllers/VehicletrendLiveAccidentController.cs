@@ -18,6 +18,8 @@ namespace HighwayMonitoringCosmosDB.Controllers
         private readonly ICosmosDbServiceLiveAccidennt _cosmosDbService;
 
         private readonly IConfiguration _configuration;
+
+        
         #region Vechile Trends CRUD
         public VehicletrendLiveAccidentController(ICosmosDbServiceLiveAccidennt cosmosDbService, IConfiguration configuration)
         {
@@ -35,7 +37,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
                     liveStramFilter.currenttimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();// GetTimestamp(DateTime.Now) -100;
                 }
                 string query = "SELECT * FROM VehicleAccidentLive v ";                
-                query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
+              //  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
                 var result = await _cosmosDbService.GetMultipleAsync(query);               
                 return Ok(result);
             }

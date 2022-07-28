@@ -73,4 +73,10 @@ namespace HighwayMonitoringCosmosDB.Models
         public int cameraId { get; set; }
         public long currenttimestamp { get; set; }
     }
+
+    public class LiveChartData
+    {
+        public VehicleTrendingLive[] VehicleTrendingLive  { get; set; }
+        public VehicleAccidentLive[] trafficAccidentLive  { get; set; }
+    }
 }

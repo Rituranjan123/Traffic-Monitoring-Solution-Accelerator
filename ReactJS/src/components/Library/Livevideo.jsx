@@ -76,7 +76,7 @@ class Livevideo extends CreateParent {
     const { initinalFormFill, formOption2 } = this.state;
 
     if (!window.lastcurrenttimestamp) {
-        window.lastcurrenttimestamp = 0;
+      window.lastcurrenttimestamp = 0;
       this.setState({
         formOption2: { showResults: 0 },
       });
@@ -86,50 +86,57 @@ class Livevideo extends CreateParent {
       });
     }
     // window.lastcurrenttimestamp,
-    let lastcurrenttimestamp=0;
-    if(localStorage.getItem("lastcurrenttimestamp")){
-      lastcurrenttimestamp=localStorage.getItem("lastcurrenttimestamp")
+    let lastcurrenttimestamp = 0;
+    if (localStorage.getItem('lastcurrenttimestamp')) {
+      lastcurrenttimestamp = localStorage.getItem('lastcurrenttimestamp');
     }
-    
+
     let reqData = {
       cameraId: id,
-      currenttimestamp:lastcurrenttimestamp
+      currenttimestamp: lastcurrenttimestamp,
     };
     let res = await postApiWithoutReqAsynNoLoader(
       '/VehicletrendLive/GetBycameraId',
       reqData
     );
-    if (res.length > 0) {
-      if(!window.lastcurrenttimestamp){
-        localStorage.setItem("lastcurrenttimestamp", res[0].current_time);
+   // if (res.length > 0) {
+    if (res.vehicleTrendingLive.length > 0) {
+      if (!window.lastcurrenttimestamp) {
+        localStorage.setItem('lastcurrenttimestamp', res.vehicleTrendingLive[0].current_time);
 
-      window.lastcurrenttimestamp = res[0].current_time;
+        window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
       }
       //window.TrendData.push(res);
       if (initinalFormFill['TrendData']) {
         let data = initinalFormFill['TrendData'];
 
         Array.prototype.push.apply(data, res);
-        initinalFormFill['TrendData'] = res;
+        initinalFormFill['TrendData'] = res.vehicleTrendingLive;
+        
+
+        initinalFormFill['MonitorData'] = res.trafficAccidentLive;
+        
       } else {
-        initinalFormFill['TrendData'] = res;
+        initinalFormFill['TrendData'] = res.vehicleTrendingLive;
+        
+
+        initinalFormFill['MonitorData'] = res.trafficAccidentLive;
       }
-     // this.setState({initinalFormFill:initinalFormFill});
+      // this.setState({initinalFormFill:initinalFormFill});
       this.setState((prevState) => {
         // let { initinalFormFill } = prevState;
         // initinalFormFill = initinalFormFill;
-        return { initinalFormFill:initinalFormFill };
+        return { initinalFormFill: initinalFormFill };
       });
     }
   };
 
-  
   getAccidentData = async (id) => {
     let VideoID = { VideoID: id };
     const { initinalFormFill, formOption2 } = this.state;
 
     if (!window.lastcurrenttimestamp) {
-        window.lastcurrenttimestamp = 0;
+      window.lastcurrenttimestamp = 0;
       this.setState({
         formOption2: { showResults: 0 },
       });
@@ -139,24 +146,24 @@ class Livevideo extends CreateParent {
       });
     }
     // window.lastcurrenttimestamp,
-    let lastcurrenttimestamp=0;
-    if(localStorage.getItem("lastcurrenttimestamp")){
-      lastcurrenttimestamp=localStorage.getItem("lastcurrenttimestamp")
+    let lastcurrenttimestamp = 0;
+    if (localStorage.getItem('lastcurrenttimestamp') != '0') {
+      lastcurrenttimestamp = localStorage.getItem('lastcurrenttimestamp');
     }
-    
+
     let reqData = {
       cameraId: id,
-      currenttimestamp:lastcurrenttimestamp
+      currenttimestamp: lastcurrenttimestamp,
     };
     let res = await postApiWithoutReqAsynNoLoader(
       '/VehicletrendLiveAccident/GetBycameraId',
       reqData
     );
-    if (res.length > 0) {
-      if(!window.lastcurrenttimestamp){
-        localStorage.setItem("lastcurrenttimestamp", res[0].current_time);
+    if (res.vehicleTrendingLive.length > 0) {
+      if (!window.lastcurrenttimestamp) {
+        localStorage.setItem('lastcurrenttimestamp', res.vehicleTrendingLive[0].current_time);
 
-      window.lastcurrenttimestamp = res[0].current_time;
+        window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
       }
       //window.TrendData.push(res);
       if (initinalFormFill['MonitorData']) {
@@ -167,25 +174,24 @@ class Livevideo extends CreateParent {
       } else {
         initinalFormFill['MonitorData'] = res;
       }
-     // this.setState({initinalFormFill:initinalFormFill});
+      // this.setState({initinalFormFill:initinalFormFill});
       this.setState((prevState) => {
         // let { initinalFormFill } = prevState;
         // initinalFormFill = initinalFormFill;
-        return { initinalFormFill:initinalFormFill };
+        return { initinalFormFill: initinalFormFill };
       });
     }
   };
 
-
   componentDidMount() {
     const { initinalFormFill } = this.state;
-   // this.getUpdate();
+    // this.getUpdate();
     this.intervel = setInterval(this.getUpdate.bind(this), 10000);
     //this.intervel2 = setInterval(this.getAccidentData.bind(this), 10000);
   }
   componentWillUnmount() {
     if (this.setInterval != null) clearInterval(this.intervel);
-   // if (this.setInterval != null) clearInterval(this.intervel2);
+    // if (this.setInterval != null) clearInterval(this.intervel2);
   }
   render() {
     const {

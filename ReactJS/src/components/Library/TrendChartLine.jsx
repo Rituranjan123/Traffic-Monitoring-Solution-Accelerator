@@ -8,9 +8,7 @@ import HighchartsReact from 'highcharts-react-official';
 class TrendChartLine extends React.Component {
   constructor(props) {
     super(props);
-    
-      }
-
+  }
 
   //componentDid
   // state = { count: 0 };
@@ -34,7 +32,7 @@ class TrendChartLine extends React.Component {
 
     if (this.props && this.props.TrendData) {
       let res = this.props.TrendData;
-      
+
       let categoriesdata = res.map((item) => item['frame_timestamp']);
       let Car = res.map((item) => item['car']);
       let Bus = res.map((item) => item['bus']);
@@ -148,8 +146,6 @@ class TrendChartLine extends React.Component {
       };
     }
 
-
-    
     return (
       <div id="chart">
         <HighchartsReact

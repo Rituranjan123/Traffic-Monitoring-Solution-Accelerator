@@ -30,7 +30,7 @@ namespace HighwayMonitoringCosmosDB.Models
     }
 
 
-    public class TrafficAccidentLive
+    public class VehicleAccidentLive
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
