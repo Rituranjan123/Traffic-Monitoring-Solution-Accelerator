@@ -17,7 +17,7 @@ namespace HighwayMonitoringCosmosDB.Models
         public int noaccident { get; set; }
 
         [JsonProperty("tAccidentStatus")]
-        public int tAccidentStatus { get; set; }
+        public long tAccidentStatus { get; set; }
 
         
 
@@ -44,7 +44,7 @@ namespace HighwayMonitoringCosmosDB.Models
         public int noaccident { get; set; }
 
         [JsonProperty("tAccidentStatus")]
-        public int tAccidentStatus { get; set; }
+        public long tAccidentStatus { get; set; }
 
 
 
