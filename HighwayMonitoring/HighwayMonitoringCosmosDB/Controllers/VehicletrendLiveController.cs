@@ -49,8 +49,8 @@ namespace HighwayMonitoringCosmosDB.Controllers
 
                 var result = await _cosmosDbService.GetMultipleAsync(query);
                 liveChartData.VehicleTrendingLive = result.Cast<VehicleTrendingLive>().ToArray();
-                //query = "SELECT * FROM VehicleAccidentLive v ";
-                  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
+                query = "SELECT * FROM VehicleAccidentLive v ";
+                //  query = "SELECT * FROM VehicleAccidentLive v where v.tAcamera_id = " + liveStramFilter.cameraId + " and v.current_timestamp > " + liveStramFilter.currenttimestamp;               
                 var r = await _cosmosDbServiceLiveAccidennt.GetMultipleAsync(query);
                 liveChartData.trafficAccidentLive = r.Cast<VehicleAccidentLive>().ToArray();
                 var s = result.GetEnumerator();

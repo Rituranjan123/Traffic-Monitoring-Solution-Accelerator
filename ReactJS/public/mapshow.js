@@ -2,6 +2,7 @@ let CityList=[];
 let cityLatLong={};
 let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
 baseURL = 'https://localhost:5001/api/';
+let MLAPI='http://20.241.205.191:5000/'
 var map;
 var pinInfobox;
 let lat1= 35.24761672238248;
@@ -65,17 +66,19 @@ function getCookie(name) {
       // document.getElementById('cameradetails').style.visibility = "hidden";
 
     function refreshIframe() {
+
         localStorage.removeItem("lastcurrenttimestamp");
 
        // localStorage.setItem("lastcurrenttimestamp", 0);
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-        document.getElementById("iframeid").src ='http://20.241.224.236:5000?id='+CameraDetails.cameraId;
+        debugger;
         document.getElementById("iframeChart").src = '/#/Livevideo/1';//+CameraDetails.cameraId
-        setInterval(function () {
-            
-            document.getElementById("iframeChart").src = '/#/Livevideo/1';//+CameraDetails.cameraId
+        setInterval(function () {   
+            debugger;         
+            document.getElementById("iframeChart").src = '/#/Livevideo/1';////+CameraDetails.cameraId
         
         }, 150000);
+        document.getElementById("iframeid").src =MLAPI+CameraDetails.cameraId;
 
        
         

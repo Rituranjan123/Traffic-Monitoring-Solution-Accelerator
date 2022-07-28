@@ -72,6 +72,7 @@ class Livevideo extends CreateParent {
   };
 
   getPowerBIData = async (id) => {
+    debugger;
     let VideoID = { VideoID: id };
     const { initinalFormFill, formOption2 } = this.state;
 
@@ -99,10 +100,13 @@ class Livevideo extends CreateParent {
       '/VehicletrendLive/GetBycameraId',
       reqData
     );
-   // if (res.length > 0) {
-    if (res.vehicleTrendingLive.length > 0) {
+    // if (res.length > 0) {
+    if (res.vehicleTrendingLive && res.vehicleTrendingLive.length > 0) {
       if (!window.lastcurrenttimestamp) {
-        localStorage.setItem('lastcurrenttimestamp', res.vehicleTrendingLive[0].current_time);
+        localStorage.setItem(
+          'lastcurrenttimestamp',
+          res.vehicleTrendingLive[0].current_time
+        );
 
         window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
       }
@@ -112,13 +116,10 @@ class Livevideo extends CreateParent {
 
         Array.prototype.push.apply(data, res);
         initinalFormFill['TrendData'] = res.vehicleTrendingLive;
-        
 
         initinalFormFill['MonitorData'] = res.trafficAccidentLive;
-        
       } else {
         initinalFormFill['TrendData'] = res.vehicleTrendingLive;
-        
 
         initinalFormFill['MonitorData'] = res.trafficAccidentLive;
       }
@@ -161,7 +162,10 @@ class Livevideo extends CreateParent {
     );
     if (res.vehicleTrendingLive.length > 0) {
       if (!window.lastcurrenttimestamp) {
-        localStorage.setItem('lastcurrenttimestamp', res.vehicleTrendingLive[0].current_time);
+        localStorage.setItem(
+          'lastcurrenttimestamp',
+          res.vehicleTrendingLive[0].current_time
+        );
 
         window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
       }
