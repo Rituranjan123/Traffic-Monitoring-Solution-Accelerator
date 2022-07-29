@@ -18,26 +18,22 @@ namespace HighwayMonitoringCosmosDB.Services
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task AddAsync(VehicleAccidentLive item)
+        public async Task AddAsync(TrafficAnalysis item)
         {
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
-        public Task AddAsync(TrafficAnalysis item)
-        {
-            throw new System.NotImplementedException();
-        }
-
+       
         public async Task DeleteAsync(string id)
         {
-            await _container.DeleteItemAsync<VehicleAccidentLive>(id, new PartitionKey(id));
+            await _container.DeleteItemAsync<TrafficAnalysis>(id, new PartitionKey(id));
         }
 
-        public async Task<VehicleAccidentLive> GetAsync(string id)
+        public async Task<TrafficAnalysis> GetAsync2(string id)
         {
             try
             {
-                var response = await _container.ReadItemAsync<VehicleAccidentLive>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<TrafficAnalysis>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException) //For handling item not found and other exceptions
@@ -45,12 +41,26 @@ namespace HighwayMonitoringCosmosDB.Services
                 return null;
             }
         }
+        //public async Task<IEnumerable<TrafficAnalysis>> GetAsync(string queryString)
+        //{
+        //    var query = _container.GetItemQueryIterator<TrafficAnalysis>(new QueryDefinition(queryString));
 
-        public async Task<IEnumerable<VehicleAccidentLive>> GetMultipleAsync(string queryString)
+        //    var results = new List<TrafficAnalysis>();
+        //    while (query.HasMoreResults)
+        //    {
+        //        var response = await query.ReadNextAsync();
+        //        results.AddRange(response.ToList());
+        //    }
+
+        //    return results;
+        //}
+
+
+        public async Task<IEnumerable<TrafficAnalysis>> GetMultipleAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<VehicleAccidentLive>(new QueryDefinition(queryString));
+            var query = _container.GetItemQueryIterator<TrafficAnalysis>(new QueryDefinition(queryString));
 
-            var results = new List<VehicleAccidentLive>();
+            var results = new List<TrafficAnalysis>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -74,19 +84,10 @@ namespace HighwayMonitoringCosmosDB.Services
             return results;
         }
 
-        public async Task UpdateAsync(string id, VehicleAccidentLive item)
+        public async Task UpdateAsync(string id, TrafficAnalysis item)
         {
             await _container.UpsertItemAsync(item, new PartitionKey(id));
         }
 
-        public Task UpdateAsync(string id, TrafficAnalysis item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        Task<IEnumerable<TrafficAnalysis>> ICosmosDbServiceAccident.GetMultipleAsync(string query)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

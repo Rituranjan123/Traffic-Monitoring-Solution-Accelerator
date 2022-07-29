@@ -27,7 +27,7 @@ namespace HighwayMonitoringCosmosDB.Services
     public interface ICosmosDbServiceAccident
     {
        Task<IEnumerable<TrafficAnalysis>> GetMultipleAsync(string query);
-        Task<VehicleAccidentLive> GetAsync(string camera_Id);
+        //Task<TrafficAnalysis> GetAsync(string camera_Id);
         Task AddAsync(TrafficAnalysis item);
         Task UpdateAsync(string id, TrafficAnalysis item);
         Task DeleteAsync(string camera_Id);

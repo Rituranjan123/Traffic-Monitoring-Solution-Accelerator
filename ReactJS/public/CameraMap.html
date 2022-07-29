@@ -235,7 +235,7 @@
     
   
 </head>
-<body>   
+<body style="margin-top: 10px;" >   
     <script>
         // Dynamic load the Bing Maps Key and Script
         // Get your own Bing Maps key at https://www.microsoft.com/maps
@@ -327,32 +327,31 @@
 <div class="container">
 
     <div class="row" style="margin-bottom:2%">
+       
         <div class="col-sm-2">           
             <span><b>State</b></span>
         </div>
         <div class="col-sm-2">
             <!-- <!-- <select id="ddlstate"  onchange="GetCity();" data-live-search="true" data-live-search-style="startsWith" class="selectpicker"></select> -->
-            <select id="ddlstate"  onchange="GetCity();" class="selectpicker" data-live-search="true" />
+            <select id="ddlstate"  onchange="GetCity();" class="selectpicker" data-live-search="true" style="margin-left: -100px;" />
             <span><b>City</b></span>  -->
             <select id="ddlCity" onchange="GetMap();" >
                
             </select> 
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" style="margin-right: -184px;">
             <span><b>City</b></span> 
                 <!-- <select id="ddlCity" onchange="GetMap();" >
              -->
             
         </div>
         <div class="col-sm-3">
-            <select id="ddlCity" onchange="GetCityMap();" >
+            <select id="ddlCity" onchange="GetCityMap();"  style="width: 150px;" >
                 <option>Select</option>
             </select>
            
         </div>
-    </div>
-
-    
+    </div>   
 
     <div class="row" style="height:300px;">
 

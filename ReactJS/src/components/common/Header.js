@@ -169,7 +169,7 @@ class Header extends Component {
                   <img className="usericon" src={user} alt="user images" />{' '}
                   {cookies.get('USER_NAME')}{' '}
                   {/* <img className="downarrow" src={menuarrow} alt="Phalkon" />*/}
-                  <span style={{ marginBottom: '10px' }}>&nbsp;⌄ </span>
+                  <span style={{ marginBottom: '10px' }}>&nbsp; </span>
                 </span>
 
                 <ul>

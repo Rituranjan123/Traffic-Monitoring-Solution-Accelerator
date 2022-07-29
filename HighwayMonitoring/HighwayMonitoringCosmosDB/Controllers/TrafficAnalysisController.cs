@@ -20,9 +20,11 @@ namespace HighwayMonitoringCosmosDB.Controllers
         public TrafficAnalysisController(ICosmosDbServiceAccident cosmosDbService)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
+
         }
 
 
+       
         [HttpGet]
         public async Task<IActionResult> List()
         {

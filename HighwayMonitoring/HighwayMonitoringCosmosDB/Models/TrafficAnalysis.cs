@@ -20,7 +20,7 @@ namespace HighwayMonitoringCosmosDB.Models
         public long tAccidentStatus { get; set; }
 
         [JsonProperty("tAccident_percent")]
-        public string tAccident_percent { get; set; }
+        public long tAccident_percent { get; set; }
 
 
 

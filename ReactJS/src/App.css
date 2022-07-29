@@ -52,7 +52,7 @@ body {
 }
 .topbar {
   /* min-height: 46px;*/
-  height: 90px;
+  height: 80px;
   display: flex;
   position: relative;
   align-items: center;
