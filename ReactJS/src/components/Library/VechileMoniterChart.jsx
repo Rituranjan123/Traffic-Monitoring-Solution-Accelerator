@@ -9,6 +9,12 @@ class VechileMoniterChart extends React.Component {
   constructor(props) {
     super(props);
 
+   
+  }
+
+  //return labels[this.pos];
+  render() {
+
     if (this.props && this.props.MonitorData) {
       let res = this.props.MonitorData;
       // let res2 = [];
@@ -29,7 +35,7 @@ class VechileMoniterChart extends React.Component {
       // res = res2;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       let tAaccident = res.map((item) => item['tAccidentStatus']);
-      var labels = [0,1];
+      var labels = [0, 1];
 
       this.state = {
         options: {
@@ -71,9 +77,6 @@ class VechileMoniterChart extends React.Component {
         },
       };
     }
-  }
-  //return labels[this.pos];
-  render() {
     return (
       <div id="chart">
         <HighchartsReact

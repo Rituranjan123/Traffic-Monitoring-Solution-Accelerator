@@ -8,7 +8,10 @@ import HighchartsReact from 'highcharts-react-official';
 class VechileAccidentLive extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      keyid: 1,
+    }
+    
     if (this.props && this.props.MonitorData) {
       let res = this.props.MonitorData;
       // let res2 = [];
@@ -28,18 +31,28 @@ class VechileAccidentLive extends React.Component {
       // }
       // res = res2;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
-      let tAaccident = res.map((item) => item['tAccidentStatus']);
-      var labels =[0, 1];
-
+      //let tAaccident =[0,0,0,0,0,0,0,0,0] //res.map((item) => item['tAccidentStatus']);
+      let tAaccident =res.map((item) => item['tAccidentStatus']);
+      var labels = [0, 1];
+        debugger;
       this.state = {
         options: {
+          plotOptions: {
+            line: {
+            lineWidth: 2,
+           // softThreshold: false
+            }
+           },
+         
           series: [
             {
               data: tAaccident,
             },
           ],
+            
           chart: {
-            type: 'line',
+            type: 'line',          
+            plotBorderWidth: 1,
             height: 350,
             // width: auto,
             marginRight: 50,
@@ -55,10 +68,10 @@ class VechileAccidentLive extends React.Component {
           title: {
             text: 'Accident Chart',
             align: 'center',
-          },          
-          
+          },
+
           yAxis: {
-            max:1,
+            max: 1,
             labels: {
               formatter: function () {
                 return labels[this.pos];
@@ -74,8 +87,20 @@ class VechileAccidentLive extends React.Component {
       };
     }
   }
+   
+  getUpdate = () => {
+      const {keyid}=this.state;
+      if (keyid==1){
+       
+        this.setState({keyid:0})
+      }
+  };
+
 
   render() {
+
+   // this.setState({keyid:1})
+    //this.getUpdate();
     return (
       <div id="chart">
         <HighchartsReact

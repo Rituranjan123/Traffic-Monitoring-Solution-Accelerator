@@ -1,7 +1,7 @@
 let CityList=[];
 let cityLatLong={};
 let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
-//baseURL = 'https://localhost:5001/api/';
+baseURL = 'https://localhost:5001/api/';
 let MLAPI='http://20.241.205.191:5000/'
 var map;
 var pinInfobox;
@@ -12,7 +12,7 @@ let long1=   -87.22187500000001;
             let params = paramsURL.get("id");
 
             if(params){
-                debugger;
+                
                 
                
                 var srclive='';
@@ -71,10 +71,10 @@ function getCookie(name) {
 
        // localStorage.setItem("lastcurrenttimestamp", 0);
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-        debugger;
+        
         document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
         setInterval(function () {   
-            debugger;         
+                     
             document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
         
         }, 150000);
@@ -85,7 +85,7 @@ function getCookie(name) {
 }
 
 function GetCityMap() {
-        debugger;
+        
     // var Obj=CityList.filter(function (el)
     // {
     //   return el.city=document.getElementById("ddlCity").value;//'Acampo' ;
@@ -133,7 +133,7 @@ async function FilldropdownState (url) {
     
    
 function FilldropdownCity (dropdown,data) {
-    debugger;
+    
     for (var i = 0; i < data.length; i++) {
                var option = document.createElement("OPTION");
                //Set Customer Name in Text part.
@@ -149,7 +149,7 @@ async function GetCity() {
     let url=baseURL+'USCity/GetCity';
     var cityList= await getHTML(url,ddlstate);
     let ddlCity = document.getElementById("ddlCity");//.value;
-    debugger;
+    
    // FilldropdownCity(ddlCity,cityList);
     
 }
@@ -300,7 +300,7 @@ function MapPositionShow(cityLatLong,map){
 }
         
     function GetMap() {
-        debugger;
+        
         var pushpinInfos = [];
        
 		var infoboxLayer = new Microsoft.Maps.EntityCollection();
@@ -350,7 +350,7 @@ function MapPositionShow(cityLatLong,map){
             let jsonstring=JSON.stringify(CameraDetails);
             var expirydate=new Date();
             expirydate.setTime( expirydate.getTime()+(100*60*60*24*100) )
-            debugger;
+            
             setCookie('CameraDetails',jsonstring,expirydate)		  
             ShowCameraDetails();
             //window.open(e.target.redirectUrl,"_self")
