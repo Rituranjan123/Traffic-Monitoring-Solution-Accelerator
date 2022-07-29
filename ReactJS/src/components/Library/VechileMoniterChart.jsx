@@ -28,7 +28,7 @@ class VechileMoniterChart extends React.Component {
       // }
       // res = res2;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
-      let tAaccident = res.map((item) => item['taccident']);
+      let tAaccident = res.map((item) => item['tAccident_percent']);
       var labels = [0,1];
 
       this.state = {

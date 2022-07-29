@@ -19,6 +19,9 @@ namespace HighwayMonitoringCosmosDB.Models
         [JsonProperty("tAccidentStatus")]
         public long tAccidentStatus { get; set; }
 
+        [JsonProperty("tAccident_percent")]
+        public string tAccident_percent { get; set; }
+
 
 
         [JsonProperty("tAframe_timestamp")]
@@ -36,7 +39,10 @@ namespace HighwayMonitoringCosmosDB.Models
         [JsonProperty("tAcamera_id")]
         public string TAcamera_Id { get; set; }
 
-        
+        [JsonProperty("tAccident_percent")]
+        public string tAccident_percent { get; set; }
+
+ 
         [JsonProperty("tAccidentStatus")]
         public long tAccidentStatus { get; set; }
 
