@@ -23,6 +23,11 @@ namespace HighwayMonitoringCosmosDB.Services
             await _container.CreateItemAsync(item, new PartitionKey(item.Id));
         }
 
+        public Task AddAsync(TrafficAnalysis item)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task DeleteAsync(string id)
         {
             await _container.DeleteItemAsync<VehicleAccidentLive>(id, new PartitionKey(id));
@@ -58,6 +63,16 @@ namespace HighwayMonitoringCosmosDB.Services
         public async Task UpdateAsync(string id, VehicleAccidentLive item)
         {
             await _container.UpsertItemAsync(item, new PartitionKey(id));
+        }
+
+        public Task UpdateAsync(string id, TrafficAnalysis item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Task<IEnumerable<TrafficAnalysis>> ICosmosDbServiceAccident.GetMultipleAsync(string query)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

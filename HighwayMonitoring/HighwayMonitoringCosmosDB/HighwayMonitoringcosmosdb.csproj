@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\TrafficAnalysisController.cs" />
     <Compile Remove="Controllers\VechileHub.cs" />
   </ItemGroup>
 

@@ -94,7 +94,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
 
 
         [HttpPut("{camera_Id}")]
-        public async Task<IActionResult> Edit([FromBody] VehicleAccidentLive item)
+        public async Task<IActionResult> Edit([FromBody] TrafficAnalysis item)
         {
             try
             {
