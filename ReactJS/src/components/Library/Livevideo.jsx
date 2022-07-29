@@ -23,7 +23,7 @@ import deleteImg from '../../images/delete_video.png';
 import { Link } from 'react-router-dom';
 import { FormLabel } from '../DataEntryFormLabel';
 import TrendChartLine from './TrendChartLine';
-import VechileMoniterChart from './VechileMoniterChart';
+import VechileAccidentLive from './VechileAccidentLive';
 import Dashboard from '../Dashboard/Dashboard';
 import { getApiBodyWithoutReqAsyn, getApiBody } from '../Services/GetAPI';
 //import { Iframe2} from './Iframe2'
@@ -235,9 +235,9 @@ class Livevideo extends CreateParent {
               ></TrendChartLine>
             ) : null}
             {initinalFormFill.MonitorData ? (
-              <VechileMoniterChart
+              <VechileAccidentLive
                 MonitorData={initinalFormFill.MonitorData}
-              ></VechileMoniterChart>
+              ></VechileAccidentLive>
             ) : null}
             {/* )}
              */}
