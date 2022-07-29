@@ -98,7 +98,7 @@ class VechileAccidentLive extends React.Component {
 
 
   render() {
-
+    console.log('tet'+this.props.keyid);
    // this.setState({keyid:1})
     //this.getUpdate();
     return (

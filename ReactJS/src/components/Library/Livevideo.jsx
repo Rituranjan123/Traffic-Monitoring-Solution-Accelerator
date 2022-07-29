@@ -209,6 +209,7 @@ class Livevideo extends CreateParent {
       iframe_url,
       formOption2,
     } = this.state;
+    let keyid = Math.random() * 100;
 
     return (
       <div className="databox1">
@@ -235,7 +236,7 @@ class Livevideo extends CreateParent {
               ></TrendChartLine>
             ) : null}
             {initinalFormFill.MonitorData ? (
-              <VechileAccidentLive
+              <VechileAccidentLive keyid={keyid}
                 MonitorData={initinalFormFill.MonitorData}
               ></VechileAccidentLive>
             ) : null}
