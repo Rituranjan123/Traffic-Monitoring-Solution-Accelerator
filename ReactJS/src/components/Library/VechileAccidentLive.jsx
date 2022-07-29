@@ -29,7 +29,7 @@ class VechileAccidentLive extends React.Component {
       // res = res2;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       let tAaccident = res.map((item) => item['tAccidentStatus']);
-      var labels = [0, 1];
+      var labels =[0, 1];
 
       this.state = {
         options: {
@@ -55,8 +55,10 @@ class VechileAccidentLive extends React.Component {
           title: {
             text: 'Accident Chart',
             align: 'center',
-          },
+          },          
+          
           yAxis: {
+            max:1,
             labels: {
               formatter: function () {
                 return labels[this.pos];

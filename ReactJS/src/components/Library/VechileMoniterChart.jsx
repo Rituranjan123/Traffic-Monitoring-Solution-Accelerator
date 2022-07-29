@@ -29,7 +29,7 @@ class VechileMoniterChart extends React.Component {
       // res = res2;
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       let tAaccident = res.map((item) => item['taccident']);
-      var labels = [0, 1];
+      var labels = [0,1];
 
       this.state = {
         options: {
@@ -72,7 +72,7 @@ class VechileMoniterChart extends React.Component {
       };
     }
   }
-
+  //return labels[this.pos];
   render() {
     return (
       <div id="chart">
