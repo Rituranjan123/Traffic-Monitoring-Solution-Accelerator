@@ -6,7 +6,7 @@ const cookies = new Cookies();
 
 let baseUrl = process.env.REACT_APP_BASEURL;
 baseUrl = 'https://localhost:5001/api'; //'https://api.phalkons.com/api';
-//baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
+baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
 // post API services
 export function postApiWithoutReq(type) {
   let UserID = '0';

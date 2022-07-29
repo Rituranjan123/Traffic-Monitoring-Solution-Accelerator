@@ -2,7 +2,8 @@ body {
   font-family: 'Roboto', sans-serif !important;
   margin-left: 8ex !important;
   margin-right: 8ex !important;
-  background-color: #fafafa !important;
+  background-color: hsl(0, 0%, 98%) !important;
+  /* overflow-y: hidden; */
 }
 * {
   box-sizing: border-box;
