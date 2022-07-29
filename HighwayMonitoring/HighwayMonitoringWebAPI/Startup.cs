@@ -53,7 +53,7 @@ namespace HighwayMonitoringWebAPI
             services.AddSingleton<ICosmosDbServiceAccident>(InitializeCosmosClientInstanceAsync2(_configuration.GetSection("CosmosDb"), "VehicleMonitering").GetAwaiter().GetResult());
             services.AddSingleton<ICosmosDbServiceLive>(InitializeCosmosICosmosDbServiceLive(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
             
-            services.AddSingleton<ICosmosDbServiceLiveAccidennt>(InitializeICosmosDbServiceLiveAccidennt(_configuration.GetSection("CosmosDb"), "VehicleTrendingLive").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbServiceLiveAccidennt>(InitializeICosmosDbServiceLiveAccidennt(_configuration.GetSection("CosmosDb"), "VehicleAccidentLive").GetAwaiter().GetResult());
 
 
 
