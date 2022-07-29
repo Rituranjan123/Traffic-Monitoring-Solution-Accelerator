@@ -60,6 +60,20 @@ namespace HighwayMonitoringCosmosDB.Services
             return results;
         }
 
+        public async Task<IEnumerable<TrafficAnalysis>> GetMultipleAsyncAccient(string queryString)
+        {
+            var query = _container.GetItemQueryIterator<TrafficAnalysis>(new QueryDefinition(queryString));
+
+            var results = new List<TrafficAnalysis>();
+            while (query.HasMoreResults)
+            {
+                var response = await query.ReadNextAsync();
+                results.AddRange(response.ToList());
+            }
+
+            return results;
+        }
+
         public async Task UpdateAsync(string id, VehicleAccidentLive item)
         {
             await _container.UpsertItemAsync(item, new PartitionKey(id));

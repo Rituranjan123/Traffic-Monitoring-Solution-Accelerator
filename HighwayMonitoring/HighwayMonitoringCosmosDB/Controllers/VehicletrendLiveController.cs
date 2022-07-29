@@ -46,6 +46,12 @@ namespace HighwayMonitoringCosmosDB.Controllers
                     List<VehicleTrendingLive> vehicleTrendingLive_ = new List<VehicleTrendingLive>();
                     vehicleTrendingLive_.Add(vehicleTrendingLive);
                     liveChartData.VehicleTrendingLive = vehicleTrendingLive_.ToArray();
+                    List<VehicleAccidentLive> vehicleAccidentLives = new List<VehicleAccidentLive>();
+                    VehicleAccidentLive vehicleAccidentLive = new VehicleAccidentLive();
+                    vehicleAccidentLive.current_timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    vehicleAccidentLives.Add(vehicleAccidentLive);
+                    liveChartData.trafficAccidentLive = vehicleAccidentLives.ToArray();
+
                 }
                 else {
                     string query = "SELECT * FROM VehicleTrendingLive v ";

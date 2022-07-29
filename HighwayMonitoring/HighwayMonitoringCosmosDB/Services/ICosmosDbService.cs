@@ -31,5 +31,7 @@ namespace HighwayMonitoringCosmosDB.Services
         Task AddAsync(TrafficAnalysis item);
         Task UpdateAsync(string id, TrafficAnalysis item);
         Task DeleteAsync(string camera_Id);
+        Task<IEnumerable<TrafficAnalysis>> GetMultipleAsyncAccient(string query);
+        
     }
 }

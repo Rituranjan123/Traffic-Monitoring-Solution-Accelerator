@@ -44,7 +44,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
             try
             {
 
-                return Ok(await _cosmosDbService.GetMultipleAsync("SELECT * FROM VehicleMonitering v where v.tAvideo_Id=" + VideoID));
+                return Ok(await _cosmosDbService.GetMultipleAsyncAccient("SELECT * FROM VehicleMonitering v where v.tAvideo_Id=" + VideoID));
             }
             catch (Exception ex)
             {
