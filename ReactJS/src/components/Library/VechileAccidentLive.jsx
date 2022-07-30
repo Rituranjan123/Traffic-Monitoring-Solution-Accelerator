@@ -47,7 +47,7 @@ class VechileAccidentLive extends React.Component {
       //let tAaccident =[0,0,0,0,0,0,0,0,0] //res.map((item) => item['tAccidentStatus']);
       let tAaccident =res.map((item) => item['tAccidentStatus']);
       var labels = [0, 1];
-        debugger;
+        
       this.state = {
         options: {
           tooltip: {
@@ -55,6 +55,17 @@ class VechileAccidentLive extends React.Component {
                 return '<br> Accident status : ' + this.y + '</br/>Second: :' + this.x ;
             }
         },
+      //   legend: {
+      //     layout: 'vertical',
+      //     align: 'left',
+      //     verticalAlign: 'top',
+      //     x: 150,
+      //     y: 100,
+      //     floating: true,
+      //     borderWidth: 1,
+      //     backgroundColor:
+      //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
+      // },
         
           plotOptions: {
             line: {
@@ -66,7 +77,7 @@ class VechileAccidentLive extends React.Component {
           series: [
             {
               data: tAaccident,
-              name: 'Accident Status',
+              name: 'Accident prediction (%)',
             },
           ],
             

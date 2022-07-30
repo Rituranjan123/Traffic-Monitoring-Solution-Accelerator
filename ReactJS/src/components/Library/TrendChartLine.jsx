@@ -43,6 +43,17 @@ class TrendChartLine extends React.Component {
           // title: {
           //   text: 'My chart'
           // },
+        //   legend: {
+        //     layout: 'vertical',
+        //     align: 'left',
+        //     verticalAlign: 'top',
+        //     x: 150,
+        //     y: 100,
+        //     floating: true,
+        //     borderWidth: 1,
+        //     backgroundColor:
+        //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
+        // },
           series: [
             {
               name: 'Car',

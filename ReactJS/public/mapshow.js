@@ -66,17 +66,14 @@ function getCookie(name) {
       // document.getElementById('cameradetails').style.visibility = "hidden";
 
     function refreshIframe() {
-
+        window.lastcurrenttimestamp=null;
         localStorage.removeItem("lastcurrenttimestamp");
-
        // localStorage.setItem("lastcurrenttimestamp", 0);
         let CameraDetails=JSON.parse(getCookie('CameraDetails'));
-        
+        setCookie('selectedcamera',CameraDetails.cameraId,null)		  
         document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
-        setInterval(function () {   
-                     
+        setInterval(function () {  
             document.getElementById("iframeChart").src = '/#/Livevideo/'+CameraDetails.cameraId
-        
         }, 150000);
         document.getElementById("iframeid").src =MLAPI+CameraDetails.cameraId;
 

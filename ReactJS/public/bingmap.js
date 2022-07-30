@@ -75,7 +75,7 @@ async function fetchAsyncGet (url) {
            var map;
            var pinInfobox;
       function GetMap() {
-          debugger;
+          
           var pushpinInfos = [];
           pushpinInfos[0] = { 'redirectUrl':'./#/Dashboard/41','lat': 35.59000000, 'lng': -87.92000000, 'title': 'Camera 1', 'description': 'Tennessee', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };
           pushpinInfos[1] = {'redirectUrl':'/#/Dashboard/40', 'lat': 33.59000000, 'lng': -86.92000000, 'title': 'Camera 2', 'description': 'Birmingham', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };      
@@ -116,7 +116,7 @@ async function fetchAsyncGet (url) {
               let jsonstring=JSON.stringify(CameraDetails);
               var expirydate=new Date();
               expirydate.setTime( expirydate.getTime()+(100*60*60*24*100) )
-              debugger;
+              
               setCookie('CameraDetails',jsonstring,expirydate)		  
               ShowCameraDetails();
               //window.open(e.target.redirectUrl,"_self")

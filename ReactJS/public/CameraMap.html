@@ -53,7 +53,7 @@
     
    
 // function FilldropdownCity (dropdown,data) {
-//     debugger;
+//     
 //     for (var i = 0; i < data.length; i++) {
 //                var option = document.createElement("OPTION");
 //                //Set Customer Name in Text part.
@@ -69,7 +69,7 @@
 //     let url=baseURL+'USCity/GetCity';
 //     var cityList= await getHTML(url,ddlstate);
 //     let ddlCity = document.getElementById("ddlCity");//.value;
-//     debugger;
+//     
 //    // FilldropdownCity(ddlCity,cityList);
     
 // }
@@ -181,7 +181,7 @@
 //          var map;
 //          var pinInfobox;
 //     function GetMap() {
-//         debugger;
+//         
 //         var pushpinInfos = [];
 //         pushpinInfos[0] = { 'redirectUrl':'./#/Dashboard/41','lat': 35.59000000, 'lng': -87.92000000, 'title': 'Camera 1', 'description': 'Tennessee', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };
 //         pushpinInfos[1] = {'redirectUrl':'/#/Dashboard/40', 'lat': 33.59000000, 'lng': -86.92000000, 'title': 'Camera 2', 'description': 'Birmingham', 'icon' :'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/24/Map-Marker-Marker-Outside-Chartreuse-icon.png' };      
@@ -221,7 +221,7 @@
 //             let jsonstring=JSON.stringify(CameraDetails);
 //             var expirydate=new Date();
 //             expirydate.setTime( expirydate.getTime()+(100*60*60*24*100) )
-//             debugger;
+//             
 //             setCookie('CameraDetails',jsonstring,expirydate)		  
 //             ShowCameraDetails();
 //             //window.open(e.target.redirectUrl,"_self")
@@ -245,14 +245,14 @@
             script.setAttribute("src", `https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=${bingKey}`);
             document.body.appendChild(script);
         })();
-        debugger;
+        
 
 //         function loadDeferredIframe() {
 //             let paramsURL = (new URL(document.location)).searchParams;
 //             let params = paramsURL.get("id");
 
 //             if(params){
-//                 debugger;
+//                 
                 
                
 //                 var srclive='';
@@ -388,7 +388,7 @@
     <div class="row">
         <div class="col-sm-12">
             
-            <iframe border="1"  scrolling="no" id="iframeid"  scrolling="auto" style="width:95%;height:600px;overflow: hidden;"  ></iframe>
+            <iframe border="1"  scrolling="no" id="iframeid"  scrolling="auto" style="width:95%;height:600px;border: 1px solid rgb(224, 132, 12);overflow: hidden;"  ></iframe>
         </div>
       </div> 
       <div class="row">

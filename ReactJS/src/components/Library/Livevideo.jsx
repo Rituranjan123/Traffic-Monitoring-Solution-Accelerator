@@ -72,29 +72,21 @@ class Livevideo extends CreateParent {
   };
 
   getPowerBIData = async (id) => {
-    debugger;
+    
+    let  s=document.cookie.split('; ').find(row => row.startsWith('selectedcamera=')).split('=')[1]; 
+    let cameraId=JSON.parse(s); 
     let VideoID = { VideoID: id };
     const { initinalFormFill, formOption2 } = this.state;
 
-    if (!window.lastcurrenttimestamp) {
-      window.lastcurrenttimestamp = 0;
-      this.setState({
-        formOption2: { showResults: 0 },
-      });
-    } else {
-      this.setState({
-        formOption2: { showResults: 1 },
-      });
-    }
-    // window.lastcurrenttimestamp,
     let lastcurrenttimestamp = 0;
     if (localStorage.getItem('lastcurrenttimestamp')) {
       lastcurrenttimestamp = localStorage.getItem('lastcurrenttimestamp');
     }
-
+    let keyid = Math.random() * 100;
     let reqData = {
-      cameraId: id,
+      cameraId: cameraId,
       currenttimestamp: lastcurrenttimestamp,
+      keydata:keyid
     };
     let res = await postApiWithoutReqAsynNoLoader(
       '/VehicletrendLive/GetBycameraId',
@@ -102,13 +94,11 @@ class Livevideo extends CreateParent {
     );
     // if (res.length > 0) {
     if (res.vehicleTrendingLive && res.vehicleTrendingLive.length > 0) {
-      if (!window.lastcurrenttimestamp) {
+      if (!(localStorage.getItem('lastcurrenttimestamp'))) {
         localStorage.setItem(
           'lastcurrenttimestamp',
           res.vehicleTrendingLive[0].current_time
         );
-
-        window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
       }
       //window.TrendData.push(res);
       if (initinalFormFill['TrendData']) {
@@ -132,60 +122,60 @@ class Livevideo extends CreateParent {
     }
   };
 
-  getAccidentData = async (id) => {
-    let VideoID = { VideoID: id };
-    const { initinalFormFill, formOption2 } = this.state;
+  // getAccidentData = async (id) => {
+  //   let VideoID = { VideoID: id };
+  //   const { initinalFormFill, formOption2 } = this.state;
 
-    if (!window.lastcurrenttimestamp) {
-      window.lastcurrenttimestamp = 0;
-      this.setState({
-        formOption2: { showResults: 0 },
-      });
-    } else {
-      this.setState({
-        formOption2: { showResults: 1 },
-      });
-    }
-    // window.lastcurrenttimestamp,
-    let lastcurrenttimestamp = 0;
-    if (localStorage.getItem('lastcurrenttimestamp') != '0') {
-      lastcurrenttimestamp = localStorage.getItem('lastcurrenttimestamp');
-    }
+  //   if (!window.lastcurrenttimestamp) {
+  //     window.lastcurrenttimestamp = 0;
+  //     this.setState({
+  //       formOption2: { showResults: 0 },
+  //     });
+  //   } else {
+  //     this.setState({
+  //       formOption2: { showResults: 1 },
+  //     });
+  //   }
+  //   // window.lastcurrenttimestamp,
+  //   let lastcurrenttimestamp = 0;
+  //   if (localStorage.getItem('lastcurrenttimestamp') != '0') {
+  //     lastcurrenttimestamp = localStorage.getItem('lastcurrenttimestamp');
+  //   }
 
-    let reqData = {
-      cameraId: id,
-      currenttimestamp: lastcurrenttimestamp,
-    };
-    let res = await postApiWithoutReqAsynNoLoader(
-      '/VehicletrendLiveAccident/GetBycameraId',
-      reqData
-    );
-    if (res.vehicleTrendingLive.length > 0) {
-      if (!window.lastcurrenttimestamp) {
-        localStorage.setItem(
-          'lastcurrenttimestamp',
-          res.vehicleTrendingLive[0].current_time
-        );
+  //   let reqData = {
+  //     cameraId: id,
+  //     currenttimestamp: lastcurrenttimestamp,
+  //   };
+  //   let res = await postApiWithoutReqAsynNoLoader(
+  //     '/VehicletrendLiveAccident/GetBycameraId',
+  //     reqData
+  //   );
+  //   if (res.vehicleTrendingLive.length > 0) {
+  //     if (!window.lastcurrenttimestamp) {
+  //       localStorage.setItem(
+  //         'lastcurrenttimestamp',
+  //         res.vehicleTrendingLive[0].current_time
+  //       );
 
-        window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
-      }
-      //window.TrendData.push(res);
-      if (initinalFormFill['MonitorData']) {
-        let data = initinalFormFill['MonitorData'];
+  //       window.lastcurrenttimestamp = res.vehicleTrendingLive[0].current_time;
+  //     }
+  //     //window.TrendData.push(res);
+  //     if (initinalFormFill['MonitorData']) {
+  //       let data = initinalFormFill['MonitorData'];
 
-        Array.prototype.push.apply(data, res);
-        initinalFormFill['MonitorData'] = res;
-      } else {
-        initinalFormFill['MonitorData'] = res;
-      }
-      // this.setState({initinalFormFill:initinalFormFill});
-      this.setState((prevState) => {
-        // let { initinalFormFill } = prevState;
-        // initinalFormFill = initinalFormFill;
-        return { initinalFormFill: initinalFormFill };
-      });
-    }
-  };
+  //       Array.prototype.push.apply(data, res);
+  //       initinalFormFill['MonitorData'] = res;
+  //     } else {
+  //       initinalFormFill['MonitorData'] = res;
+  //     }
+  //     // this.setState({initinalFormFill:initinalFormFill});
+  //     this.setState((prevState) => {
+  //       // let { initinalFormFill } = prevState;
+  //       // initinalFormFill = initinalFormFill;
+  //       return { initinalFormFill: initinalFormFill };
+  //     });
+  //   }
+  // };
 
   componentDidMount() {
     const { initinalFormFill } = this.state;

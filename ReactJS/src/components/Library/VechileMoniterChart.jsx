@@ -39,6 +39,7 @@ class VechileMoniterChart extends React.Component {
           series: [
             {
               data: tAaccident,
+              name: 'Accident prediction (%)',
             },
           ],
           chart: {
