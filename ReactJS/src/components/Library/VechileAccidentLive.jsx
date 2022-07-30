@@ -12,6 +12,19 @@ class VechileAccidentLive extends React.Component {
       keyid: 1,
     }
     
+      }
+   
+  getUpdate = () => {
+      const {keyid}=this.state;
+      if (keyid==1){
+       
+        this.setState({keyid:0})
+      }
+  };
+
+
+  render() {
+
     if (this.props && this.props.MonitorData) {
       let res = this.props.MonitorData;
       // let res2 = [];
@@ -37,6 +50,12 @@ class VechileAccidentLive extends React.Component {
         debugger;
       this.state = {
         options: {
+          tooltip: {
+            formatter: function() {
+                return '<br> Accident status : ' + this.y + '</br/>Second: :' + this.x ;
+            }
+        },
+        
           plotOptions: {
             line: {
             lineWidth: 2,
@@ -47,6 +66,7 @@ class VechileAccidentLive extends React.Component {
           series: [
             {
               data: tAaccident,
+              name: 'Accident Status',
             },
           ],
             
@@ -86,18 +106,7 @@ class VechileAccidentLive extends React.Component {
         },
       };
     }
-  }
-   
-  getUpdate = () => {
-      const {keyid}=this.state;
-      if (keyid==1){
-       
-        this.setState({keyid:0})
-      }
-  };
 
-
-  render() {
     console.log('tet'+this.props.keyid);
    // this.setState({keyid:1})
     //this.getUpdate();

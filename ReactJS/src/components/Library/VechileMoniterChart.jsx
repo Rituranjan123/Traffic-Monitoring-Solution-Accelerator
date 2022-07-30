@@ -8,13 +8,10 @@ import HighchartsReact from 'highcharts-react-official';
 class VechileMoniterChart extends React.Component {
   constructor(props) {
     super(props);
-
-   
   }
 
   //return labels[this.pos];
   render() {
-
     if (this.props && this.props.MonitorData) {
       let res = this.props.MonitorData;
       // let res2 = [];

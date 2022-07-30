@@ -97,7 +97,7 @@ class TrendChartLine extends React.Component {
           legend: {
             tooltipHoverFormatter: function (val, opts) {
               return (
-                val +
+                'Second:'+val +
                 ' - ' +
                 opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
                 ''

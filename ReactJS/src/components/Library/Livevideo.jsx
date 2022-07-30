@@ -236,7 +236,8 @@ class Livevideo extends CreateParent {
               ></TrendChartLine>
             ) : null}
             {initinalFormFill.MonitorData ? (
-              <VechileAccidentLive keyid={keyid}
+              <VechileAccidentLive
+                keyid={keyid}
                 MonitorData={initinalFormFill.MonitorData}
               ></VechileAccidentLive>
             ) : null}
