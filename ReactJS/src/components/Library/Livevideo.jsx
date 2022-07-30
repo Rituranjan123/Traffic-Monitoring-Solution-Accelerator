@@ -72,9 +72,11 @@ class Livevideo extends CreateParent {
   };
 
   getPowerBIData = async (id) => {
-    
-    let  s=document.cookie.split('; ').find(row => row.startsWith('selectedcamera=')).split('=')[1]; 
-    let cameraId=JSON.parse(s); 
+    let s = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('selectedcamera='))
+      .split('=')[1];
+    let cameraId = JSON.parse(s);
     let VideoID = { VideoID: id };
     const { initinalFormFill, formOption2 } = this.state;
 
@@ -86,7 +88,7 @@ class Livevideo extends CreateParent {
     let reqData = {
       cameraId: cameraId,
       currenttimestamp: lastcurrenttimestamp,
-      keydata:keyid
+      keydata: keyid,
     };
     let res = await postApiWithoutReqAsynNoLoader(
       '/VehicletrendLive/GetBycameraId',
@@ -94,7 +96,7 @@ class Livevideo extends CreateParent {
     );
     // if (res.length > 0) {
     if (res.vehicleTrendingLive && res.vehicleTrendingLive.length > 0) {
-      if (!(localStorage.getItem('lastcurrenttimestamp'))) {
+      if (!localStorage.getItem('lastcurrenttimestamp')) {
         localStorage.setItem(
           'lastcurrenttimestamp',
           res.vehicleTrendingLive[0].current_time
