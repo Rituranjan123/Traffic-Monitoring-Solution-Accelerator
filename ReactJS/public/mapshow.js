@@ -3,10 +3,11 @@ let cityLatLong={};
 let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
 //baseURL = 'https://localhost:5001/api/';
 let MLAPI='http://20.241.205.191:5000/'
+let ZoomLevel=11;
 var map;
 var pinInfobox;
-let lat1= 35.24761672238248;
-let long1=   -87.22187500000001;
+let lat1= 40.7260080136994;
+let long1=-73.94835013587952;
         function loadDeferredIframe() {
             let paramsURL = (new URL(document.location)).searchParams;
             let params = paramsURL.get("id");
@@ -92,6 +93,8 @@ function GetCityMap() {
 
     cityLatLong.lat1=Obj.latitude;
     cityLatLong.long1=Obj.longitude;
+    ZoomLevel=4;
+
     GetMap();
     
 }
@@ -116,7 +119,7 @@ async function FilldropdownState (url) {
     var option = document.createElement("OPTION");    
     option.innerHTML = 'Select';
     dropdown.options.add(option);
-
+       // dropdown.se
     for (var i = 0; i < data.length; i++) {
                var option = document.createElement("OPTION");
                //Set Customer Name in Text part.
@@ -146,9 +149,6 @@ async function GetCity() {
     let url=baseURL+'USCity/GetCity';
     var cityList= await getHTML(url,ddlstate);
     let ddlCity = document.getElementById("ddlCity");//.value;
-    
-   // FilldropdownCity(ddlCity,cityList);
-    
 }
 
 
@@ -318,7 +318,7 @@ function MapPositionShow(cityLatLong,map){
           credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
-          zoom: 5,
+          zoom: ZoomLevel,
           disableScrollWheelZoom:false
       };
         var map = new window.Microsoft.Maps.Map('#myMap',mapOptions);
@@ -379,3 +379,36 @@ function MapPositionShow(cityLatLong,map){
             window.onscroll = function() {};
         }
        // disableScroll();
+
+       function selectElement(id, valueToSelect) {    
+        let element = document.getElementById(id);
+        element.value = valueToSelect;
+    }
+   
+      setTimeout(
+        pageloadState(), 
+        9000);
+
+        
+      setTimeout(
+        pageloadCity(),
+        12000);
+
+      
+       
+      
+
+      function pageloadState(){        
+        selectElement('ddlstate','New York');
+        ddlstate.onchange();     
+        
+
+    }
+
+    
+    function pageloadCity(){        
+        electElement('ddlCity','New York')
+        ddlCity.onchange()   
+        
+
+    }
