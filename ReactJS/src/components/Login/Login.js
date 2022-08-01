@@ -3,7 +3,7 @@ import './Login.css';
 import { Redirect, withRouter } from 'react-router-dom';
 import { loginRequest } from '../../authConfig';
 import logo from '../../images/logo.png';
-import sideImg from '../../images/Trafic_M_login-image.png'
+import sideImg from '../../images/Trafic_M_login-image.png';
 import logintext from '../../images/phalkon-login-text.png';
 import Cookies from 'universal-cookie';
 import {
@@ -69,8 +69,8 @@ class Login extends Component {
     }
     return (
       <div className="login">
-        <div className='login_sideImg'>
-          <img src={sideImg}/>
+        <div className="login_sideImg">
+          <img src={sideImg} />
         </div>
         <div className="loginpan">
           {/* <div className="loginlogo">
@@ -78,18 +78,20 @@ class Login extends Component {
             <p></p>
 
           </div> */}
-            <div className="formrow">
-              <div className="micro_logo">
-                <img style={{ width: '100%' }} src="./microsoft_icon.png" />
-              </div>
-              <span style={{marginBottom:'10px'}}><b>Microsoft Traffic Analysis </b></span>
-              <div style={{marginTop:'20px'}}>
+          <div className="formrow">
+            <div className="micro_logo">
+              <img style={{ width: '100%' }} src="./microsoft_icon.png" />
+            </div>
+            <span style={{ marginBottom: '10px' }}>
+              <b>Microsoft Traffic Analysis </b>
+            </span>
+            <div style={{ marginTop: '20px' }}>
               <SignInButton />
-              </div>
-              {/* <FormControl placeholder="User Name" aria-label="Username" />
+            </div>
+            {/* <FormControl placeholder="User Name" aria-label="Username" />
               <FormControl placeholder="Password" aria-label="Password" />
                */}
-            </div>
+          </div>
         </div>
       </div>
     );

@@ -64,13 +64,21 @@ class VechileMoniterChart extends React.Component {
             type: 'line',
           },
           dataLabels: {
-            enabled: false,
+            enabled: true,
           },
+          
           title: {
             text: 'Accident Chart',
             align: 'center',
           },
           yAxis: {
+            tickInterval: 10,
+            min: 0,
+            max: 100,
+            title: {
+              text: 'Value'
+          },
+  
             labels: {
               formatter: function () {
                 return labels[this.pos];

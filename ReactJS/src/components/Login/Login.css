@@ -59,10 +59,9 @@
 .login .formrow {
   /* margin: 50px 0 0 0; */
 }
-.micro_logo{
+.micro_logo {
   width: 40%;
   margin: auto;
-
 }
 .login .formrow .form-control {
   background: #f2f4f5;

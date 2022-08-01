@@ -102,7 +102,7 @@ class VechileAccidentLive extends React.Component {
             type: 'line',
           },
           dataLabels: {
-            enabled: false,
+            enabled: true,
           },
           title: {
             text: 'Accident Chart',

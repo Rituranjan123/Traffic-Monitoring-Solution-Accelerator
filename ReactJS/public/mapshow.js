@@ -8,6 +8,7 @@ var map;
 var pinInfobox;
 let lat1= 40.7260080136994;
 let long1=-73.94835013587952;
+let pageload=1;
         function loadDeferredIframe() {
             let paramsURL = (new URL(document.location)).searchParams;
             let params = paramsURL.get("id");
@@ -93,7 +94,7 @@ function GetCityMap() {
 
     cityLatLong.lat1=Obj.latitude;
     cityLatLong.long1=Obj.longitude;
-    ZoomLevel=4;
+   // ZoomLevel=4;
 
     GetMap();
     
@@ -111,7 +112,12 @@ async function FilldropdownState (url) {
     let customerslist=await fetchAsyncGet(baseURL+'USCity/GetAllState');
     let statelist=customerslist.usStateList;
     var ddlstate = document.getElementById("ddlstate");
-    Filldropdown(ddlstate,statelist)  
+    Filldropdown(ddlstate,statelist) 
+    if(pageload==1){ 
+        // pageload=0;
+        pageloadState();
+    
+    }
    // await GetCity();        
 }
     
@@ -149,6 +155,14 @@ async function GetCity() {
     let url=baseURL+'USCity/GetCity';
     var cityList= await getHTML(url,ddlstate);
     let ddlCity = document.getElementById("ddlCity");//.value;
+    debugger;
+    if(pageload==1){
+        pageload = 0;
+        selectElement('ddlCity','New York')
+        ddlCity.onchange()   
+      
+        //pageloadCity()
+    }
 }
 
 
@@ -177,7 +191,13 @@ function getHTML(url,postObj) {
                //Add the Option element to DropDownList.
                dropdown.options.add(option);
            }
-
+           if(pageload==1){
+            pageload = 0;
+            selectElement('ddlCity','New York')
+            ddlCity.onchange()   
+          
+            //pageloadCity()
+        }
                // return pushpinInfos;
 
             } else {
@@ -385,20 +405,25 @@ function MapPositionShow(cityLatLong,map){
         element.value = valueToSelect;
     }
    
-      setTimeout(
-        pageloadState(), 
-        9000);
+    window.onload = ()=>{
+        FilldropdownState();
+        setTimeout(
+            
+            11000);
+    
+            
+            
+           
 
-        
-      setTimeout(
-        pageloadCity(),
-        12000);
-
+    }
       
-       
       
 
-      function pageloadState(){        
+   
+      
+
+      function pageloadState(){  
+        console.log("sdkfljsdf")      
         selectElement('ddlstate','New York');
         ddlstate.onchange();     
         
@@ -407,7 +432,7 @@ function MapPositionShow(cityLatLong,map){
 
     
     function pageloadCity(){        
-        electElement('ddlCity','New York')
+        selectElement('ddlCity','New York')
         ddlCity.onchange()   
         
 
