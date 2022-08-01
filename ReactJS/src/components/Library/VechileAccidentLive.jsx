@@ -72,25 +72,22 @@ class VechileAccidentLive extends React.Component {
             },
           },
 
-          
-            series: [
-           
-              {
-                name: 'Accident prediction (<80%)',
-                    threshold : 0,
-                data: tAaccident,
-                color: 'green',
-                negativeColor: 'blue'
+          series: [
+            {
+              name: 'Accident prediction (<80%)',
+              threshold: 0,
+              data: tAaccident,
+              color: 'green',
+              negativeColor: 'blue',
             },
-                {
-                name: 'Accident prediction (>80%)',
-                    threshold : 80,
-                data: tAaccident,
-                color: 'red',
-                negativeColor: 'transparent'
-            }
+            {
+              name: 'Accident prediction (>80%)',
+              threshold: 80,
+              data: tAaccident,
+              color: 'red',
+              negativeColor: 'transparent',
+            },
           ],
-          
 
           chart: {
             type: 'line',

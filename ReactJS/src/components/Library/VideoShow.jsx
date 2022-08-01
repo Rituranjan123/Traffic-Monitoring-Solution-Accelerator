@@ -338,7 +338,7 @@ class VideoShow extends CreateParent {
               </Fragment>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col md={12}>
               <iframe
                 id="test"
@@ -371,7 +371,7 @@ class VideoShow extends CreateParent {
                 ></VechileMoniterChart>
               ) : null}
             </Col>
-          </Row>
+          </Row> */}
 
           <div className="clr"></div>
         </div>

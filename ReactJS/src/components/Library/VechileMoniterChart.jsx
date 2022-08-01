@@ -37,22 +37,20 @@ class VechileMoniterChart extends React.Component {
       this.state = {
         options: {
           series: [
-           
             {
               name: 'Accident prediction (<80%)',
-                  threshold : 0,
+              threshold: 0,
               data: tAaccident,
               color: 'green',
-              negativeColor: 'blue'
-          },
-              {
+              negativeColor: 'blue',
+            },
+            {
               name: 'Accident prediction (>80%)',
-                  threshold : 80,
+              threshold: 80,
               data: tAaccident,
               color: 'red',
-              negativeColor: 'transparent'
-          }
-       
+              negativeColor: 'transparent',
+            },
           ],
           chart: {
             type: 'line',

@@ -1,12 +1,22 @@
 .login {
-  background: url(../../images/Trafic_M_login-image.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100% !important;
-  width: calc(100% - 340px);
+  /* background: url(../../images/Trafic_M_login-image.png); */
+  /* background-repeat: no-repeat; */
+  /* background-size: 100% 100% !important; */
+  /* width: calc(100% - 340px); */
   height: 100vh;
-  background-position: 0 0;
-  background-size: cover;
-  position: relative;
+  overflow: hidden;
+  display: flex;
+  /* background-position: 0 0; */
+  /* background-size: cover; */
+  /* position: relative; */
+  /* background-color: aqua; */
+}
+.login_sideImg {
+  flex: 1;
+}
+.login_sideImg > img {
+  width: 100%;
+  height: 100%;
 }
 .logintext {
   position: absolute;
@@ -25,10 +35,12 @@
   width: 320px;
   height: 100vh;
   background: #fff;
-  position: absolute;
+  /* position: absolute;
   right: -320px;
-  top: 0px;
+  top: 0px; */
   padding: 0 30px;
+  display: flex;
+  align-items: center;
 }
 .loginlogo {
   width: 100%;
@@ -45,7 +57,12 @@
   margin: 0;
 }
 .login .formrow {
-  margin: 50px 0 0 0;
+  /* margin: 50px 0 0 0; */
+}
+.micro_logo{
+  width: 40%;
+  margin: auto;
+
 }
 .login .formrow .form-control {
   background: #f2f4f5;

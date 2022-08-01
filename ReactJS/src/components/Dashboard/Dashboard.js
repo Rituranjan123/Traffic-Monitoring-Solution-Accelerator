@@ -51,7 +51,7 @@ class Dashboard extends Component {
   render() {
     const { src } = this.state;
     return (
-      <>
+      <div style={{height:'85vh', overflowY:'hidden'}}>
         {/* {this.props.powerBIEmbedUrlID ? ( */}
         <iframe
           id="test"
@@ -103,7 +103,7 @@ class Dashboard extends Component {
 		window.report = embeddedReport;
 	}}
 /> */}
-      </>
+      </div>
     );
   }
 }
