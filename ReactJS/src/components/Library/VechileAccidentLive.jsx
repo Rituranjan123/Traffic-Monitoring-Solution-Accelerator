@@ -42,7 +42,7 @@ class VechileAccidentLive extends React.Component {
       let categoriesdata = res.map((item) => item['tAframe_timestamp']);
       //let tAaccident =[0,0,0,0,0,0,0,0,0] //res.map((item) => item['tAccidentStatus']);
       let tAaccident = res.map((item) => item['tAccidentStatus']);
-      var labels = [0, 1];
+      var labels = [0];
 
       this.state = {
         options: {
@@ -110,7 +110,10 @@ class VechileAccidentLive extends React.Component {
           },
 
           yAxis: {
-            max: 1,
+            tickInterval: 10,
+            min: 0,
+            max: 100,
+
             labels: {
               formatter: function () {
                 return labels[this.pos];

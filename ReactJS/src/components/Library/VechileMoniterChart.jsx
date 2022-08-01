@@ -66,7 +66,6 @@ class VechileMoniterChart extends React.Component {
           dataLabels: {
             enabled: true,
           },
-          
           title: {
             text: 'Accident Chart',
             align: 'center',
