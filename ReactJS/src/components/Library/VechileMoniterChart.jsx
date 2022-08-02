@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
+import './Library.css';
 class VechileMoniterChart extends React.Component {
   constructor(props) {
     super(props);
@@ -36,6 +36,21 @@ class VechileMoniterChart extends React.Component {
 
       this.state = {
         options: {
+          tooltip: {
+            formatter: function () {
+              return (
+                '<br> Accident status : ' + this.y + '</br/>Second: :' + this.x
+              );
+            },
+          },
+          legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            itemMarginTop: 10,
+            itemMarginBottom: 10
+          },
+         
           series: [
             {
               name: 'Accident prediction (<80%)',
@@ -56,12 +71,13 @@ class VechileMoniterChart extends React.Component {
             type: 'line',
             height: 350,
             // width: auto,
-            marginRight: 50,
-            marginLeft: 50,
+            // marginRight: 50,
+            // marginLeft: 50,
           },
           stroke: {
             curve: 'stepline',
             type: 'line',
+            width: [0, 4],
           },
           dataLabels: {
             enabled: true,
@@ -72,17 +88,19 @@ class VechileMoniterChart extends React.Component {
           },
           yAxis: {
             tickInterval: 10,
-            min: 0,
-            max: 100,
+             min: 0,
+             max: 100, 
             title: {
-              text: 'Value'
+              text: 'Prcentage',
+            // // marginRight: 50,
+            
           },
-  
-            labels: {
-              formatter: function () {
-                return labels[this.pos];
-              },
-            },
+             
+          labels: {
+            formatter: function() {
+                return Math.abs(this.value);
+            }
+        }
           },
           markers: {
             hover: {
@@ -92,15 +110,21 @@ class VechileMoniterChart extends React.Component {
         },
       };
     }
+
+
     return (
       <div id="chart">
+        
         <HighchartsReact
           options={this.state.options}
           series={this.state.series}
           type="line"
-          height={350}
+          // width={1400}
+          height={450}
+
           highcharts={Highcharts}
         />
+         <span className='timeinSecond'>Time in second</span>
       </div>
     );
   }

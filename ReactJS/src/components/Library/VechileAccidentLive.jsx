@@ -4,6 +4,7 @@ import Chart from 'react-apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import './Library.css';
 
 class VechileAccidentLive extends React.Component {
   constructor(props) {
@@ -46,6 +47,14 @@ class VechileAccidentLive extends React.Component {
 
       this.state = {
         options: {
+          // legend: {
+          //   layout: 'vertical',
+          //   align: 'right',
+          //   verticalAlign: 'top',
+          //   itemMarginTop: 10,
+          //   itemMarginBottom: 10
+          // },
+         
           tooltip: {
             formatter: function () {
               return (
@@ -65,13 +74,7 @@ class VechileAccidentLive extends React.Component {
           //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
           // },
 
-          plotOptions: {
-            line: {
-              lineWidth: 2,
-              // softThreshold: false
-            },
-          },
-
+         
           series: [
             {
               name: 'Accident prediction (<80%)',
@@ -93,9 +96,9 @@ class VechileAccidentLive extends React.Component {
             type: 'line',
             plotBorderWidth: 1,
             height: 350,
-            // width: auto,
-            marginRight: 50,
-            marginLeft: 50,
+            // // width: auto,
+            // marginRight: 50,
+            // marginLeft: 50,
           },
           stroke: {
             curve: 'stepline',
@@ -113,12 +116,17 @@ class VechileAccidentLive extends React.Component {
             tickInterval: 10,
             min: 0,
             max: 100,
+            title: {
+              text: 'Prcentage',            
+            
+          },
 
             labels: {
-              formatter: function () {
-                return labels[this.pos];
-              },
-            },
+              formatter: function() {
+                  return Math.abs(this.value);
+              }
+          },
+      
           },
           markers: {
             hover: {
@@ -134,6 +142,8 @@ class VechileAccidentLive extends React.Component {
     //this.getUpdate();
     return (
       <div id="chart">
+
+       
         <HighchartsReact
           options={this.state.options}
           series={this.state.series}
@@ -141,6 +151,7 @@ class VechileAccidentLive extends React.Component {
           height={350}
           highcharts={Highcharts}
         />
+        <span className='timeinSecond2'>Time in second</span>
       </div>
     );
   }

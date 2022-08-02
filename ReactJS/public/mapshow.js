@@ -8,6 +8,9 @@ var map;
 var pinInfobox;
 let lat1= 40.7260080136994;
 let long1=-73.94835013587952;
+let StateName='New York';
+let CityName='New York';
+
 let pageload=1;
         function loadDeferredIframe() {
             let paramsURL = (new URL(document.location)).searchParams;
@@ -158,7 +161,7 @@ async function GetCity() {
     debugger;
     if(pageload==1){
         pageload = 0;
-        selectElement('ddlCity','New York')
+        selectElement('ddlCity',CityName)
         ddlCity.onchange()   
       
         //pageloadCity()
@@ -193,7 +196,7 @@ function getHTML(url,postObj) {
            }
            if(pageload==1){
             pageload = 0;
-            selectElement('ddlCity','New York')
+            selectElement('ddlCity',CityName)
             ddlCity.onchange()   
           
             //pageloadCity()
@@ -424,7 +427,7 @@ function MapPositionShow(cityLatLong,map){
 
       function pageloadState(){  
         console.log("sdkfljsdf")      
-        selectElement('ddlstate','New York');
+        selectElement('ddlstate',StateName);
         ddlstate.onchange();     
         
 
@@ -432,8 +435,30 @@ function MapPositionShow(cityLatLong,map){
 
     
     function pageloadCity(){        
-        selectElement('ddlCity','New York')
+        selectElement('ddlCity',CityName)
         ddlCity.onchange()   
         
 
     }
+
+
+
+    function onReady(callback) {
+        var intervalID = window.setInterval(checkReady, 1000);
+    
+        function checkReady() {
+            if (document.getElementsByTagName('body')[0] !== undefined) {
+                window.clearInterval(intervalID);
+                callback.call(this);
+            }
+        }
+    }
+    
+    function show(id, value) {
+        document.getElementById(id).style.display = value ? 'block' : 'none';
+    }
+    
+    onReady(function () {
+       // show('page', true);
+        show('loading', false);
+    });

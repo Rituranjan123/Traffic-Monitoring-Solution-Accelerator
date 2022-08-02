@@ -96,3 +96,22 @@
   background-color: transparent;
   margin-right: 4px;
 }
+
+.timeinSecond{
+  position: relative;
+  left: 514px;
+  bottom: 20px;
+  z-index: 100;
+  font-size: 12px;
+  
+}
+
+.timeinSecond2{
+  position: relative;
+  left: 514px;
+  bottom: 60px;
+  z-index: 100;
+  font-size: 12px;
+  
+}
+

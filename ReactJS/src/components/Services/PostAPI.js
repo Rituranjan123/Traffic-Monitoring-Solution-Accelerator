@@ -2,11 +2,7 @@ import Moment from 'moment';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 //Rest API Env
-//let baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
-
-let baseUrl = process.env.REACT_APP_BASEURL;
-baseUrl = 'https://localhost:5001/api'; //'https://api.phalkons.com/api';
-baseUrl = 'https://highwaymonitoringwebapi.azurewebsites.net/api';
+let baseUrl=window.baseURL;
 // post API services
 export function postApiWithoutReq(type) {
   let UserID = '0';

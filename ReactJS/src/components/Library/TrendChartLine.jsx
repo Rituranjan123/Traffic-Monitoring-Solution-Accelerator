@@ -4,29 +4,13 @@ import Chart from 'react-apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
+import './Library.css';
 class TrendChartLine extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  //componentDid
-  // state = { count: 0 };
-
-  // componentDidMount() {
-  //   const intervalId = setInterval(() => {
-  //     this.setState(prevState => {
-  //       return {
-  //         count: prevState.count + 1,
-  //       };
-  //     });
-  //   }, 10000);
-  // }
-
-  // componentWillUnmount(){
-  //   clearInterval(intervalId);
-  // }
-
+  
   render() {
     let options = {};
 
@@ -40,20 +24,24 @@ class TrendChartLine extends React.Component {
       let Motorbike = res.map((item) => item['motorbike']);
       this.state = {
         options: {
-          // title: {
-          //   text: 'My chart'
-          // },
-          //   legend: {
-          //     layout: 'vertical',
-          //     align: 'left',
-          //     verticalAlign: 'top',
-          //     x: 150,
-          //     y: 100,
-          //     floating: true,
-          //     borderWidth: 1,
-          //     backgroundColor:
-          //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
-          // },
+         
+          legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            itemMarginTop: 10,
+            itemMarginBottom: 10,
+            tooltipHoverFormatter: function (val, opts) {
+              return (
+                'Second:' +
+                val +
+                ' - ' +
+                opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
+                ''
+              );
+            },
+          },
+         
           series: [
             {
               name: 'Car',
@@ -105,17 +93,7 @@ class TrendChartLine extends React.Component {
             opacity: 4,
             type: 'solid',
           },
-          legend: {
-            tooltipHoverFormatter: function (val, opts) {
-              return (
-                'Second:' +
-                val +
-                ' - ' +
-                opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
-                ''
-              );
-            },
-          },
+         
           markers: {
             size: 0,
             height: 350,
@@ -123,6 +101,12 @@ class TrendChartLine extends React.Component {
               sizeOffset: 6,
             },
           },
+          yAxis: {
+            title: {
+                text: 'Count'
+            }
+        },
+    
           xaxis: {
             categories: categoriesdata,
           },
@@ -168,6 +152,7 @@ class TrendChartLine extends React.Component {
           height={450}
           highcharts={Highcharts}
         />
+         <span className='timeinSecond'>Time in second</span>
       </div>
     );
   }
