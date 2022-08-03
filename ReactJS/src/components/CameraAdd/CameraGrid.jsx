@@ -88,44 +88,44 @@ class CameraGrid extends CreateParent {
         />
         {/*<div className="pagetitle">Camera Grid</div> */}
 
-        <div className="databox">
-          <h2></h2>
+        <table className="table-data">
 
-          <div className="securitiesTablegrid">
-            <div className="listtopbar">
-              <div className="other">camera Name</div>
-              <div className="other">Stream Endpoint</div>
-              <div className="other">state</div>
-              <div className="other">city</div>
-              <div className="other">latitude</div>
-              <div className="other">longitude</div>
-            </div>
+          <tbody className="">
+            <tr className="">
+              <th className="other">camera Name</th>
+              <th className="other" style={{width: '200px'}}>Stream Endpoint</th>
+              <th className="other">state</th>
+              <th className="other">city</th>
+              <th className="other">latitude</th>
+              <th className="other">longitude</th>
+              <th className="other"></th>
+            </tr>
 
             {Data.map((item) => (
-              <div className="listdata" key={item.cameraId}>
-                <div className="other">{item.cameraIp}</div>
-                <div className="other" style={{ wordBreak: 'break-word' }}>
+              <tr className="" key={item.cameraId}>
+                <td className="other">{item.cameraIp}</td>
+                <td className="other" style={{ wordBreak: 'break-word' }}>
                   {item.iP_Address}
-                </div>
-                <div className="other">{item.state}</div>
-                <div className="other" style={{ paddingLeft: '35px' }}>
+                </td>
+                <td className="other">{item.state}</td>
+                <td className="other" style={{}}>
                   {item.city}
-                </div>
-                <div className="other" style={{ paddingLeft: '35px' }}>
+                </td>
+                <td className="other" style={{}}>
                   {item.latitude}
-                </div>
-                <div className="other" style={{ paddingLeft: '35px' }}>
+                </td>
+                <td className="other" style={{}}>
                   {item.longitude}
-                </div>
+                </td>
 
-                <div className="action" style={{ paddingLeft: '100px' }}>
+                <td className="action" style={{}}>
                   <div className="edit">
                     <Link to={{ pathname: `/UpdateCamera/${item.cameraId}` }}>
                       Edit
                     </Link>
                   </div>
-                </div>
-              </div>
+                </td>
+              </tr>
             ))}
             {/* <div className="paginationData">
               <div className="leftpage">
@@ -175,8 +175,8 @@ class CameraGrid extends CreateParent {
 
               <div className="clr"></div>
             </div> */}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
     );
   }
