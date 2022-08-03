@@ -54,7 +54,7 @@ class VechileAccidentLive extends React.Component {
           //   itemMarginTop: 10,
           //   itemMarginBottom: 10
           // },
-         
+
           tooltip: {
             formatter: function () {
               return (
@@ -74,7 +74,6 @@ class VechileAccidentLive extends React.Component {
           //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
           // },
 
-         
           series: [
             {
               name: 'Accident prediction (<80%)',
@@ -117,16 +116,14 @@ class VechileAccidentLive extends React.Component {
             min: 0,
             max: 100,
             title: {
-              text: 'Prcentage',            
-            
-          },
+              text: 'Prcentage',
+            },
 
             labels: {
-              formatter: function() {
-                  return Math.abs(this.value);
-              }
-          },
-      
+              formatter: function () {
+                return Math.abs(this.value);
+              },
+            },
           },
           markers: {
             hover: {
@@ -142,8 +139,6 @@ class VechileAccidentLive extends React.Component {
     //this.getUpdate();
     return (
       <div id="chart">
-
-       
         <HighchartsReact
           options={this.state.options}
           series={this.state.series}
@@ -151,7 +146,7 @@ class VechileAccidentLive extends React.Component {
           height={350}
           highcharts={Highcharts}
         />
-        <span className='timeinSecond2'>Time in second</span>
+        <span className="timeinSecond2">Time in second</span>
       </div>
     );
   }

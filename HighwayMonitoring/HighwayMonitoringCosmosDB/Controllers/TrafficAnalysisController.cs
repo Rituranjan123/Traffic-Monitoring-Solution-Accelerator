@@ -111,13 +111,32 @@ namespace HighwayMonitoringCosmosDB.Controllers
         }
 
 
-        [HttpDelete("{camera_Id}")]
-        public async Task<IActionResult> Delete(string camera_Id)
+        //[HttpDelete("{camera_Id}")]
+        //public async Task<IActionResult> Delete(string camera_Id)
+        //{
+        //    try
+        //    {
+        //        await _cosmosDbService.DeleteAsync(camera_Id);
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        [HttpDelete("{id}")]
+        public async Task<string> Delete(int VideoID)
         {
             try
             {
-                await _cosmosDbService.DeleteAsync(camera_Id);
-                return NoContent();
+
+                var data = await _cosmosDbService.GetMultipleAsync("SELECT * FROM VehicleMonitering v where v.tAvideo_Id=" + VideoID);
+                foreach (TrafficAnalysis d in data)
+                {
+                    await _cosmosDbService.DeleteAsync(d.Id);
+                }
+                return "success";
             }
             catch (Exception ex)
             {

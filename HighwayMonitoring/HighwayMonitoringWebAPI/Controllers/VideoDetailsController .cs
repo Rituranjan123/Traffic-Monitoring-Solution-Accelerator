@@ -42,15 +42,15 @@ namespace HighwayMonitoringWebAPI.Controllers
         ClassHttpRequest classHttpRequest = new ClassHttpRequest();
         private readonly ICosmosDbService _cosmosDbService;
         private readonly IHostingEnvironment _hostingEnvironment;
-
-
-        public VideoController(IRepository<VideoDetails> VideoDetails, VideoService CameraService, IConfiguration configuration, ICosmosDbService cosmosDbService, IHostingEnvironment hostingEnvironment)
+        private readonly ICosmosDbServiceAccident _cosmosDbServiceAccident;
+        public VideoController(IRepository<VideoDetails> VideoDetails, VideoService CameraService, IConfiguration configuration, ICosmosDbService cosmosDbService, IHostingEnvironment hostingEnvironment, ICosmosDbServiceAccident cosmosDbServiceAccident)
         {
             _cameraService = CameraService;
             _VideoDetails = VideoDetails;
             _configuration = configuration;
             _cosmosDbService = cosmosDbService;
             _hostingEnvironment = hostingEnvironment;
+            _cosmosDbServiceAccident = cosmosDbServiceAccident;
         }
 
 
@@ -172,10 +172,11 @@ namespace HighwayMonitoringWebAPI.Controllers
 
 
         [HttpPost("deleteVideoByid")]
-        public Object DeleteVideoByid(VideoDetails VideoDetails)
+        public async Task<Object> DeleteVideoByid(VideoDetails VideoDetails)
         {
             try {
                 var data = _cameraService.DeleteVideoByid(VideoDetails);
+                await DeleteFileBlobAPI(VideoDetails);
                 var json = JsonConvert.SerializeObject(data, Formatting.Indented,
                     new JsonSerializerSettings()
                     {
@@ -186,7 +187,7 @@ namespace HighwayMonitoringWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw ;
             }
         }
 
@@ -230,6 +231,12 @@ namespace HighwayMonitoringWebAPI.Controllers
                     }
                 }
                 var r = await vehicletrendController.Delete(VideoDetails.VideoId);
+                TrafficAnalysisController trafficAnalysisController = new TrafficAnalysisController(_cosmosDbServiceAccident);
+                var result = await trafficAnalysisController.Delete(VideoDetails.VideoId);
+
+
+
+
                 return true;
             }
             catch (Exception ex)

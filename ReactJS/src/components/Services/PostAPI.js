@@ -2,7 +2,7 @@ import Moment from 'moment';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 //Rest API Env
-let baseUrl=window.baseURL;
+let baseUrl = window.baseURL;
 // post API services
 export function postApiWithoutReq(type) {
   let UserID = '0';

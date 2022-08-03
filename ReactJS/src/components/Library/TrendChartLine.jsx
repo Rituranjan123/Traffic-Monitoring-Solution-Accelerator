@@ -10,7 +10,6 @@ class TrendChartLine extends React.Component {
     super(props);
   }
 
-  
   render() {
     let options = {};
 
@@ -24,7 +23,6 @@ class TrendChartLine extends React.Component {
       let Motorbike = res.map((item) => item['motorbike']);
       this.state = {
         options: {
-         
           legend: {
             layout: 'vertical',
             align: 'right',
@@ -41,7 +39,7 @@ class TrendChartLine extends React.Component {
               );
             },
           },
-         
+
           series: [
             {
               name: 'Car',
@@ -93,7 +91,7 @@ class TrendChartLine extends React.Component {
             opacity: 4,
             type: 'solid',
           },
-         
+
           markers: {
             size: 0,
             height: 350,
@@ -103,10 +101,10 @@ class TrendChartLine extends React.Component {
           },
           yAxis: {
             title: {
-                text: 'Count'
-            }
-        },
-    
+              text: 'Count',
+            },
+          },
+
           xaxis: {
             categories: categoriesdata,
           },
@@ -152,7 +150,7 @@ class TrendChartLine extends React.Component {
           height={450}
           highcharts={Highcharts}
         />
-         <span className='timeinSecond'>Time in second</span>
+        <span className="timeinSecond">Time in second</span>
       </div>
     );
   }

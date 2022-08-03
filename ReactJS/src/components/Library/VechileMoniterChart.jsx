@@ -48,9 +48,9 @@ class VechileMoniterChart extends React.Component {
             align: 'right',
             verticalAlign: 'top',
             itemMarginTop: 10,
-            itemMarginBottom: 10
+            itemMarginBottom: 10,
           },
-         
+
           series: [
             {
               name: 'Accident prediction (<80%)',
@@ -88,19 +88,18 @@ class VechileMoniterChart extends React.Component {
           },
           yAxis: {
             tickInterval: 10,
-             min: 0,
-             max: 100, 
+            min: 0,
+            max: 100,
             title: {
               text: 'Prcentage',
-            // // marginRight: 50,
-            
-          },
-             
-          labels: {
-            formatter: function() {
+              // // marginRight: 50,
+            },
+
+            labels: {
+              formatter: function () {
                 return Math.abs(this.value);
-            }
-        }
+              },
+            },
           },
           markers: {
             hover: {
@@ -111,20 +110,17 @@ class VechileMoniterChart extends React.Component {
       };
     }
 
-
     return (
       <div id="chart">
-        
         <HighchartsReact
           options={this.state.options}
           series={this.state.series}
           type="line"
           // width={1400}
           height={450}
-
           highcharts={Highcharts}
         />
-         <span className='timeinSecond'>Time in second</span>
+        <span className="timeinSecond">Time in second</span>
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
-let baseUrl=window.baseURL;
+let baseUrl = window.baseURL;
 
 export let downloadURL = baseUrl;
 //get API servicesnpm
