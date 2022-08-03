@@ -14,6 +14,7 @@
     <meta http-equiv="Expires" content="0" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="./config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="https://microsoft.github.io/PowerBI-JavaScript/demo/node_modules/powerbi-client/dist/powerbi.js"></script>
     <script type=”text/javascript” src=”//cdn.jsdelivr.net/afterglow/latest/afterglow.min.js”></script>
@@ -38,7 +39,8 @@
     <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
      
     
-     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script>
+     <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script> -->
+     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key='+window.bingMapKey+'&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script>
      <script type='text/javascript' src='./Vforward/dist/video.min.js'  ></script>
     
      <script type='text/javascript' src='./Vforward/dist/videojs-replayforward.min.js'  ></script>
@@ -85,41 +87,8 @@
      -->
   <script>
     
- window.baseURL= 'https://localhost:5001/api'; 
- window.baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
-var myVideo = document.getElementById("video1"); 
-
-function loginRedirect(){
-  window.location.href="/";
-}
-function playPause() { 
-    if (myVideo.paused) 
-        myVideo.play(); 
-    else 
-        myVideo.pause(); 
-} 
-
-function makeBig() { 
-    myVideo.width = 560; 
-} 
-
-  function makeSmall() { 
-    myVideo.width = 320; 
-} 
-
-function makeNormal() { 
-    myVideo.width = 420; 
-} 
-
- function skip(value) {
-        var video = document.getElementById("video1");
-        video.currentTime += value;
- }    
- 
- function restart() {
-        var video = document.getElementById("video1");
-        video.currentTime = 0;
-    }
+//  window.baseURL= 'https://localhost:5001/api'; 
+//  window.baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
 
    </script> 
     <div id="myMap1" style="display:none;position:relative;width:600px;height:300px;"></div>
@@ -194,7 +163,7 @@ window.map.setView({ bounds: result.bestView });
       var calloutOptions = { title: "Location Information", description:   "This is your current location." };
       var callout = new Microsoft.Maps.Infobox(curPos, calloutOptions);
       var mapOptions = {
-          credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
+          credentials:window.bingMapKey,// 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
           zoom: 12
@@ -248,12 +217,12 @@ window.map.setView({ bounds: result.bestView });
 
     </script> 
    <script>
-    var player = videojs('example_video_1');
+    // var player = videojs('example_video_1');
   
-    player.seekButtons({
-      forward: 30,
-      back: 10
-    });
+    // player.seekButtons({
+    //   forward: 30,
+    //   back: 10
+    // });
   
   
   // You could alternatively include the plugin in the setup options, e.g.

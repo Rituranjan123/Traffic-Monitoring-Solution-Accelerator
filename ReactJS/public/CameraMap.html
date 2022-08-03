@@ -5,6 +5,7 @@
 
     <meta charset="utf-8" />
 	<link rel="shortcut icon" href="/favicon.ico"/>
+    <script src="./config.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="This example shows how to use the selected result from the default autosuggest UI to fill in an address form." />
     <meta name="keywords" content="Microsoft maps, map, gis, API, SDK, Bing, Bing Maps, autosuggest" />
@@ -21,7 +22,7 @@
         // Get your own Bing Maps key at https://www.microsoft.com/maps
         (async () => {
             let script = document.createElement("script");
-            let bingKey ='AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN'// await fetch("https://samples.azuremaps.com/api/GetBingMapsKey").then(r => r.text()).then(key => { return key });
+            let bingKey =window.bingMapKey;//'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN'// await fetch("https://samples.azuremaps.com/api/GetBingMapsKey").then(r => r.text()).then(key => { return key });
             script.setAttribute("src", `https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=${bingKey}`);
             document.body.appendChild(script);
         })();

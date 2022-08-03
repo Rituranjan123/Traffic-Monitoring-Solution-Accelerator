@@ -1,15 +1,15 @@
 let CityList=[];
 let cityLatLong={};
-let baseURL='https://highwaymonitoringwebapi.azurewebsites.net/api/';
-//baseURL = 'https://localhost:5001/api/';
-let MLAPI='http://20.241.205.191:5000/'
-let ZoomLevel=11;
 var map;
 var pinInfobox;
-let lat1= 40.7260080136994;
-let long1=-73.94835013587952;
-let StateName='New York';
-let CityName='New York';
+let baseURL=window.baseURL;//'https://highwaymonitoringwebapi.azurewebsites.net/api/';
+//baseURL = 'https://localhost:5001/api/';
+let MLAPI=window.MLAPI;//'http://20.241.205.191:5000/'
+let ZoomLevel=window.ZoomLevel;//11;
+let lat1=window.window.lat1;// 40.7260080136994;
+let long1=window.long1;//-73.94835013587952;
+let StateName=window.StateName;//,//'New York';
+let CityName=window.CityName; //'New York';
 
 let pageload=1;
         function loadDeferredIframe() {
@@ -97,7 +97,7 @@ function GetCityMap() {
 
     cityLatLong.lat1=Obj.latitude;
     cityLatLong.long1=Obj.longitude;
-   // ZoomLevel=4;
+   
 
     GetMap();
     
@@ -338,7 +338,7 @@ function MapPositionShow(cityLatLong,map){
         var curPos = new Microsoft.Maps.Location(lat1,   long1);
         var mapOptions={};
          mapOptions = {
-          credentials: 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
+          credentials: window.bingMapKey,//'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
           zoom: ZoomLevel,
