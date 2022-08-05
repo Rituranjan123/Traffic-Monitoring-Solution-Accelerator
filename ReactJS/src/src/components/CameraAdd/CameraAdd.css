@@ -1,7 +1,25 @@
+.TEXTBOXSIZE {
+  width: 100px;
+  height: 100px;
+}
+.grpname {
+  font-weight: bold;
+  color: #0093ee;
+}
+.checkAll {
+  font-size: 13px;
+  cursor: pointer;
+}
+.refbk {
+  display: inline-block;
+  padding-right: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
 .securitiesTablegrid .listtopbar {
   width: 100%;
   background: #fff;
-  padding: 14px 10px 14px 10px;
+  padding: 10px 230px 14px 10px;
   font-size: 12px;
   color: #1c293b;
   font-weight: bold;
@@ -12,13 +30,11 @@
   align-items: center;
   text-transform: uppercase;
   border-bottom: 1px solid #dcdcdc;
+  position: sticky;
+  top: 61px;
+  z-index: 99;
 }
-.refbk {
-  display: inline-block;
-  padding-right: 10px;
-  font-size: 13px;
-  text-transform: uppercase;
-}
+
 .securitiesTablegrid .listtopbar .srno {
   width: 5%;
   padding: 0 5px;
@@ -29,11 +45,11 @@
 }
 .securitiesTablegrid .listtopbar .other {
   width: 20%;
-  padding: 0 5px;
+  padding: 0 25px;
 }
 .securitiesTablegrid .listdata {
   width: 100%;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 30px 10px 10px;
   font-size: 12px;
   color: #354052;
   position: relative;
@@ -46,9 +62,9 @@
 .securitiesTablegrid .listdata:hover {
   border: 1px solid #0093ee;
 }
-/* .securitiesTablegrid .listdata:nth-child(even) {
+.securitiesTablegrid .listdata:nth-child(even) {
   background-color: #ededed;
-} */
+}
 .securitiesTablegrid .listdata .srno {
   width: 5%;
   padding: 0 5px;
@@ -60,7 +76,20 @@
 }
 .securitiesTablegrid .listdata .action .edit {
   cursor: pointer;
-  background: url(../../../../images/ic-edit.png);
+  background: url(../../images/ic-edit.png);
+  background-repeat: no-repeat;
+  color: #0093ee;
+  cursor: pointer;
+  padding: 0px 20px;
+  display: inline-block;
+  font-size: 12px;
+  background-position: 0 1px;
+  background-size: 14px;
+}
+
+.securitiesTablegrid .listdata .action .Authorization {
+  cursor: pointer;
+  background: url(../../images/ic-user.png);
   background-repeat: no-repeat;
   color: #0093ee;
   cursor: pointer;
@@ -73,7 +102,7 @@
 .refblock {
   width: 100%;
   padding: 10px 0;
-  /* border-bottom: 1px solid #ededed; */
+  border-bottom: 1px solid #ededed;
   position: relative;
 }
 .refdate {
@@ -83,7 +112,7 @@
 }
 .securitiesTablegrid .listdata .action .delete {
   cursor: pointer;
-  background: url(../../../../images/ic-delete.png);
+  background: url(../../images/ic-delete.png);
   background-repeat: no-repeat;
   color: #ff5242;
   cursor: pointer;
@@ -94,8 +123,8 @@
   background-size: 14px;
 }
 .securitiesTablegrid .listdata .other {
-  width: 10%;
-  padding: 0 5px;
+  width: 100%;
+  padding: 0 25px;
 }
 .databox .btnaddrecords {
   position: absolute;
@@ -153,11 +182,64 @@
   font-size: 13px;
   border-radius: 3px;
 }
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
+
+.securitiesTablegrids .listtopbar {
+  width: 100%;
+  background: #fff;
+  padding: 14px 10px;
+  font-size: 12px;
+  color: #1c293b;
+  font-weight: 700;
+  margin-bottom: 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  border-bottom: 1px solid #dcdcdc;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 61px;
+  z-index: 123;
 }
-.other2 {
-  cursor: pointer;
-  border: 2px solid black;
+
+.securitiesTablegrids .listtopbar .srno {
+  width: 5%;
+  padding: 0 5px;
+}
+.securitiesTablegrids .listtopbar .action {
+  width: 25%;
+  padding: 0 5px;
+}
+.securitiesTablegrids .listtopbar .other {
+  width: 20%;
+  padding: 0 5px;
+}
+
+.mapcss {
+  position: relative;
+  width: 600px;
+  height: 250px;
+}
+
+.box {
+  height: '40px';
+  margin-top: '15px';
+}
+
+.table-data {
+  width: 100%;
+  margin-top: 20px;
+  /* border-collapse: collapse; */
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+}
+.table-data tr:first-child {
+  background-color: #ddd;
+}
+.table-data td,
+.table-data th {
+  border: 1px solid rgb(170, 164, 164);
+  padding: 8px;
 }

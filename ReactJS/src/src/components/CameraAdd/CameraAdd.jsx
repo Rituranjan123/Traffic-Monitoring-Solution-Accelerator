@@ -386,10 +386,10 @@ class CameraAdd extends CreateParent {
             <Col md={6}>
               <div id="myMap" className="mapcss"></div>
               <Row>
-                <Col md={5} style={{ marginLeft: '70px', width: '237px' }}>
+                <Col md={4} style={{ marginLeft: '70px', width: '237px' }}>
                   <Form.Group>
                     <InputGroup>
-                      <div  style={{ marginTop: '20px' }}>
+                      <div style={{ marginTop: '20px' }}>
                         <span style={{ marginLeft: '-80px' }}>
                           <b>Latitude :</b>
                         </span>{' '}
@@ -406,7 +406,7 @@ class CameraAdd extends CreateParent {
                     </InputGroup>
                   </Form.Group>
                 </Col>
-                <Col md={5}>
+                <Col md={4}>
                   <Form.Group>
                     <InputGroup style={{ marginLeft: '80px' }}>
                       <div style={{ marginTop: '20px' }}>
@@ -415,7 +415,7 @@ class CameraAdd extends CreateParent {
                         </span>{' '}
                         <span id="latitude"></span>
                       </div>
-                      <FormControl 
+                      <FormControl
                         name="Longitude"
                         id="Longitude"
                         value={CameraValue.Longitude}

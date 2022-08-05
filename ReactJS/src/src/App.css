@@ -1283,7 +1283,7 @@ body {
   color: #f44336;
 }
 .other {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .other.ascending {
   cursor: pointer;
