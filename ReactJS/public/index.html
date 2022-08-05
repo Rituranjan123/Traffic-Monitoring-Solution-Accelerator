@@ -40,7 +40,8 @@
      
     
      <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script> -->
-     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key='+window.bingMapKey+'&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script>
+     <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key='+window.bingMapKey+'&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script> -->
+     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key='+window.bingMapKey+'' async defer></script>
      <!-- <script type='text/javascript' src='./Vforward/dist/video.min.js'  ></script>
     
      <script type='text/javascript' src='./Vforward/dist/videojs-replayforward.min.js'  ></script>
@@ -101,7 +102,8 @@
          
         window.map = new window.Microsoft.Maps.Map('#myMap', {});
         var result={};
-        result.latitude=47.7511;   result.longitude=-120.7401;
+        result.latitude=window.lat1;//47.7511;  
+         result.longitude=window.long1;//-120.7401;
        // FindMAp(result);
         window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) { set_latitudes_and_longitude(e); });
         Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
@@ -179,6 +181,7 @@ window.map.setView({ bounds: result.bestView });
 
     function MapPositionShow3(cityLatLong,pinNumber) {
       try{
+      //  if(window.lat1!=cityLatLong.latitude){
       let lat=cityLatLong.latitude;   
       let lon=cityLatLong.longitude;
    // let lat=cityLatLong.lat1;let lon= cityLatLong.long1; 
@@ -188,7 +191,7 @@ window.map.setView({ bounds: result.bestView });
 	var pin = new Microsoft.Maps.Pushpin(locs[0], {icon: './Mylocation.png', width:'20px', height:'20px'});
     pinLayer.push(pin);    
     map.entities.push(pin);
-
+       // }
     }
     catch(error){
       console.log(error);

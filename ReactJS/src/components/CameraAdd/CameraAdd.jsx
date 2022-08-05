@@ -194,6 +194,7 @@ class CameraAdd extends CreateParent {
     const { CameraValue } = this.state;
     // console.log(this.state.CameraValue.State);
     // return;
+    //this.handleSeachableDropdonw(val, 'City')
     if (this.state.CameraValue && this.state.CameraValue.State) {
       let initinalFormFill2 = await GetDropdownpost(
         '/USCity/GetCity',
@@ -242,8 +243,8 @@ class CameraAdd extends CreateParent {
       result.longitude = CameraValue.Longitude;
       window.FindMAp(result);
     } else {
-      result.latitude = 47.7511;
-      result.longitude = -120.7401;
+      result.latitude =window.lat1;// 47.7511;
+      result.longitude =window.long1;// -120.7401;
       window.FindMAp(result);
       document.getElementById('Latitude').value = result.latitude;
       document.getElementById('Longitude').value = result.longitude;
