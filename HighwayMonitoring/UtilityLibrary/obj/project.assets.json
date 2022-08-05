@@ -53,11 +53,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\RituranjanGupta\\Documents\\GitHub\\Traffic-Monitoring-Solution-Accelerator2\\Traffic-Monitoring-Solution-Accelerator\\HighwayMonitoring\\UtilityLibrary\\UtilityLibrary.csproj",
+      "projectUniqueName": "C:\\Users\\RituranjanGupta\\Documents\\GitHub\\Traffic-Monitoring-Solution-Accelerator\\HighwayMonitoring\\UtilityLibrary\\UtilityLibrary.csproj",
       "projectName": "UtilityLibrary",
-      "projectPath": "C:\\Users\\RituranjanGupta\\Documents\\GitHub\\Traffic-Monitoring-Solution-Accelerator2\\Traffic-Monitoring-Solution-Accelerator\\HighwayMonitoring\\UtilityLibrary\\UtilityLibrary.csproj",
+      "projectPath": "C:\\Users\\RituranjanGupta\\Documents\\GitHub\\Traffic-Monitoring-Solution-Accelerator\\HighwayMonitoring\\UtilityLibrary\\UtilityLibrary.csproj",
       "packagesPath": "C:\\Users\\RituranjanGupta\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\RituranjanGupta\\Documents\\GitHub\\Traffic-Monitoring-Solution-Accelerator2\\Traffic-Monitoring-Solution-Accelerator\\HighwayMonitoring\\UtilityLibrary\\obj\\",
+      "outputPath": "C:\\Users\\RituranjanGupta\\Documents\\GitHub\\Traffic-Monitoring-Solution-Accelerator\\HighwayMonitoring\\UtilityLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\RituranjanGupta\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -106,7 +106,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

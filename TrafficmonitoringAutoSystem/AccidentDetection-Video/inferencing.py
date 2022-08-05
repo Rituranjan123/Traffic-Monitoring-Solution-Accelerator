@@ -1,3 +1,5 @@
+import datetime
+
 import cv2
 import os
 import json
@@ -30,13 +32,6 @@ def predict_video(video_path):
     # calculate duration of the video
     fps1 = cap.get(cv2.CAP_PROP_FPS)
 
-    # # Initialising Video writer
-    # output_video = cv2.VideoWriter(
-    #     os.path.join(r"C:\Users\ShreyaSharma\Documents\Projects\Sony-Object-Detection\accident-detection-system\Traffic-Net\result",
-    #                  "3274_probprocessed.mp4"),
-    #     cv2.VideoWriter_fourcc(*'avc1'), 24, (
-    #         (int(cap.get(3)), int(cap.get(4)))))
-
     progress_tracker = 0
     response_label = ""
     accident = ""
@@ -53,20 +48,20 @@ def predict_video(video_path):
             progress_tracker += 1
 
             if progress_tracker % skip_frame == 0:
-                cv2.imwrite("video_image3274.jpg", frame)
+                cv2.imwrite("video_image5.jpg", frame)
 
             # Predicting each frame of video
             try:
                 predictions, probabilities = predictor.classifyImage(
-                    image_input="video_image3274.jpg", result_count=1)
+                    image_input="video_image5.jpg", result_count=1)
 
-                if predictions == ['Accident'] or predictions == ['Fire']:
+                if (predictions == ['Accident'] or predictions == ['Fire']) and probabilities[0] >= 60:
                     predictions = "Accident"
                     tAccidentStat = "1"
                     accident = "1"
                     no_accident = "0"
 
-                elif predictions == ['Sparse_Traffic'] or predictions == ['Dense_Traffic']:
+                elif (predictions == ['Sparse_Traffic'] or predictions == ['Dense_Traffic']) and probabilities[0] < 60:
                     predictions = "No Accident"
                     tAccidentStat = "0"
                     accident = "0"
@@ -78,10 +73,7 @@ def predict_video(video_path):
                     accident = "0"
                     no_accident = "0"
 
-                if predictions == "Accident" and probabilities[0] < 50:
-                    response_label = "No Accident" + ":" + "{:.2f}".format(probabilities[0]) + "%"
-                else:
-                    response_label = predictions + ":" + "{:.2f}".format(probabilities[0]) + "%"
+    
 
             except:
                 None
@@ -97,23 +89,28 @@ def predict_video(video_path):
 
             # Appending the resultant dictionary into list
             json_list.append(deepcopy(json_dict))
+            json_dict.update(Id)
+            json_dict.update(camera_id)
+            json_dict["tAccident"] = int(accident)
+            json_dict["noaccident"] = int(no_accident)
+            json_dict["tAccidentStatus"] = int(tAccidentStat)
+            json_dict["tAframe_timestamp"] = int(frame_stamp)
+            json_dict["tAvideo_Id"] = int(video_id)
 
-            font = cv2.FONT_HERSHEY_PLAIN
-            frame = cv2.putText(frame, '{}'.format(response_label), (150, 35), font, 3, (207, 109, 4), 3, cv2.LINE_AA)
 
-            #cv2.imshow("output", frame)
-
-            # # Writing frames into file
-            # output_video.write(frame)
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
 
         else:
             break
+            json_dict.update(Id)
+            json_dict.update(camera_id)
+            json_dict["tAccident"] = int(accident)
+            json_dict["noaccident"] = int(no_accident)
+            json_dict["tAccidentStatus"] = int(tAccidentStat)
+            json_dict["tAframe_timestamp"] = int(frame_stamp)
+            json_dict["tAvideo_Id"] = int(video_id)
+
 
     cap.release()
-    # output_video.release()
     cv2.destroyAllWindows()
 
     # Converting list of dictionary into json
@@ -121,12 +118,3 @@ def predict_video(video_path):
     for i in range(0, len(json_list), int(fps1)):
         k = json_list[i]
         json_list_final.append(k)
-
-    #with open('prob.json', 'w', encoding='utf-8') as f:
-        #json.dump(json_list_final, f, ensure_ascii=False, indent=4)
-    return json_list_final
-
-
-# Calling function
-# p = predict_video(r'C:\Users\ShreyaSharma\Documents\Projects\Sony-Object-Detection\accident-detection-system\Traffic-Net\videos\3274.mp4')
-# print(p)

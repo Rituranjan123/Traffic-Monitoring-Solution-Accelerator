@@ -89,11 +89,12 @@ class CameraGrid extends CreateParent {
         {/*<div className="pagetitle">Camera Grid</div> */}
 
         <table className="table-data">
-
           <tbody className="">
             <tr className="">
               <th className="other">camera Name</th>
-              <th className="other" style={{width: '200px'}}>Stream Endpoint</th>
+              <th className="other" style={{ width: '200px' }}>
+                Stream Endpoint
+              </th>
               <th className="other">state</th>
               <th className="other">city</th>
               <th className="other">latitude</th>

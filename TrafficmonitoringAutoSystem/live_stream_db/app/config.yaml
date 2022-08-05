@@ -1,0 +1,5 @@
+Account: "https://mspocdb.documents.azure.com:443/"
+Key: "R79EBwOGMIbYFnwFXbN33p1eLX30uLVAT1XnIckuxpaZ7y9ZXa1LGaRTeHHD3jIJYuzzTo21cq9NLxHPqPf9uw=="
+DatabaseName: "HighwayMonitoringSystem2"
+containerName: "VehicleTrendingLive"
+stream_url: "https://mspocmediaservice-usea.streaming.media.azure.net/b0111185-2ab5-49d1-8b3e-f84a36a8756a/3042.ism/manifest(format=m3u8-cmaf)"

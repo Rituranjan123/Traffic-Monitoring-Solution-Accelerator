@@ -1,15 +1,17 @@
-import time
-import cv2 as cv2
-import numpy as np
-import collections
-import yaml
-from azure.storage.blob import ContainerClient
-
-import json
 import os
-from pathlib import Path
-
-
+import yaml
+import numpy as np
+import cv2 as cv2
+import pandas as pd 
+import json
+from azure.cosmos import CosmosClient
+import collections
+import time
+import json
+import datetime
+from flask import Flask, render_template, Response
+from flask import request
+import requests
 input_size = 416
 
 # Detection confidence threshold
@@ -33,7 +35,6 @@ required_class_index = [2, 3, 5, 7]
 modelConfiguration = 'yolov4.cfg'
 modelWeigheights = 'yolov4.weights'
 
-# configure the network model
 net = cv2.dnn.readNetFromDarknet(modelConfiguration, modelWeigheights)
 
 # Configure the network backend
@@ -46,30 +47,22 @@ np.random.seed(42)
 colors = np.random.randint(0, 255, size=(len(classNames), 3), dtype='uint8')
 
 
-# In[2]:
-    
 def load_config():
     dir_root = os.path.dirname(os.path.abspath(__file__))
     print('root_dir:', dir_root)
     with open(dir_root+ "/config.yaml", "r") as yamlfile:
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
     
-def get_files(dir):
-    k = os.listdir(dir)
-    print('k:', k)
-    return k
-
-def upload(videos, connection_string, container_name):
-    container_client = ContainerClient.from_connection_string(connection_string, container_name)
-    print("uploading files to blob storage")
+def upload_data(dict_1):
+    config = load_config()
+    # create cosmos client
+    client = CosmosClient(config['Account'], config['Key'])
+    database = client.get_database_client(config['DatabaseName'])
+    container1 = database.get_container_client(config['containerName'])
+    container1.upsert_item(dict_1)
     
-    for file in videos:
-        print(file)
-        blob_client = container_client.get_blob_client(file)
-        dir_root = os.path.dirname(os.path.abspath(__file__))
-        with open(dir_root + "/videos/"+ file, "rb") as data:
-            blob_client.upload_blob(data, connection_timeout=14400, overwrite=True)
 
+    
 def postProcess(outputs, img):
     # global detected_classNames
     height, width = img.shape[:2]
@@ -117,31 +110,21 @@ def postProcess(outputs, img):
     detected_classNames.clear()
     return dict1
 
-
-# In[3]:
-
-
-def realTime(video):
-    print(video)
-    cap = cv2.VideoCapture(video)
+def realTime():
+    #print(video)
+    config= load_config()
+    cap = cv2.VideoCapture(config['stream_url'])
+    #cap = cv2.VideoCapture("https://mspocmediaservice-usea.streaming.media.azure.net/b0111185-2ab5-49d1-8b3e-f84a36a8756a/3042.ism/manifest(format=m3u8-cmaf)")
+    #cap = cv2.VideoCapture("https://mspocmediaservice-usea.streaming.media.azure.net/3b1f6b2e-a36f-452f-9fb3-d7c4336a2d1a/32745.ism/manifest(format=m3u8-cmaf)")
     fps = (cap.get(cv2.CAP_PROP_FPS))
-    #print(fps)
+    print(int(fps))
     #print(video)
     # out = cv2.VideoWriter('test.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 15, size)
-    dict1 = {"car": 0, "bus": 4, "motorbike": 3, "truck": 4}
-    json_final_list = []
-    camera_dict = {'camera_Id': 1}
-    video_id = Path(video).stem
-    Video_Id = {'videoID': video_id}
-    print(Video_Id)
-    dir_root = os.path.dirname(os.path.abspath(__file__))
-    dir = dir_root + '/videos/'
-    for f in os.listdir(dir):
-        os.remove(os.path.join(dir, f))
-    writer = None
-    # frame_count = 0
-
-
+    dict1 = {'car': 0, 'bus': 4, 'motorbike': 3, 'truck': 4}
+    #print(dict1)
+    #json_final_list = []
+    camera_dict = {'camera_Id': '1'}
+    count=1
     while cap.isOpened():
         dict_vehicle = {}
         json_dict = {}
@@ -159,7 +142,7 @@ def realTime(video):
             outputs = net.forward(outputNames)
             
             dict_v = postProcess(outputs, img)
-            #print('dict_v',dict_v)
+            print('dict_v',dict_v)
 
             for i in dict1:
                 if i in dict_v:
@@ -168,12 +151,23 @@ def realTime(video):
                     dict_vehicle[i] = 0
 
             frame_stamp = (cap.get(cv2.CAP_PROP_POS_MSEC)) / 1000  # condition
+            ct = datetime.datetime.now()
+            ts = ct.timestamp()
+            Id = {'id': '{0}'.format(count)}
+            json_dict.update(Id)
             json_dict.update(camera_dict)
-            json_dict.update(Video_Id)
             json_dict.update(dict_vehicle)
-            json_dict['frame_timestamp'] = frame_stamp
-            json_final_list.append(json_dict)
+            json_dict['frame_timestamp'] = round(frame_stamp)
+            json_dict['current_time'] = ts
+            #json_final_list.append(json_dict)
             # print(json_final_list)
+            #
+            print(json_dict)
+            #data_dict = {k:str(v) for k,v in json_dict.items()}
+            #print('data_dict', data_dict)
+            #data_dict = json.dumps(json_dict, indent = 4)
+            if count==1 or count%int(fps)==0:
+               upload_data(json_dict)
 
             cv2.putText(img, "Car:" + " " + str(dict_vehicle['car']), (20, 40), cv2.FONT_HERSHEY_SIMPLEX, font_size,
                         font_color, font_thickness)
@@ -183,56 +177,22 @@ def realTime(video):
                         font_color, font_thickness)
             cv2.putText(img, "Motorbike:" + " " + str(dict_vehicle['motorbike']), (20, 100), cv2.FONT_HERSHEY_SIMPLEX,
                         font_size, font_color, font_thickness)
+            print(dict_vehicle)
             dict_vehicle.clear()
-
-            #cv2.imshow('output', img)
-            if writer is None:
-                resultVideo = cv2.VideoWriter_fourcc(*'vp80')
-
-                # Writing current processed frame into the video file
-                dir_root = os.path.dirname(os.path.abspath(__file__))
-                #print(dir_root)
-                
-                writer = cv2.VideoWriter(dir_root + '/videos/'+ video_id+'.webm', resultVideo, 30,
-                                         (img.shape[1], img.shape[0]), True)
-
-            # Write processed current frame to the file
-            writer.write(img)
+            cv2.imshow('output', img)
+            count+=1
+            #ret, buffer = cv2.imencode('.jpg', img)
+            #frame = buffer.tobytes()
+            #print(frame)
+            #yield (b'--frame\r\n'
+                  # b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result'''
             c = cv2.waitKey(1)
+            # time.sleep(0.01)
             if c & 0xFF == ord('q'):
                 break
-        else:
-            break
-        # frame_count += 1
+            
     cap.release()
-    writer.release()
-    cv2.destroyAllWindows()
-    config = load_config()
-    print('config:',  config)
-    dir_root = os.path.dirname(os.path.abspath(__file__))
-    videos = get_files(dir_root+ "/videos/")
-    print(videos)
-    upload(videos, config['azure_storage_connectionstring'], config['process_container_name'])
- 
-    os.remove(dir_root + '/videos/'+ video_id+'.webm')
-   
-   
+    cv2.destroyAllWindows()   
 
-  
-
-    json_list_final = []
-    for i in range(0, len(json_final_list), int(fps)):
-        # print(i)
-        k = json_final_list[i]
-        #print(k)
-        json_list_final.append(k)
-    return json_list_final
-
-
-# In[ ]:
-
-#
-# json_dict = realTime(video='videos/1.mp4')
-# print(json_dict)
-
-# In[ ]:
+realTime()
+#Initialize the Flask app

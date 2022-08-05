@@ -389,7 +389,7 @@ class CameraAdd extends CreateParent {
                 <Col md={5} style={{ marginLeft: '70px', width: '237px' }}>
                   <Form.Group>
                     <InputGroup>
-                      <div  style={{ marginTop: '20px' }}>
+                      <div style={{ marginTop: '20px' }}>
                         <span style={{ marginLeft: '-80px' }}>
                           <b>Latitude :</b>
                         </span>{' '}
@@ -415,7 +415,7 @@ class CameraAdd extends CreateParent {
                         </span>{' '}
                         <span id="latitude"></span>
                       </div>
-                      <FormControl 
+                      <FormControl
                         name="Longitude"
                         id="Longitude"
                         value={CameraValue.Longitude}

@@ -227,7 +227,6 @@
   margin-top: '15px';
 }
 
-
 .table-data {
   width: 100%;
   margin-top: 80px;
@@ -235,8 +234,8 @@
   border: 1px solid #ddd;
 }
 
-
-.table-data td, .table-data th {
+.table-data td,
+.table-data th {
   border: 1px solid #ddd;
   padding: 8px;
 }
