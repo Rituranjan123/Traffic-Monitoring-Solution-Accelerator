@@ -41,12 +41,12 @@
     
      <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script> -->
      <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key='+window.bingMapKey+'&cp=47.621065~-122.352534&style=o&lvl=14&trfc=1' async defer></script>
-     <script type='text/javascript' src='./Vforward/dist/video.min.js'  ></script>
+     <!-- <script type='text/javascript' src='./Vforward/dist/video.min.js'  ></script>
     
      <script type='text/javascript' src='./Vforward/dist/videojs-replayforward.min.js'  ></script>
-    
-     <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">
-     <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
+     -->
+     <!-- <link href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script> -->
    
     </head>
   <body>
@@ -166,15 +166,35 @@ window.map.setView({ bounds: result.bestView });
           credentials:window.bingMapKey,// 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN',
           center: curPos,
           mapTypeId: Microsoft.Maps.MapTypeId.road,
-          zoom: 12
+          zoom: 9
       };
       window.map = new window.Microsoft.Maps.Map('#myMap',mapOptions);
 
      // window.map = new Microsoft.Maps.Map(("#myMap").get(0), mapOptions);
      // window.map.entities.push(callout);
       window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) { set_latitudes_and_longitude(e); });
+      MapPositionShow3(result,map)
     
     }
+
+    function MapPositionShow3(cityLatLong,pinNumber) {
+      try{
+      let lat=cityLatLong.latitude;   
+      let lon=cityLatLong.longitude;
+   // let lat=cityLatLong.lat1;let lon= cityLatLong.long1; 
+   var locs = [];
+     locs[0] = new Microsoft.Maps.Location(cityLatLong.latitude, cityLatLong.longitude);
+        var pinLayer = new Microsoft.Maps.EntityCollection();
+	var pin = new Microsoft.Maps.Pushpin(locs[0], {icon: './Mylocation.png', width:'20px', height:'20px'});
+    pinLayer.push(pin);    
+    map.entities.push(pin);
+
+    }
+    catch(error){
+      console.log(error);
+    }
+}
+
 
     function initGeolocation()
      {

@@ -12,31 +12,31 @@ let StateName=window.StateName;//,//'New York';
 let CityName=window.CityName; //'New York';
 
 let pageload=1;
-        function loadDeferredIframe() {
-            let paramsURL = (new URL(document.location)).searchParams;
-            let params = paramsURL.get("id");
+        // function loadDeferredIframe() {
+        //     let paramsURL = (new URL(document.location)).searchParams;
+        //     let params = paramsURL.get("id");
 
-            if(params){
+        //     if(params){
                 
                 
                
-                var srclive='';
-                    if(params=='40'){  
-                        ShowCameraDetails();                  
-                        srclive='http://20.102.33.84:5000/'
-                    }
-                    else if(params=='41'){    
-                        ShowCameraDetails();                
-                        srclive='http://localhost/index41.html'
-                    }    
-                    else{
-                        document.getElementById("cameradetails").style.display = "hide";
-                        srclive='http://localhost/index0.html'
-                    }
-                document.getElementById("iframeid").src=srclive
+        //         var srclive='';
+        //             if(params=='40'){  
+        //                 ShowCameraDetails();                  
+        //                 srclive='http://20.102.33.84:5000/'
+        //             }
+        //             else if(params=='41'){    
+        //                 ShowCameraDetails();                
+        //                 srclive='http://localhost/index41.html'
+        //             }    
+        //             else{
+        //                 document.getElementById("cameradetails").style.display = "hide";
+        //                 srclive='http://localhost/index0.html'
+        //             }
+        //         document.getElementById("iframeid").src=srclive
            
-            }
-        }
+        //     }
+        // }
 
         function ShowCameraDetails(){            
             let CameraDetails=JSON.parse(getCookie('CameraDetails'));
@@ -88,10 +88,7 @@ function getCookie(name) {
 
 function GetCityMap() {
         
-    // var Obj=CityList.filter(function (el)
-    // {
-    //   return el.city=document.getElementById("ddlCity").value;//'Acampo' ;
-    // });
+   
     var Obj=CityList.find(o => o.city === document.getElementById("ddlCity").value);
 
 
@@ -278,26 +275,26 @@ xhr.onload = function () {
 }}
 
 
-function MapPositionShow3(cityLatLong,pinNumber) {
-    let lat=cityLatLong.lat1;let lon= cityLatLong.long1;
-    let locs = new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1);
-    var pinLocation = new Microsoft.Maps.Location(locs);
+// function MapPositionShow3(cityLatLong,pinNumber) {
+//     let lat=cityLatLong.lat1;let lon= cityLatLong.long1;
+//     let locs = new Microsoft.Maps.Location(cityLatLong.lat1, cityLatLong.long1);
+//     var pinLocation = new Microsoft.Maps.Location(locs);
 
-    var pin = new Microsoft.Maps.Pushpin(locs, {icon: './Mylocation.png', width:'20px', height:'20px'});
+//     var pin = new Microsoft.Maps.Pushpin(locs, {icon: './Mylocation.png', width:'20px', height:'20px'});
 
-    pinInfobox = new Microsoft.Maps.Infobox(pinLocation,
-            { title: 'Details',
-                description: 'Latitude: ' + lat.toString() + ' Longitude: ' + lon.toString(),
-                offset: new Microsoft.Maps.Point(0, 15)
-            });
+//     pinInfobox = new Microsoft.Maps.Infobox(pinLocation,
+//             { title: 'Details',
+//                 description: 'Latitude: ' + lat.toString() + ' Longitude: ' + lon.toString(),
+//                 offset: new Microsoft.Maps.Point(0, 15)
+//             });
 
 
-    map.entities.push(pinInfobox);
-    map.entities.push(pin);
+//     map.entities.push(pinInfobox);
+//     map.entities.push(pin);
 
-    pin.setLocation(pinLocation);
-    map.setView({ center: pinLocation});
-}
+//     pin.setLocation(pinLocation);
+//     map.setView({ center: pinLocation});
+// }
 
 
 function MapPositionShow(cityLatLong,map){
@@ -325,7 +322,7 @@ function MapPositionShow(cityLatLong,map){
        
 		var infoboxLayer = new Microsoft.Maps.EntityCollection();
         var pinLayer = new Microsoft.Maps.EntityCollection();
-        var apiKey = 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN';
+        //var apiKey = 'AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN';
         if(cityLatLong.lat1){
             lat1=cityLatLong.lat1; 
             long=cityLatLong.long1;
