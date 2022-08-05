@@ -42,10 +42,7 @@ class CameraAdd extends CreateParent {
   handelInit = () => {
     const { CameraValue, formOption } = this.state;
 
-    formOption.currentDate =
-      cookies.get('REFERENCE_DATE') === undefined
-        ? new Date()
-        : new Date(cookies.get('REFERENCE_DATE'));
+    formOption.PageLoad =true;
     formOption.errorBoll = false;
     formOption.legalBoll = false;
     formOption.Message = '';
@@ -176,8 +173,12 @@ class CameraAdd extends CreateParent {
 
   async componentDidMount() {
     //   componentDidMount() {
-    console.log('nedlsf df sdf');
+      const { CameraValue,formOption } = this.state;
     let initinalFormFill = await GetDropdown('/USCity/GetAllState', '');
+    if(formOption.PageLoad ==true){
+      CameraValue.state=window.StateName;
+
+    }
 
     if (this.props.match !== undefined && this.props.match !== '') {
       if (
@@ -191,10 +192,7 @@ class CameraAdd extends CreateParent {
         CameraValue: {},
       });
     }
-    const { CameraValue } = this.state;
-    // console.log(this.state.CameraValue.State);
-    // return;
-    //this.handleSeachableDropdonw(val, 'City')
+    
     if (this.state.CameraValue && this.state.CameraValue.State) {
       let initinalFormFill2 = await GetDropdownpost(
         '/USCity/GetCity',
@@ -206,36 +204,9 @@ class CameraAdd extends CreateParent {
     }
     //  return;
 
-    this.setState({ initinalFormFill: initinalFormFill });
+    this.setState({ initinalFormFill: initinalFormFill,CameraValue:CameraValue,formOption:formOption });
 
-    // const script = document.createElement('script');
-    // script.type = 'text/javascript';
-    // script.src =
-    //   'https://www.bing.com/api/maps/mapcontrol?key=AuU1ciWa-v2D4MXrLhXxgbVY6676TOmemFJ3LpCO52P5Mnx8_KIdez1M7G2j0ZIN'; // + this.props.apiKey;
-    // script.async = true;
-    // script.defer = true;
-    // var result={};
-    // result.latitude=document.getElementById('Latitude').value;
-    // result.longitude=document.getElementById('Longitude').value;
-    // document.head.appendChild(script);
-    // setTimeout(
-    //   () =>
-    //     (script.onload = function () {
-    //       window.addEventListener('load', function () {
-    //         window.FindMAp(result);
-    //         // navigator.geolocation.getCurrentPosition(function (position) {
-    //         //   window.initGeolocation();
-    //         // });
-    //       });
-    //     }),
-    //   0
-    // );
-    // document.addEventListener('DOMContentLoaded', function (event) {
-    //   //window.GetMap();
-    // //  window.initGeolocation();
-    // window.FindMAp(result);
-    // });
-
+   
     var result = {};
     if (CameraValue.Latitude) {
       var result = {};
@@ -243,8 +214,8 @@ class CameraAdd extends CreateParent {
       result.longitude = CameraValue.Longitude;
       window.FindMAp(result);
     } else {
-      result.latitude =window.lat1;// 47.7511;
-      result.longitude =window.long1;// -120.7401;
+      result.latitude =window.lat1;
+      result.longitude =window.long1;
       window.FindMAp(result);
       document.getElementById('Latitude').value = result.latitude;
       document.getElementById('Longitude').value = result.longitude;
@@ -301,6 +272,13 @@ class CameraAdd extends CreateParent {
       MenuData,
       initinalFormFill,
     } = this.state;
+    if(formOption.PageLoad ==true){
+      CameraValue.State=window.StateName;
+      CameraValue.City=window.CityName;
+       formOption.PageLoad ==false;
+      //this.setState({formOption:formOption});
+
+    }
     return (
       <div className="datagrid">
         <SnackbarError
