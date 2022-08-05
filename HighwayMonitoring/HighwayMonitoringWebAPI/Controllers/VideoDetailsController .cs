@@ -28,6 +28,8 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using Microsoft.AspNetCore.Hosting;
 using System.Text;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.Extensions.Hosting;
 
 namespace HighwayMonitoringWebAPI.Controllers
 {
@@ -39,11 +41,14 @@ namespace HighwayMonitoringWebAPI.Controllers
         private readonly IRepository<VideoDetails> _VideoDetails;
         // private readonly ApplicationDbContext _applicationDbContext;
         private readonly IConfiguration _configuration;
-        ClassHttpRequest classHttpRequest = new ClassHttpRequest();
+        UtilityHttpRequest classHttpRequest = new UtilityHttpRequest();
         private readonly ICosmosDbService _cosmosDbService;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
         private readonly ICosmosDbServiceAccident _cosmosDbServiceAccident;
-        public VideoController(IRepository<VideoDetails> VideoDetails, VideoService CameraService, IConfiguration configuration, ICosmosDbService cosmosDbService, IHostingEnvironment hostingEnvironment, ICosmosDbServiceAccident cosmosDbServiceAccident)
+        private readonly IServer server;
+        private readonly IHostApplicationLifetime hostApplicationLifetime;
+
+        public VideoController(IRepository<VideoDetails> VideoDetails, VideoService CameraService, IConfiguration configuration, ICosmosDbService cosmosDbService, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment, ICosmosDbServiceAccident cosmosDbServiceAccident)
         {
             _cameraService = CameraService;
             _VideoDetails = VideoDetails;
@@ -51,6 +56,9 @@ namespace HighwayMonitoringWebAPI.Controllers
             _cosmosDbService = cosmosDbService;
             _hostingEnvironment = hostingEnvironment;
             _cosmosDbServiceAccident = cosmosDbServiceAccident;
+            this.server = server;
+            this.hostApplicationLifetime = hostApplicationLifetime;
+
         }
 
 
@@ -220,7 +228,7 @@ namespace HighwayMonitoringWebAPI.Controllers
             {
                 string blobstorageconnection = (_configuration.GetValue<string>("BlobConnectionString"));
                 string BlobContainerName = _configuration.GetValue<string>("BlobContainerNameprocessvideo");
-                VehicletrendController vehicletrendController = new VehicletrendController(_cosmosDbService, _configuration);
+                VehicletrendController vehicletrendController = new VehicletrendController(_cosmosDbService, _configuration,server,hostApplicationLifetime);
 
                 if (await DeleteFile(VideoDetails.VideoId + ".webm", blobstorageconnection, BlobContainerName))
                 {
@@ -459,7 +467,7 @@ namespace HighwayMonitoringWebAPI.Controllers
 
         public async Task<ActionResult> UploadFileLarge(IFormFile fileRequestObject, [FromForm] string name  )
         {
-            ClassHttpRequest classHttpRequest = new ClassHttpRequest();
+            UtilityHttpRequest classHttpRequest = new UtilityHttpRequest();
             try
             {
 
