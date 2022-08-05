@@ -235,11 +235,18 @@
   background-color: #ffffff;
   margin-bottom: 20px;
 }
+<<<<<<< HEAD:ReactJS/src/src/components/CameraAdd/CameraAdd.css
 .table-data tr:first-child {
   background-color: #ddd;
 }
 .table-data td,
 .table-data th {
   border: 1px solid rgb(170, 164, 164);
+=======
+
+.table-data td,
+.table-data th {
+  border: 1px solid #ddd;
+>>>>>>> 175a4f91f3d11c65ae435c8ddb7284257d37f881:ReactJS/src/components/CameraAdd/CameraAdd.css
   padding: 8px;
 }

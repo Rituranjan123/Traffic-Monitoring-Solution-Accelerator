@@ -71,7 +71,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
         [HttpPost]
         public async Task<string> Create([FromBody] List<TrafficAnalysis> item)
         {
-            ClassHttpRequest classHttpRequest = new ClassHttpRequest();
+            UtilityHttpRequest classHttpRequest = new UtilityHttpRequest();
 
             try
             {

@@ -92,7 +92,11 @@ class CameraGrid extends CreateParent {
           <tbody className="">
             <tr className="">
               <th className="other">camera Name</th>
+<<<<<<< HEAD:ReactJS/src/src/components/CameraAdd/CameraGrid.jsx
               <th className="other" style={{ width: '400px' }}>
+=======
+              <th className="other" style={{ width: '200px' }}>
+>>>>>>> 175a4f91f3d11c65ae435c8ddb7284257d37f881:ReactJS/src/components/CameraAdd/CameraGrid.jsx
                 Stream Endpoint
               </th>
               <th className="other">state</th>

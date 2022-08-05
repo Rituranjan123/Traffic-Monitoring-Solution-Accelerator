@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace UtilityLibrary
 {
-    public class ClassHttpRequest
+    public class UtilityHttpRequest
     {
         public async Task<string> PostAPI(string APIPath, FormUrlEncodedContent content,int id)
         {

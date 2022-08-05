@@ -1,8 +1,12 @@
 ﻿using HighwayMonitoringCosmosDB.Models;
 using HighwayMonitoringCosmosDB.Services;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,12 +21,40 @@ namespace HighwayMonitoringCosmosDB.Controllers
         private readonly ICosmosDbService _cosmosDbService;
 
         private readonly IConfiguration _configuration;
+
+        private readonly IServer server;
+        private readonly IHostApplicationLifetime hostApplicationLifetime;
+
         #region Vechile Trends CRUD
-        public VehicletrendController(ICosmosDbService cosmosDbService, IConfiguration configuration)
+        //public VehicletrendController(ICosmosDbService cosmosDbService, IConfiguration configuration)
+        //{
+        //    _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
+        //    _configuration = configuration; ;
+        //}
+
+        public VehicletrendController(ICosmosDbService cosmosDbService, IConfiguration configuration, IServer server, IHostApplicationLifetime hostApplicationLifetime)
         {
             _cosmosDbService = cosmosDbService ?? throw new ArgumentNullException(nameof(cosmosDbService));
-            _configuration = configuration; ;
+            _configuration = configuration;
+            this.server = server;
+            this.hostApplicationLifetime = hostApplicationLifetime;
+
         }
+
+        private string GetAddresses()
+        {
+            var addresses = (server.Features.Get<IServerAddressesFeature>().Addresses) ;
+            //string URI= addresses[0].ToString();
+            //return addresses[0].ToString();
+            string URL= string.Join(",", addresses);
+            if (URL.Contains(","))
+            {
+                var Result = URL.Split(",");
+                return Result[0];
+            }
+            return URL;
+        }
+
 
 
         [HttpGet]
@@ -69,7 +101,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
         [HttpPost]
         public async Task<string> Create([FromBody] List<Vehicletrend> item)
         {
-            ClassHttpRequest classHttpRequest = new ClassHttpRequest();
+            UtilityHttpRequest classHttpRequest = new UtilityHttpRequest();
 
             try
             {
@@ -82,7 +114,7 @@ namespace HighwayMonitoringCosmosDB.Controllers
                     {
                     new KeyValuePair<string, string>("VideoId", item[0].VideoID.ToString())
                 });
-                    string BaseURL = _configuration.GetValue<string>("BaseURL") + "Video/UpdateProcessVideo";
+                    string BaseURL = GetAddresses()+ "/api/Video/UpdateProcessVideo";// _configuration.GetValue<string>("BaseURL") + "Video/UpdateProcessVideo";
                     await classHttpRequest.PostAPI(BaseURL, content, item[0].VideoID);
                     classHttpRequest.WritetoFile(null, "Vechile Json recived" + item[0].VideoID.ToString());
                 }
