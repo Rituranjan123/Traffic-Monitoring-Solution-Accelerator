@@ -114,7 +114,8 @@ namespace HighwayMonitoringCosmosDB.Controllers
                     {
                     new KeyValuePair<string, string>("VideoId", item[0].VideoID.ToString())
                 });
-                    string BaseURL = GetAddresses()+ "/api/Video/UpdateProcessVideo";// _configuration.GetValue<string>("BaseURL") + "Video/UpdateProcessVideo";
+                   // string BaseURL = GetAddresses()+ "/api/Video/UpdateProcessVideo";//
+                    string BaseURL =_configuration.GetValue<string>("BaseURL") + "Video/UpdateProcessVideo";
                     await classHttpRequest.PostAPI(BaseURL, content, item[0].VideoID);
                     classHttpRequest.WritetoFile(null, "Vechile Json recived" + item[0].VideoID.ToString());
                 }
