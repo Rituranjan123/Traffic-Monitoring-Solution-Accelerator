@@ -42,7 +42,7 @@ class CameraAdd extends CreateParent {
   handelInit = () => {
     const { CameraValue, formOption } = this.state;
 
-    formOption.PageLoad =true;
+    formOption.PageLoad = true;
     formOption.errorBoll = false;
     formOption.legalBoll = false;
     formOption.Message = '';
@@ -173,11 +173,10 @@ class CameraAdd extends CreateParent {
 
   async componentDidMount() {
     //   componentDidMount() {
-      const { CameraValue,formOption } = this.state;
+    const { CameraValue, formOption } = this.state;
     let initinalFormFill = await GetDropdown('/USCity/GetAllState', '');
-    if(formOption.PageLoad ==true){
-      CameraValue.state=window.StateName;
-
+    if (formOption.PageLoad == true) {
+      CameraValue.state = window.StateName;
     }
 
     if (this.props.match !== undefined && this.props.match !== '') {
@@ -192,7 +191,7 @@ class CameraAdd extends CreateParent {
         CameraValue: {},
       });
     }
-    
+
     if (this.state.CameraValue && this.state.CameraValue.State) {
       let initinalFormFill2 = await GetDropdownpost(
         '/USCity/GetCity',
@@ -204,9 +203,12 @@ class CameraAdd extends CreateParent {
     }
     //  return;
 
-    this.setState({ initinalFormFill: initinalFormFill,CameraValue:CameraValue,formOption:formOption });
+    this.setState({
+      initinalFormFill: initinalFormFill,
+      CameraValue: CameraValue,
+      formOption: formOption,
+    });
 
-   
     var result = {};
     if (CameraValue.Latitude) {
       var result = {};
@@ -214,8 +216,8 @@ class CameraAdd extends CreateParent {
       result.longitude = CameraValue.Longitude;
       window.FindMAp(result);
     } else {
-      result.latitude =window.lat1;
-      result.longitude =window.long1;
+      result.latitude = window.lat1;
+      result.longitude = window.long1;
       window.FindMAp(result);
       document.getElementById('Latitude').value = result.latitude;
       document.getElementById('Longitude').value = result.longitude;
@@ -272,12 +274,11 @@ class CameraAdd extends CreateParent {
       MenuData,
       initinalFormFill,
     } = this.state;
-    if(formOption.PageLoad ==true){
-      CameraValue.State=window.StateName;
-      CameraValue.City=window.CityName;
-       formOption.PageLoad ==false;
+    if (formOption.PageLoad == true) {
+      CameraValue.State = window.StateName;
+      CameraValue.City = window.CityName;
+      formOption.PageLoad == false;
       //this.setState({formOption:formOption});
-
     }
     return (
       <div className="datagrid">
