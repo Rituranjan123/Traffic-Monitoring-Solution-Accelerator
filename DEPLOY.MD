@@ -8,14 +8,15 @@ To start, clone or download this repository and navigate to the project's root d
 This Azure Resource Manager (ARM) template will create an Azure resource groups & resource .
 
 
+If your environment meets the prerequisites and you're familiar with using ARM templates, select the **Deploy web site and DB to Azure** button. The template will open in the Azure portal.
 
-If your environment meets the prerequisites and you're familiar with using ARM templates, select the **Deploy to Azure** button. This Azure Resource Manager (ARM) template will create Kubernetes services
+[![Deploy web site and DB to Azure 0](/Media/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_MainResourceGroup.json)
 
-[![Deploy to Azure 1](/Media/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_AKSResourceGroup.json)
 
-If your environment meets the prerequisites and you're familiar with using ARM templates, select the **Deploy to Azure** button. The template will open in the Azure portal.
+To deploy Kubernetes services select the **Deploy Kubernetes to Azure** button. This Azure Resource Manager (ARM) template will create Kubernetes services
 
-[![Deploy to Azure 0](/Media/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_MainResourceGroup.json)
+[![Deploy AKS to Azure 1](/Media/deploy-to-azure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FRituranjan123%2FTraffic-Monitoring-Solution-Accelerator%2Fmain%2FARMTemplate%2FARMTemplate_mspoc_AKSResourceGroup.json)
+
 
 
 
